@@ -6,7 +6,10 @@ console.log = function(data) {
   var socket = io.connect('http://localhost');
   socket.on('news', function (data) {
     console.log(data);
-    socket.emit('my other event', { my: 'data' });
+	socket.emit('query', { query: 'bbox=-63.579254,44.648872,-63.572559,44.649605' });
+  });
+  socket.on('query_data', function (data) {
+	console.log(data);
   });
 </script>
 <div id="log"></div>
