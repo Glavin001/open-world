@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.0.2" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <bounds minlat="44.6488720" minlon="-63.5792540" maxlat="44.6496050" maxlon="-63.5725590"/>
+ <node id="1898965520" lat="44.6508155" lon="-63.5790110" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:58Z"/>
+ <node id="19092743" lat="44.6446898" lon="-63.5727789" user="macgregor" uid="303303" visible="true" version="4" changeset="7057394" timestamp="2011-01-23T01:59:08Z"/>
+ <node id="962128136" lat="44.6493311" lon="-63.5752397" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:12Z"/>
+ <node id="962127189" lat="44.6500167" lon="-63.5756656" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:11Z"/>
+ <node id="1139389494" lat="44.6494007" lon="-63.5745558" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:29Z"/>
+ <node id="1898965526" lat="44.6508343" lon="-63.5790805" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:58Z"/>
+ <node id="962128169" lat="44.6498195" lon="-63.5764231" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:12Z"/>
+ <node id="23013746" lat="44.6489102" lon="-63.5723195" user="macgregor" uid="303303" visible="true" version="3" changeset="7057394" timestamp="2011-01-23T01:58:55Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="1368202224" lat="44.6492881" lon="-63.5742694" user="macgregor" uid="303303" visible="true" version="1" changeset="8781977" timestamp="2011-07-20T19:18:06Z"/>
+ <node id="962126263" lat="44.6489099" lon="-63.5769053" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:11Z"/>
+ <node id="1898965274" lat="44.6488320" lon="-63.5781669" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:55Z"/>
+ <node id="582400247" lat="44.6503028" lon="-63.5748919" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:44:06Z"/>
+ <node id="1139389758" lat="44.6487258" lon="-63.5732479" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:52Z"/>
+ <node id="962127618" lat="44.6487578" lon="-63.5755403" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:43:44Z"/>
+ <node id="1139389062" lat="44.6489672" lon="-63.5726376" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:10Z"/>
+ <node id="962126446" lat="44.6501327" lon="-63.5758913" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:11Z"/>
+ <node id="1898965352" lat="44.6494384" lon="-63.5757998" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="17279462" lat="44.6501559" lon="-63.5741212" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:43:27Z"/>
+ <node id="30738193" lat="44.6501437" lon="-63.5736405" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:42:38Z"/>
+ <node id="1898965339" lat="44.6492455" lon="-63.5782355" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="1139389056" lat="44.6478818" lon="-63.5744214" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:10Z"/>
+ <node id="1898965350" lat="44.6494329" lon="-63.5787252" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="17279465" lat="44.6491902" lon="-63.5750466" user="macgregor" uid="303303" visible="true" version="4" changeset="7205941" timestamp="2011-02-06T16:42:41Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="17290167" lat="44.6460528" lon="-63.5742754" user="macgregor" uid="303303" visible="true" version="2" changeset="7057394" timestamp="2011-01-23T01:58:39Z"/>
+ <node id="962125344" lat="44.6500354" lon="-63.5755916" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:10Z"/>
+ <node id="25232579" lat="44.6496129" lon="-63.5732980" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:43:37Z"/>
+ <node id="30757783" lat="44.6473987" lon="-63.5734562" user="macgregor" uid="303303" visible="true" version="2" changeset="7057394" timestamp="2011-01-23T01:59:06Z"/>
+ <node id="1139389553" lat="44.6487060" lon="-63.5775315" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:34Z"/>
+ <node id="1139389173" lat="44.6487997" lon="-63.5727421" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:15Z"/>
+ <node id="267592735" lat="44.6493791" lon="-63.5738727" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:42:58Z">
+  <tag k="amenity" v="restaurant"/>
+  <tag k="name" v="Bluenose II"/>
+ </node>
+ <node id="1139388913" lat="44.6497723" lon="-63.5740325" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:05Z"/>
+ <node id="17277706" lat="44.6490431" lon="-63.5757491" user="macgregor" uid="303303" visible="true" version="4" changeset="12987003" timestamp="2012-09-04T20:06:09Z"/>
+ <node id="1898965356" lat="44.6495231" lon="-63.5783781" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="15693811" lat="44.6486103" lon="-63.5776807" user="macgregor" uid="303303" visible="true" version="4" changeset="12987003" timestamp="2012-09-04T20:06:08Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="1898965347" lat="44.6492799" lon="-63.5757239" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="1139388863" lat="44.6487051" lon="-63.5746996" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:04Z"/>
+ <node id="58852510" lat="44.6486883" lon="-63.5727100" user="macgregor" uid="303303" visible="true" version="2" changeset="7057394" timestamp="2011-01-23T01:58:57Z"/>
+ <node id="1139389734" lat="44.6490820" lon="-63.5774470" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:50Z"/>
+ <node id="22004586" lat="44.6493308" lon="-63.5828348" user="Steve in Halifax" uid="3670" visible="true" version="1" changeset="149874" timestamp="2007-07-17T03:15:27Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="1898965276" lat="44.6490470" lon="-63.5787335" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:55Z"/>
+ <node id="22004597" lat="44.6490827" lon="-63.5794924" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:09Z"/>
+ <node id="1368202218" lat="44.6485962" lon="-63.5734714" user="macgregor" uid="303303" visible="true" version="1" changeset="8781977" timestamp="2011-07-20T19:18:05Z"/>
+ <node id="1139388922" lat="44.6490088" lon="-63.5733941" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:05Z"/>
+ <node id="1368202216" lat="44.6484948" lon="-63.5738884" user="macgregor" uid="303303" visible="true" version="1" changeset="8781977" timestamp="2011-07-20T19:18:05Z"/>
+ <node id="1139388772" lat="44.6495402" lon="-63.5776061" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:01Z"/>
+ <node id="17705567" lat="44.6482170" lon="-63.5745985" user="macgregor" uid="303303" visible="true" version="3" changeset="7057394" timestamp="2011-01-23T01:59:16Z"/>
+ <node id="1139389641" lat="44.6502315" lon="-63.5749548" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:42Z"/>
+ <node id="17279464" lat="44.6485296" lon="-63.5733111" user="macgregor" uid="303303" visible="true" version="3" changeset="7057394" timestamp="2011-01-23T01:59:07Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="1898965517" lat="44.6507661" lon="-63.5789498" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:58Z"/>
+ <node id="1898965341" lat="44.6492462" lon="-63.5789822" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="1898965315" lat="44.6490994" lon="-63.5764690" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="25232974" lat="44.6475447" lon="-63.5749327" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:43:10Z"/>
+ <node id="1898965348" lat="44.6492999" lon="-63.5787911" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="22004590" lat="44.6492649" lon="-63.5807560" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:09Z"/>
+ <node id="1139389107" lat="44.6501342" lon="-63.5753554" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:12Z"/>
+ <node id="1898965529" lat="44.6508373" lon="-63.5791820" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:58Z"/>
+ <node id="17705563" lat="44.6502125" lon="-63.5755627" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:43:31Z"/>
+ <node id="25232580" lat="44.6491214" lon="-63.5726459" user="macgregor" uid="303303" visible="true" version="2" changeset="7057394" timestamp="2011-01-23T01:59:09Z"/>
+ <node id="1139389445" lat="44.6496599" lon="-63.5744784" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:27Z"/>
+ <node id="17298974" lat="44.6465661" lon="-63.5723065" user="macgregor" uid="303303" visible="true" version="2" changeset="7057394" timestamp="2011-01-23T01:59:18Z"/>
+ <node id="22004600" lat="44.6489907" lon="-63.5791139" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:09Z"/>
+ <node id="1219506008" lat="44.6493750" lon="-63.5727838" user="macgregor" uid="303303" visible="true" version="1" changeset="7679097" timestamp="2011-03-26T19:20:44Z">
+  <tag k="amenity" v="bus_station"/>
+  <tag k="name" v="Water Street Terminal"/>
+ </node>
+ <node id="1139389077" lat="44.6503184" lon="-63.5737745" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:11Z"/>
+ <node id="1898965311" lat="44.6490816" lon="-63.5787527" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="962127745" lat="44.6501704" lon="-63.5757424" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:11Z"/>
+ <node id="1898965322" lat="44.6491019" lon="-63.5781442" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="30757782" lat="44.6475435" lon="-63.5727996" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:44:11Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="17290171" lat="44.6480317" lon="-63.5752766" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:43:49Z"/>
+ <node id="1139389701" lat="44.6487665" lon="-63.5772906" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:48Z"/>
+ <node id="1898965358" lat="44.6496116" lon="-63.5783576" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="962128036" lat="44.6499782" lon="-63.5765024" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:12Z"/>
+ <node id="1139389607" lat="44.6490946" lon="-63.5776678" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:39Z"/>
+ <node id="25232964" lat="44.6472342" lon="-63.5740793" user="macgregor" uid="303303" visible="true" version="3" changeset="7057394" timestamp="2011-01-23T01:59:04Z"/>
+ <node id="1139389468" lat="44.6501218" lon="-63.5757182" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:08Z"/>
+ <node id="22004566" lat="44.6494358" lon="-63.5845313" user="Steve in Halifax" uid="3670" visible="true" version="2" changeset="453831" timestamp="2007-12-28T17:35:15Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="1139389110" lat="44.6492142" lon="-63.5730709" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:13Z"/>
+ <node id="1139389045" lat="44.6490820" lon="-63.5777179" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:09Z"/>
+ <node id="32070338" lat="44.6494131" lon="-63.5841357" user="Freek" uid="5446" visible="true" version="2" changeset="9593958" timestamp="2011-10-18T19:03:43Z"/>
+ <node id="17290169" lat="44.6470513" lon="-63.5747852" user="macgregor" uid="303303" visible="true" version="2" changeset="7057394" timestamp="2011-01-23T01:58:49Z"/>
+ <node id="30738192" lat="44.6503896" lon="-63.5738866" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:42:55Z"/>
+ <node id="1368202225" lat="44.6493894" lon="-63.5738524" user="macgregor" uid="303303" visible="true" version="1" changeset="8781977" timestamp="2011-07-20T19:18:06Z"/>
+ <node id="962126315" lat="44.6488926" lon="-63.5750084" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:42:54Z"/>
+ <node id="19092741" lat="44.6463946" lon="-63.5729361" user="macgregor" uid="303303" visible="true" version="2" changeset="7057394" timestamp="2011-01-23T01:59:00Z"/>
+ <node id="17298978" lat="44.6450159" lon="-63.5715175" user="macgregor" uid="303303" visible="true" version="3" changeset="7057394" timestamp="2011-01-23T01:58:46Z"/>
+ <node id="1139388995" lat="44.6488233" lon="-63.5752820" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:07Z"/>
+ <node id="1898965275" lat="44.6488696" lon="-63.5780237" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:55Z"/>
+ <node id="1139389653" lat="44.6494501" lon="-63.5743739" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:44Z"/>
+ <node id="17705586" lat="44.6510931" lon="-63.5760791" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:43:07Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="1139389223" lat="44.6494133" lon="-63.5736194" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:17Z"/>
+ <node id="1139389597" lat="44.6495160" lon="-63.5732270" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:39Z"/>
+ <node id="30738199" lat="44.6503016" lon="-63.5741916" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:43:19Z"/>
+ <node id="1139389289" lat="44.6488221" lon="-63.5728796" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:19Z"/>
+ <node id="962126503" lat="44.6490880" lon="-63.5751063" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:43:59Z"/>
+ <node id="1139389279" lat="44.6490186" lon="-63.5748570" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:19Z"/>
+ <node id="22004594" lat="44.6491698" lon="-63.5799807" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:09Z"/>
+ <node id="32070342" lat="44.6493423" lon="-63.5744021" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:43:58Z"/>
+ <node id="1139389337" lat="44.6494771" lon="-63.5778575" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:21Z"/>
+ <node id="1689418196" lat="44.6495263" lon="-63.5743115" user="macgregor" uid="303303" visible="true" version="1" changeset="11089889" timestamp="2012-03-24T22:53:15Z">
+  <tag k="amenity" v="pub"/>
+  <tag k="name" v="Split Crow"/>
+ </node>
+ <node id="1898965512" lat="44.6506766" lon="-63.5798039" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:58Z"/>
+ <node id="1139388842" lat="44.6495626" lon="-63.5739280" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:03Z"/>
+ <node id="1139389400" lat="44.6493034" lon="-63.5749564" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:24Z"/>
+ <node id="30738125" lat="44.6486210" lon="-63.5774849" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:10Z"/>
+ <node id="962127034" lat="44.6496092" lon="-63.5772547" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:11Z"/>
+ <node id="1898965306" lat="44.6490671" lon="-63.5786619" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:55Z"/>
+ <node id="1139389612" lat="44.6491319" lon="-63.5744108" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:40Z"/>
+ <node id="1898965343" lat="44.6492579" lon="-63.5765449" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="17705590" lat="44.6483685" lon="-63.5739528" user="macgregor" uid="303303" visible="true" version="2" changeset="7057394" timestamp="2011-01-23T01:58:36Z"/>
+ <node id="1898965277" lat="44.6490480" lon="-63.5788723" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:55Z"/>
+ <node id="17279463" lat="44.6495125" lon="-63.5737868" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:43:00Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="22004607" lat="44.6487071" lon="-63.5781475" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:09Z"/>
+ <node id="15693461" lat="44.6442005" lon="-63.5725520" user="macgregor" uid="303303" visible="true" version="4" changeset="7057394" timestamp="2011-01-23T01:59:06Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="1898965328" lat="44.6491552" lon="-63.5785827" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="17277700" lat="44.6487487" lon="-63.5770257" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:09Z"/>
+ <node id="1139389172" lat="44.6488185" lon="-63.5742535" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:15Z"/>
+ <node id="15693462" lat="44.6462295" lon="-63.5735833" user="macgregor" uid="303303" visible="true" version="5" changeset="7057394" timestamp="2011-01-23T01:58:58Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="1139389219" lat="44.6494311" lon="-63.5746509" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:17Z">
+  <tag k="amenity" v="restaurant"/>
+  <tag k="name" v="Boston Pizza"/>
+ </node>
+ <node id="1139389249" lat="44.6490972" lon="-63.5773865" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:18Z"/>
+ <node id="962125390" lat="44.6489532" lon="-63.5756381" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:42:39Z"/>
+ <node id="1898965278" lat="44.6490643" lon="-63.5782874" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:55Z"/>
+ <node id="17290163" lat="44.6450836" lon="-63.5737746" user="macgregor" uid="303303" visible="true" version="2" changeset="7057394" timestamp="2011-01-23T01:59:05Z"/>
+ <node id="1139389521" lat="44.6492880" lon="-63.5724457" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:31Z"/>
+ <node id="21525731" lat="44.6452808" lon="-63.5730720" user="macgregor" uid="303303" visible="true" version="3" changeset="7057394" timestamp="2011-01-23T01:59:17Z"/>
+ <node id="15693821" lat="44.6495500" lon="-63.5848800" user="macgregor" uid="303303" visible="true" version="3" changeset="12987003" timestamp="2012-09-04T20:06:08Z">
+  <tag k="highway" v="traffic_signals"/>
+ </node>
+ <node id="1898965349" lat="44.6494077" lon="-63.5791608" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:56Z"/>
+ <node id="25232977" lat="44.6476795" lon="-63.5744009" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:42:49Z"/>
+ <node id="1898965431" lat="44.6498776" lon="-63.5755128" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:05:57Z"/>
+ <node id="1139389700" lat="44.6491115" lon="-63.5734633" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:48Z"/>
+ <node id="22004604" lat="44.6488829" lon="-63.5787587" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:09Z"/>
+ <node id="1139389679" lat="44.6491051" lon="-63.5730258" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:46Z"/>
+ <way id="122433052" user="macgregor" uid="303303" visible="true" version="1" changeset="8781977" timestamp="2011-07-20T19:18:15Z">
+  <nd ref="1368202216"/>
+  <nd ref="1368202218"/>
+  <nd ref="1368202225"/>
+  <nd ref="1368202224"/>
+  <nd ref="1368202216"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="4236883" user="macgregor" uid="303303" visible="true" version="7" changeset="7057394" timestamp="2011-01-23T01:58:58Z">
+  <nd ref="30738199"/>
+  <nd ref="17279462"/>
+  <nd ref="17279463"/>
+  <nd ref="17279464"/>
+  <nd ref="30757782"/>
+  <nd ref="17298974"/>
+  <nd ref="17298978"/>
+  <tag k="clopin:id" v="cyclefast"/>
+  <tag k="clopin:route" v="cyclefast"/>
+  <tag k="highway" v="secondary"/>
+  <tag k="name" v="Hollis Street"/>
+  <tag k="oneway" v="yes"/>
+ </way>
+ <way id="179522706" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:06:01Z">
+  <nd ref="1898965352"/>
+  <nd ref="1898965343"/>
+  <nd ref="1898965315"/>
+  <nd ref="1898965347"/>
+  <nd ref="1898965352"/>
+  <tag k="building" v="yes"/>
+  <tag k="landuse" v="commercial"/>
+  <tag k="layer" v="2"/>
+  <tag k="name" v="Duke Tower"/>
+ </way>
+ <way id="45715916" user="macgregor" uid="303303" visible="true" version="4" changeset="10563640" timestamp="2012-02-01T23:35:16Z">
+  <nd ref="23013746"/>
+  <nd ref="25232580"/>
+  <nd ref="25232579"/>
+  <nd ref="30738193"/>
+  <nd ref="1139389077"/>
+  <nd ref="30738192"/>
+  <tag k="clopin:id" v="cycleslow"/>
+  <tag k="clopin:route" v="cycleslow"/>
+  <tag k="highway" v="tertiary"/>
+  <tag k="lanes" v="2"/>
+  <tag k="name" v="Lower Water Street"/>
+  <tag k="oneway" v="yes"/>
+  <tag k="surface" v="paved"/>
+ </way>
+ <way id="4100551" user="Freek" uid="5446" visible="true" version="2" changeset="9593958" timestamp="2011-10-18T19:03:24Z">
+  <nd ref="15693821"/>
+  <nd ref="22004566"/>
+  <nd ref="32070338"/>
+  <nd ref="22004586"/>
+  <nd ref="22004590"/>
+  <nd ref="22004594"/>
+  <nd ref="22004597"/>
+  <nd ref="22004600"/>
+  <nd ref="22004604"/>
+  <nd ref="22004607"/>
+  <nd ref="15693811"/>
+  <tag k="highway" v="unclassified"/>
+  <tag k="name" v="Rainnie Drive"/>
+ </way>
+ <way id="179522708" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:06:02Z">
+  <nd ref="1898965328"/>
+  <nd ref="1898965339"/>
+  <nd ref="1898965356"/>
+  <nd ref="1898965350"/>
+  <nd ref="1898965328"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="45717257" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:43:40Z">
+  <nd ref="32070342"/>
+  <nd ref="582400247"/>
+  <tag k="bicycle" v="yes"/>
+  <tag k="foot" v="yes"/>
+  <tag k="highway" v="pedestrian"/>
+  <tag k="name" v="Granville Street"/>
+ </way>
+ <way id="3492118" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:42:39Z">
+  <nd ref="17277706"/>
+  <nd ref="17290171"/>
+  <nd ref="17290169"/>
+  <nd ref="17290167"/>
+  <nd ref="17290163"/>
+  <tag k="highway" v="unclassified"/>
+  <tag k="name" v="Argyle Street"/>
+  <tag k="oneway" v="yes"/>
+ </way>
+ <way id="4228481" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:43:40Z">
+  <nd ref="962126315"/>
+  <nd ref="1139388995"/>
+  <nd ref="962127618"/>
+  <nd ref="25232974"/>
+  <nd ref="25232977"/>
+  <nd ref="962126315"/>
+  <tag k="name" v="Grand Parade"/>
+  <tag k="tourism" v="attraction"/>
+ </way>
+ <way id="3489267" user="Dmajackson" uid="165168" visible="true" version="2" changeset="3300426" timestamp="2009-12-06T04:40:33Z">
+  <nd ref="15693811"/>
+  <nd ref="30738125"/>
+  <nd ref="17277700"/>
+  <nd ref="17277706"/>
+  <nd ref="17279465"/>
+  <nd ref="32070342"/>
+  <nd ref="17279463"/>
+  <tag k="highway" v="unclassified"/>
+  <tag k="name" v="Duke Street"/>
+ </way>
+ <way id="98486281" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:05Z">
+  <nd ref="962128036"/>
+  <nd ref="962128169"/>
+  <nd ref="962127034"/>
+  <nd ref="962126263"/>
+  <nd ref="962128136"/>
+  <nd ref="1898965431"/>
+  <nd ref="962125344"/>
+  <nd ref="962127189"/>
+  <nd ref="1139389468"/>
+  <nd ref="962127745"/>
+  <nd ref="962126446"/>
+  <nd ref="962128036"/>
+  <tag k="building" v="yes"/>
+  <tag k="name" v="Scotia Square"/>
+  <tag k="source" v="CanVec 6.0 - NRCan"/>
+ </way>
+ <way id="45715913" user="macgregor" uid="303303" visible="true" version="3" changeset="7205941" timestamp="2011-02-06T16:44:01Z">
+  <nd ref="25232579"/>
+  <nd ref="17279463"/>
+  <tag k="highway" v="unclassified"/>
+  <tag k="name" v="Duke Street"/>
+  <tag k="oneway" v="yes"/>
+ </way>
+ <way id="98486275" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:42:26Z">
+  <nd ref="1139389062"/>
+  <nd ref="1139389521"/>
+  <tag k="bridge" v="yes"/>
+  <tag k="highway" v="footway"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="82668553" user="macgregor" uid="303303" visible="true" version="2" changeset="7205941" timestamp="2011-02-06T16:42:49Z">
+  <nd ref="962127618"/>
+  <nd ref="1139388995"/>
+  <nd ref="962126315"/>
+  <nd ref="962126503"/>
+  <nd ref="962125390"/>
+  <nd ref="962127618"/>
+  <tag k="addr:housenumber" v="1841"/>
+  <tag k="addr:street" v="Argyle Street"/>
+  <tag k="building" v="yes"/>
+  <tag k="name" v="Halifax City Hall"/>
+  <tag k="office" v="government"/>
+ </way>
+ <way id="179522691" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:06:01Z">
+  <nd ref="1898965358"/>
+  <nd ref="1898965349"/>
+  <nd ref="1898965512"/>
+  <nd ref="1898965529"/>
+  <nd ref="1898965526"/>
+  <nd ref="1898965520"/>
+  <nd ref="1898965517"/>
+  <nd ref="1898965358"/>
+  <tag k="landuse" v="construction"/>
+  <tag k="name" v="Citadel Hotel Redevelopment"/>
+ </way>
+ <way id="98486189" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:03Z">
+  <nd ref="1139389494"/>
+  <nd ref="1139389641"/>
+  <nd ref="1139389107"/>
+  <nd ref="1139389400"/>
+  <nd ref="1139389494"/>
+  <tag k="building" v="yes"/>
+  <tag k="name" v="Barrington Place"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="98486276" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:42:26Z">
+  <nd ref="1139388863"/>
+  <nd ref="1139389172"/>
+  <nd ref="1139389612"/>
+  <nd ref="1139389279"/>
+  <nd ref="1139388863"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="98486279" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:42:26Z">
+  <nd ref="1139389700"/>
+  <nd ref="1139389110"/>
+  <nd ref="1139389597"/>
+  <nd ref="1139389223"/>
+  <nd ref="1139389700"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="45715936" user="Dmajackson" uid="165168" visible="true" version="1" changeset="3300426" timestamp="2009-12-06T04:43:07Z">
+  <nd ref="19092741"/>
+  <nd ref="30757783"/>
+  <nd ref="17705590"/>
+  <nd ref="32070342"/>
+  <tag k="highway" v="unclassified"/>
+  <tag k="name" v="Granville Street"/>
+  <tag k="oneway" v="yes"/>
+ </way>
+ <way id="98486166" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:41:58Z">
+  <nd ref="58852510"/>
+  <nd ref="1139389173"/>
+  <nd ref="1139389062"/>
+  <tag k="highway" v="footway"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="179522709" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:06:02Z">
+  <nd ref="1898965275"/>
+  <nd ref="1898965274"/>
+  <nd ref="1898965278"/>
+  <nd ref="1898965322"/>
+  <nd ref="1898965275"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="98486236" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:42:16Z">
+  <nd ref="1139389758"/>
+  <nd ref="1139389289"/>
+  <nd ref="1139389679"/>
+  <nd ref="1139388922"/>
+  <nd ref="1139389758"/>
+  <tag k="building" v="yes"/>
+  <tag k="name" v="Bank of Montreal Building"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="179522721" user="macgregor" uid="303303" visible="true" version="1" changeset="12987003" timestamp="2012-09-04T20:06:02Z">
+  <nd ref="1898965277"/>
+  <nd ref="1898965341"/>
+  <nd ref="1898965348"/>
+  <nd ref="1898965306"/>
+  <nd ref="1898965276"/>
+  <nd ref="1898965311"/>
+  <nd ref="1898965277"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="4794135" user="macgregor" uid="303303" visible="true" version="8" changeset="7205941" timestamp="2011-02-06T16:43:29Z">
+  <nd ref="17705586"/>
+  <nd ref="17705563"/>
+  <nd ref="17279465"/>
+  <nd ref="17705567"/>
+  <nd ref="1139389056"/>
+  <nd ref="25232964"/>
+  <nd ref="15693462"/>
+  <nd ref="21525731"/>
+  <nd ref="19092743"/>
+  <nd ref="15693461"/>
+  <tag k="clopin:id" v="cycleslow"/>
+  <tag k="clopin:route" v="cycleslow"/>
+  <tag k="highway" v="secondary"/>
+  <tag k="name" v="Barrington Street"/>
+  <tag k="ref" v="3"/>
+ </way>
+ <way id="98486267" user="macgregor" uid="303303" visible="true" version="2" changeset="12987003" timestamp="2012-09-04T20:06:06Z">
+  <nd ref="1139389553"/>
+  <nd ref="1139389701"/>
+  <nd ref="1139389734"/>
+  <nd ref="1139389249"/>
+  <nd ref="1139388772"/>
+  <nd ref="1139389337"/>
+  <nd ref="1139389607"/>
+  <nd ref="1139389045"/>
+  <nd ref="1139389553"/>
+  <tag k="addr:city" v="Halifax"/>
+  <tag k="addr:housenumber" v="1881"/>
+  <tag k="addr:street" v="Brunswick Street"/>
+  <tag k="building" v="yes"/>
+  <tag k="name" v="The Plaza"/>
+  <tag k="source" v="bing"/>
+ </way>
+ <way id="98486216" user="macgregor" uid="303303" visible="true" version="1" changeset="7205941" timestamp="2011-02-06T16:42:10Z">
+  <nd ref="1139389653"/>
+  <nd ref="1139388842"/>
+  <nd ref="1139388913"/>
+  <nd ref="1139389445"/>
+  <nd ref="1139389653"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="bing"/>
+ </way>
+</osm>
