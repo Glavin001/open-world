@@ -15,21 +15,32 @@ socket.on('init', function (data) {
 
 socket.on('update', function(data) {
 	// Another player has update their location
-	playerData[data.playerId].lastKnownLocation = data.lastKnownLocation;
+	playerData.otherPlayers[data.playerId].lastKnownLocation = data.lastKnownLocation;
 	updateDataVis();
 });
 
 socket.on('setName', function(data) {
 	// Another player has update their name
-	playerData[data.playerId].playerName = data.playerName;
+	playerData.otherPlayers[data.playerId].playerName = data.playerName;
+	updateDataVis();
+});
+
+socket.on('newPlayer', function(data) {
+	// Add in the new player
+	playerData.otherPlayers[data.playerId] = {
+		playerName: data.playerName,
+		lastKnownLocation: data.lastKnownLocation
+	};
 	updateDataVis();
 });
 
 function submitName() {
-	socket.emit("setName", { playerName: document.getElementById('name').value });
+	var newName = document.getElementById('name').value;
+	playerData.you.playerName = newName;
+	socket.emit("setName", { playerName: newName });
 }
 
 </script>
-<div style="width: 200px; position: absolute; right: 200px" id="playerData">
+<div style="position: absolute;" id="playerData">
 </div>
 <div style="position: absolute; bottom: 30px"><input id="name" type="text"></input><button onclick="submitName()">Set Name</button></div>

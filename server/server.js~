@@ -89,18 +89,82 @@ function fetchMapData(query, callback) {
 	req.end();
 }
 
+
+var players = 0,
+	playerSockets = {};
+
+
+function genInitData(playerId) {
+	var tPlayerData = {
+			you : {
+				playerId: playerId,
+				playerName: playerSockets[playerId].playerName,
+				lastKnownLocation: playerSockets[playerId].lastKnownLocation
+			},
+			otherPlayers : {}
+		};
+	for (var pid in playerSockets) {
+		if (pid !== playerId) {
+			tPlayerData.otherPlayers[pid] = {
+				playerName: playerSockets[pid].playerName,
+				lastKnownLocation: playerSockets[pid].lastKnownLocation
+			}
+		}
+	}
+	return tPlayerData;
+}
+
 io.sockets.on('connection', function (socket) {
-  
+  	
+	// Create a player object for this socket
+	// TODO: Re-Link old players
+	var playerId = "Player " + (++players),
+		playerObj = {
+			playerId: playerId,
+			playerName: playerId, // Player name is the id by default
+			socket: socket,
+			lastKnownLocation: {
+				latitude: 44.644193,
+				longitude: -63.572541
+			}
+		};
+	playerSockets[playerId] = playerObj;
+	socket.playerId = playerId;
+
+	// Send the player data of themselves and others
+	socket.emit('init', genInitData(playerId));
+	socket.broadcast.emit('newPlayer', {
+		playerId: playerObj.playerId,
+		playerName: playerObj.playerName,
+		lastKnownLocation: playerObj.lastKnownLocation
+	});
+
+	socket.on('setName', function(data) {
+		// Update the player's name
+		playerSockets[socket.playerId].playerName = data.playerName;
+		// Send it out to everyone
+		socket.broadcast.emit('setName', {
+			playerName: data.playerName,
+			playerId: socket.playerId
+		});
+	});
+
+	socket.on('update', function(data) {
+		// Tell everyone else this player's new location
+		socket.broadcast.emit('update', {
+			playerId: socket.playerId,
+			location: data.location
+		});
+	});
+	
+
+
+/// BREAKS THE SOCKET
 	socket.on('query', function (data) {
     	console.log(data);
 		fetchMapData(data.query, function(error, data) {
 			socket.emit('query_data', { error: error, data: data });
 		});
 	});
-
-
-
-
-	socket.emit('news', { hello: 'world' });
 
 });

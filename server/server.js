@@ -118,19 +118,27 @@ io.sockets.on('connection', function (socket) {
   	
 	// Create a player object for this socket
 	// TODO: Re-Link old players
-	var playerId = "Player " + (++players);
-	playerSockets[playerId] = {
-		playerName: playerId, // Player name is the id by default
-		socket: socket,
-		lastKnownLocation: {
-			latitude: 44.644193,
-			longitude: -63.572541
-		}
-	};
+	var playerId = "Player " + (++players),
+		playerObj = {
+			playerId: playerId,
+			playerName: playerId, // Player name is the id by default
+			socket: socket,
+			lastKnownLocation: {
+				latitude: 44.644193,
+				longitude: -63.572541
+			}
+		};
+	playerSockets[playerId] = playerObj;
 	socket.playerId = playerId;
 
 	// Send the player data of themselves and others
 	socket.emit('init', genInitData(playerId));
+	// Let everyone else know there is a new player
+	socket.broadcast.emit('newPlayer', {
+		playerId: playerObj.playerId,
+		playerName: playerObj.playerName,
+		lastKnownLocation: playerObj.lastKnownLocation
+	});
 
 	socket.on('setName', function(data) {
 		// Update the player's name
