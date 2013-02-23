@@ -1,8 +1,44 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = io.connect('http://localhost');
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
+var playerData = {};
+function updateDataVis() {
+	document.getElementById("playerData").innerHTML = "<pre>" + JSON.stringify(playerData) + "</pre>";
+}
+
+var socket = io.connect('http://localhost');
+socket.on('init', function (data) {
+	document.getElementById('name').value = data.you.playerName;
+	// Update the local player data
+	playerData = data;
+	updateDataVis();
+});
+
+socket.on('update', function(data) {
+	// Another player has update their location
+	playerData.otherPlayers[data.playerId].lastKnownLocation = data.lastKnownLocation;
+	updateDataVis();
+});
+
+socket.on('setName', function(data) {
+	// Another player has update their name
+	playerData.otherPlayers[data.playerId].playerName = data.playerName;
+	updateDataVis();
+});
+
+socket.on('newPlayer', function(data) {
+	// Add in the new player
+	playerData.otherPlayers[data.playerId] = {
+		playerName: data.playerName,
+		lastKnownLocation: data.lastKnownLocation
+	};
+	updateDataVis();
+});
+
+function submitName() {
+	socket.emit("setName", { playerName: document.getElementById('name').value });
+}
+
 </script>
+<div style="position: absolute;" id="playerData">
+</div>
+<div style="position: absolute; bottom: 30px"><input id="name" type="text"></input><button onclick="submitName()">Set Name</button></div>
