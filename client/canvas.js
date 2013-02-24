@@ -50,7 +50,7 @@ var MapRenderer = function(){
         
         this.testDraw = function() {
             backgroundLayerContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            this.drawMap(backgroundLayerContext, this.panLat, this.panLon, 5000);
+            this.drawMap(backgroundLayerContext, this.panLat, this.panLon, 100000);
         };
         
         this.setupCanvas = function(canvasEl) {
@@ -130,13 +130,25 @@ var MapRenderer = function(){
             var s = scale / MAX_SCALE;
             var bufLat = (lat - minlat) * MAX_SCALE;
             var bufLon = (lon - minlon) * MAX_SCALE;
-            var bufferImage = buf.getImageData(bufLon, bufLat, CANVAS_WIDTH / s, CANVAS_HEIGHT / s);
-            g.save();
             
+            var bufferImage = buf.getImageData(bufLon, bufLat, CANVAS_WIDTH / s, CANVAS_HEIGHT / s);
+            // setup
+            //var buffer = document.createElement('canvas');
+            //buffer.width = buf.width;
+            //buffer.height = buf.height;
+
+            g.save();
+            // save
+            //buffer.getContext('2d').drawImage(bufferImage, 0, 0);
+
             g.scale(s, s);
             g.putImageData(bufferImage, 0, 0);
+            delete bufferImage;
             
             g.restore();
+            // restore
+            //g.drawImage(buffer, 0, 0);
+            
         };
         
         this.handlenode = function (node) {
@@ -150,13 +162,13 @@ var MapRenderer = function(){
         this.handleway = function(way) {
             var id = way.attributes['id'].nodeValue;
 
-
+/*
             if ( !$(way).find("tag[k='highway']").length)
             {
                 //console.log("Not highway");
                 return;
             }
-
+*/
             ways[id] = $(way).find("nd").map( function () { return $(this).attr('ref'); } );
         };
 
