@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="../js/jquery.min.js"></script>
+        <script src="js/jquery.min.js"></script>
         <script src="canvas.js" ></script>
         <script>
-            $(document).ready( function() {
-                var mapRenderer = new MapRenderer($("#mapContainer"));
-                
+            var xoff = 0;
+            var yoff = 0;
+            var mapRenderer;
+            var ready = function()
+            {
+                console.log(mapRenderer);
+                var la = 44.6488720;
+                var lo = -63.5792540;
+
+                setInterval(function()
+                {
+                    xoff -= 0.00001; // positive=up
+                    yoff -= 0.00001; // position=left
+                    
+                    mapRenderer.panTo(la + xoff, lo + yoff);
+                    mapRenderer.testDraw();
+                }, 100);
+            }
+            $(document).ready(function() {
+            mapRenderer = new MapRenderer($("#mapContainer"), ready);
+
             });
         </script>
     </head>

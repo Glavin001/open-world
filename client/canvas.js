@@ -7,8 +7,8 @@ var MapRenderer = function(){
     var backgroundLayerContext = backgroundLayer.getContext("2d");
     var spritesLayerContext = spritesLayer.getContext("2d");
     
-    var panLat = 44.6488720 - 0.002;
-    var panLon = -63.5792540 - 0.002;
+    var panLat = 44.6488720;
+    var panLon = -63.5792540;
     var minlat, minlon;
     
     var CANVAS_WIDTH = 1024;
@@ -16,29 +16,49 @@ var MapRenderer = function(){
     var CANVAS_BUF_WIDTH = 3*CANVAS_HEIGHT;
     var CANVAS_BUF_HEIGHT = 3*CANVAS_WIDTH;
     var MAX_SCALE = 100000;
+    var LAT_WIDTH = CANVAS_BUF_WIDTH / MAX_SCALE;
+    var LON_HEIGHT = CANVAS_BUF_HEIGHT / MAX_SCALE;
+    var PADDING_LAT = (CANVAS_BUF_WIDTH - CANVAS_WIDTH)/2 / MAX_SCALE;
+    var PADDING_LON = (CANVAS_BUF_HEIGHT - CANVAS_HEIGHT)/2 / MAX_SCALE;
     
     // Map data
     var nodes = {};
     var ways = {};
     
-    var mapRenderer = function(container) {
+    var mapRenderer = function(container, callback) {
         this.container = container;
         this.setupCanvas(backgroundLayer);
         this.setupCanvas(spritesLayer);
         this.setupBuffer(mapBuffer);
         var self = this;
-        $.ajax({url: "./halifax1.xml", method: "GET" })
+        var lo = panLon - PADDING_LON;
+        var la = panLat - PADDING_LAT;
+        $.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_HEIGHT)+","+(la+LAT_WIDTH) , method: "GET" })
                 .done(function(data) {
             self.loadBuffer(buf, data);
-            self.drawMap(backgroundLayerContext, panLat, panLon, 5000);
+            //self.drawMap(spritesLayerContext, panLat, panLon, 5000);
+            callback.call();
         });
         
     };
     
     (function() {
+        this.panTo = function(la, lo) {
+            this.panLat = la;
+            this.panLon = lo;
+        };
+        
+        this.testDraw = function() {
+            backgroundLayerContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            this.drawMap(backgroundLayerContext, this.panLat, this.panLon, 5000);
+        };
+        
         this.setupCanvas = function(canvasEl) {
             canvasEl.width = CANVAS_WIDTH;
             canvasEl.height = CANVAS_HEIGHT;
+            canvasEl.style.left = 0;
+            canvasEl.style.top = 0;
+            $(canvasEl).css( { position:"absolute" } );
             this.container.append(canvasEl);
         };
 
@@ -84,7 +104,7 @@ var MapRenderer = function(){
                         lon = ( lon - minlon ) * MAX_SCALE; 
                         lat = ( lat - minlat ) * MAX_SCALE;
                         
-                        console.log(lat,lon);
+                        //console.log(lat,lon);
                         //g.fillRect(lon, lat, 2, 2);
                         if (startPoint)
                         {
@@ -133,7 +153,7 @@ var MapRenderer = function(){
 
             if ( !$(way).find("tag[k='highway']").length)
             {
-                console.log("Not highway");
+                //console.log("Not highway");
                 return;
             }
 
