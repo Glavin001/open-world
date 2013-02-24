@@ -106,6 +106,7 @@ function genInitData(playerId) {
 	for (var pid in playerSockets) {
 		if (pid !== playerId) {
 			tPlayerData.otherPlayers[pid] = {
+				playerId: pid,
 				playerName: playerSockets[pid].playerName,
 				lastKnownLocation: playerSockets[pid].lastKnownLocation
 			}
@@ -124,8 +125,8 @@ io.sockets.on('connection', function (socket) {
 			playerName: playerId, // Player name is the id by default
 			socket: socket,
 			lastKnownLocation: {
-				latitude: 44.644193,
-				longitude: -63.572541
+				latitude: 0,
+				longitude: 0
 			}
 		};
 	playerSockets[playerId] = playerObj;
@@ -154,7 +155,8 @@ io.sockets.on('connection', function (socket) {
 		// Tell everyone else this player's new location
 		socket.broadcast.emit('update', {
 			playerId: socket.playerId,
-			location: data.location
+			lastKnownLocation: data.lastKnownLocation,
+			orientation: data.orientation
 		});
 	});
 	
