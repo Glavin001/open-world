@@ -125,8 +125,8 @@ io.sockets.on('connection', function (socket) {
 			playerName: playerId, // Player name is the id by default
 			socket: socket,
 			lastKnownLocation: {
-				latitude: 0,
-				longitude: 0
+				latitude: 200,
+				longitude: 250
 			}
 		};
 	playerSockets[playerId] = playerObj;
