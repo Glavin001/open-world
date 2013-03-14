@@ -3,31 +3,33 @@
 <body>
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/jquery.min.js"></script>
-        <script src="canvas.js" ></script>
-       <script>
-            var xoff = 0;
-            var yoff = 0;
-            var mapRenderer;
-            var ready = function()
-            {
-                console.log(mapRenderer);
-                var la = 44.6488720;
-                var lo = -63.5792540;
-                
-                setInterval(function() {
-                    /*
-                    xoff -= 0.00001; // positive=up
-                    yoff -= 0.00001; // position=left
-                    */
-                    mapRenderer.panTo(la + xoff, lo + yoff);
-                    mapRenderer.testDraw();
-                }, 100);
-                
-            }
-            $(document).ready(function() {
-            mapRenderer = new MapRenderer($("#mapContainer"), ready);
+<script src="canvas.js" ></script>
+<script>
+    var xoff = 0;
+    var yoff = 0;
+    var zoom = 50000;
+    var mapRenderer;
+    var ready = function()
+    {
+        console.log(mapRenderer);
+        var la = 44.6488720;
+        var lo = -63.5792540;
+        
+        setInterval(function() {
+            /*
+             xoff -= 0.00001; // positive=up
+             yoff -= 0.00001; // position=left
+             */
+            //console.log(la + xoff, lo + yoff);
+            mapRenderer.panTo(la + xoff, lo + yoff);
+            mapRenderer.zoomTo(zoom);
+            mapRenderer.testDraw();
+        }, 100);
 
-            });
+    }
+    $(document).ready(function() {
+        mapRenderer = new MapRenderer($("#mapContainer"), ready);
+     });
 </script>
 <script>
 var playerData = {},
@@ -137,7 +139,7 @@ function startGame(){
 
 	var stage = new Kinetic.Stage({
         container: 'container',
-        width: 1024,
+        width: 1324,
         height: 768
 	});
 
@@ -181,7 +183,7 @@ function startGame(){
 			player.move(0, PLAYER_SPEED * -1);
 			orientation = "north";
                         
-                        xoff += 0.0001;
+                        xoff += 0.001;
                         
 		}
 		if (40 in keysDown) { // Player holding down
@@ -190,7 +192,7 @@ function startGame(){
 			player.move(0, PLAYER_SPEED * 1);
 			orientation = "south";
                         
-                        xoff -= 0.0001;
+                        xoff -= 0.001;
                         
 		}
 		if (37 in keysDown) { // Player holding left
@@ -198,7 +200,7 @@ function startGame(){
 			player.setOffset(0, 0);
 			player.move(PLAYER_SPEED * -1, 0);
                         
-                        yoff += 0.0001;
+                        yoff += 0.001;
                         
 		}
 		if (39 in keysDown) { // Player holding right
@@ -207,8 +209,7 @@ function startGame(){
 			player.move(PLAYER_SPEED * 1, 0);
 			orientation = "east";
                         
-                        
-                        yoff -= 0.0001;
+                        yoff -= 0.001;
                         
 		}
 		player.orientation = orientation;

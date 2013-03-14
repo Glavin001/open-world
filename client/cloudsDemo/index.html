@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8" />
+        <title>HTML5 clouds | Script Tutorials</title>
+        <link href="css/main.css" rel="stylesheet" type="text/css" />
+        <script src="js/ThreeWebGL.js"></script>
+        <script src="js/ThreeExtras.js"></script>
+    </head>
+    <body>
+        <script id="vs" type="x-shader/x-vertex">
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            }
+        </script>
+        <script id="fs" type="x-shader/x-fragment">
+            uniform sampler2D map;
+            uniform vec3 fogColor;
+            uniform float fogNear;
+            uniform float fogFar;
+            varying vec2 vUv;
+            void main() {
+                float depth = gl_FragCoord.z / gl_FragCoord.w;
+                float fogFactor = smoothstep( fogNear, fogFar, depth );
+                gl_FragColor = texture2D( map, vUv );
+                gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
+                gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+            }
+        </script>
+
+        <div class="container">
+            <canvas id="panel" width="10" height="1"></canvas>
+        </div>
+        <script type="text/javascript" src="js/script.js"></script>
+        <footer>
+            <h2>HTML5 clouds</h2>
+            <a href="http://www.script-tutorials.com/html5-clouds/" class="stuts">Back to original tutorial on <span>Script Tutorials</span></a>
+        </footer>
+    </body>
+</html>
