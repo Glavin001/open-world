@@ -9,7 +9,6 @@ staticHeaders = { host: 'localhost',
   'accept-encoding': 'gzip,deflate,sdch',
   'accept-language': 'en-GB,en-US;q=0.8,en;q=0.6',
   'accept-charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3' };
-
 app.listen(8081);
 
 function handler (req, res) {
@@ -45,7 +44,7 @@ function handleProxy(request, response) {
 	//  http://api.openstreetmap.org/api/0.6/map
 	console.log("PROXY REQ: " + request.method);
 	console.dir(request.headers);
-	var proxy = http.createClient(80, 'api.openstreetmap.org')
+	var proxy = http.createClient(8081, 'api.openstreetmap.org')
 	var proxy_request = proxy.request(request.method, '/api/0.6/map' + request.url.substr(6), request.headers);
 	  proxy_request.addListener('response', function (proxy_response) {
 		proxy_response.addListener('data', function(chunk) {
@@ -66,7 +65,7 @@ function handleProxy(request, response) {
 
 function fetchMapData(query, callback) {
 	console.log("URL /api/0.6/map?" + query);
-	var client = http.createClient(80, 'api.openstreetmap.org'),
+	var client = http.createClient(8081, 'api.openstreetmap.org'),
 		req = client.request('GET', '/api/0.6/map?' + query, staticHeaders),
 		data = '',
 		calledBack = false;

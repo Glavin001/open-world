@@ -34,8 +34,8 @@ var MapRenderer = function() {
         var la = panLat - PADDING_LAT;
         console.log(LON_WIDTH, LAT_HEIGHT);
         
-        $.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
-        //$.ajax({ url: "halifax1.xml" , method: "GET" })
+        //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
+        $.ajax({ url: "halifax1.xml" , method: "GET" })
             .done(function(mapData) {
             self.loadMap(mapData);
             //self.drawMap(spritesLayerContext, panLat, panLon, 5000);
