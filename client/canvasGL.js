@@ -34,9 +34,11 @@ var MapRenderer = function() {
         var la = panLat - PADDING_LAT;
         console.log(LON_WIDTH, LAT_HEIGHT);
         
-        $.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
+        //console.log("bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT));
+        //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
         //$.ajax({ url: "halifax1.xml" , method: "GET" })
         //$.ajax({ url: "germany1.xml" , method: "GET" })
+        $.ajax({ url: "halifax2_large.xml" , method: "GET" })
             .done(function(mapData) {
             console.log("Done: Have Map Data");
             self.loadMap(mapData);
@@ -69,7 +71,7 @@ var MapRenderer = function() {
             panLat = (maxlat-minlat)/2;
             panLon = (maxlon-minlon)/2;
             
-            
+            /*
             // Iterate throught the otherWays
             console.log("otherWays:",otherWays);
             for (var key in otherWays) {
@@ -108,8 +110,9 @@ var MapRenderer = function() {
                             geometry.vertices.push( new THREE.Vector3( prevLon, elevation, prevLat ) ); // top left
                             geometry.vertices.push( new THREE.Vector3( lon, elevation, lat ) ); // bottom right
                             var asphalt = new THREE.MeshBasicMaterial({color: 0xff0000, transparent: true, opacity: 0.7, lineWidth: 10});
-                            var road = new THREE.Line(geometry, asphalt);
-                            scene.add(road);
+                            var otherWay = new THREE.Line(geometry, asphalt);
+                            otherWay.matrixAutoUpdate = false;
+                            scene.add(otherWay);
                             //console.log("Add road", road, lon, lat);
                             
                             prevLon = lon;
@@ -119,7 +122,7 @@ var MapRenderer = function() {
                     
                 }
             }     
-            
+            */
     
             // Iterate throught the highways
             //var asphalt = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("img/asphalt.jpg") });  
@@ -163,11 +166,13 @@ var MapRenderer = function() {
                             geometry.vertices.push( new THREE.Vector3( prevLon, elevation, prevLat-roadWidth ));
                             geometry.vertices.push( new THREE.Vector3( lon, elevation, lat-roadWidth ));
                             geometry.vertices.push( new THREE.Vector3( lon, elevation, lat ) );
-                            geometry.faces.push( new THREE.Face4( 0, 1, 2 , 3 ) );
+                            geometry.faces.push( new THREE.Face4( 0, 1, 2, 3 ) );
+                            geometry.faces.push( new THREE.Face4( 3, 2, 1, 0 ) );
                             geometry.computeBoundingSphere();
                             var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10 });
                             //var asphalt = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("img/asphalt.jpg") });
                             var road = new THREE.Mesh(geometry, asphalt);
+                            road.matrixAutoUpdate = false;
                             scene.add(road);
                             
                             /*
@@ -183,7 +188,6 @@ var MapRenderer = function() {
                             prevLat = lat;
                         }
                     });
-                    
                     
                     
                     /*
@@ -228,6 +232,70 @@ var MapRenderer = function() {
             
             // Iterate throught the buildings
             console.log("Buildings:",buildings);
+            for (var key in buildings) {
+                if (buildings.hasOwnProperty(key)) {
+                    var way = buildings[key];
+                    
+                    // Draw highway blacktop
+                    var startPoint = true;
+                    var prevLon = 0;
+                    var prevLat = 0;
+                    var elevation = 0;
+                    var buildingHeight = 10;
+                    var roadWidth = 1;
+                    
+                    var startPoint = true;
+                    $(way).each(function() {
+                        var currNode = nodes[this];
+                        var lat = currNode.lat;
+                        var lon = currNode.lon;
+                        // Scale lat and lon
+                        if (lon < minlon)
+                            console.log("Out of Bounds:", lon, minlon);
+                        if (lat < minlat)
+                            console.log("Out of Bounds:", lat, minlat);
+                        lon = ( lon - minlon ) * MAX_SCALE; 
+                        lat = (lat - minlat) * MAX_SCALE;
+                        console.log(lat,lon);
+                        
+                        if (startPoint)
+                        {
+                            startPoint = false;
+                            prevLon = lon;
+                            prevLat = lat;
+                        }
+                        else
+                        {                        
+                            
+                            var geometry = new THREE.Geometry();
+                            geometry.vertices.push( new THREE.Vector3( prevLon, elevation, prevLat ));
+                            geometry.vertices.push( new THREE.Vector3( prevLon, elevation+buildingHeight, prevLat ));
+                            geometry.vertices.push( new THREE.Vector3( lon, elevation+buildingHeight, lat ));
+                            geometry.vertices.push( new THREE.Vector3( lon, elevation, lat ) );
+                            geometry.faces.push( new THREE.Face4( 0, 1, 2, 3 ) );
+                            geometry.faces.push( new THREE.Face4( 3, 2, 1, 0 ) );
+                            geometry.computeBoundingSphere();
+                            var wall = new THREE.MeshNormalMaterial();
+                            var building = new THREE.Mesh(geometry, wall);
+                            building.matrixAutoUpdate = false;
+                            scene.add(building);
+                            
+                            /*
+                            geometry.vertices.push( new THREE.Vector3( prevLon, elevation, prevLat ) ); // top left
+                            geometry.vertices.push( new THREE.Vector3( lon, elevation, lat ) ); // bottom right
+                            var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0.5, lineWidth: 1});
+                            var road = new THREE.Line(geometry, asphalt);
+                            scene.add(road);
+                            //console.log("Add road", road, lon, lat);
+                            */
+                           
+                            prevLon = lon;
+                            prevLat = lat;
+                        }
+                    });
+                    
+                }
+            }    
             /*for (var key in buildings) {
                 if (buildings.hasOwnProperty(key)) {
                     var way = buildings[key];
@@ -267,12 +335,13 @@ var MapRenderer = function() {
             } 
             */     
            
-           /*
+          
             console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
             camera.position.x = ( panLon  ) * MAX_SCALE; 
             camera.position.z = ( panLat  ) * MAX_SCALE;
             console.log(camera.position);
-           */
+            camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
+
             console.log("Done drawing.");
 
         };
