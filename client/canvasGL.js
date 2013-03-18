@@ -34,9 +34,11 @@ var MapRenderer = function() {
         var la = panLat - PADDING_LAT;
         console.log(LON_WIDTH, LAT_HEIGHT);
         
-        //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
-        $.ajax({ url: "halifax1.xml" , method: "GET" })
+        $.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
+        //$.ajax({ url: "halifax1.xml" , method: "GET" })
+        //$.ajax({ url: "germany1.xml" , method: "GET" })
             .done(function(mapData) {
+            console.log("Done: Have Map Data");
             self.loadMap(mapData);
             //self.drawMap(spritesLayerContext, panLat, panLon, 5000);
             callback.call();
@@ -131,6 +133,7 @@ var MapRenderer = function() {
                     var prevLon = 0;
                     var prevLat = 0;
                     var elevation = 0;
+                    var roadWidth = 1;
                     
                     var startPoint = true;
                     $(way).each(function() {
@@ -154,14 +157,28 @@ var MapRenderer = function() {
                         }
                         else
                         {                        
+                            
                             var geometry = new THREE.Geometry();
+                            geometry.vertices.push( new THREE.Vector3( prevLon, elevation, prevLat ));
+                            geometry.vertices.push( new THREE.Vector3( prevLon, elevation, prevLat-roadWidth ));
+                            geometry.vertices.push( new THREE.Vector3( lon, elevation, lat-roadWidth ));
+                            geometry.vertices.push( new THREE.Vector3( lon, elevation, lat ) );
+                            geometry.faces.push( new THREE.Face4( 0, 1, 2 , 3 ) );
+                            geometry.computeBoundingSphere();
+                            var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10 });
+                            //var asphalt = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("img/asphalt.jpg") });
+                            var road = new THREE.Mesh(geometry, asphalt);
+                            scene.add(road);
+                            
+                            /*
                             geometry.vertices.push( new THREE.Vector3( prevLon, elevation, prevLat ) ); // top left
                             geometry.vertices.push( new THREE.Vector3( lon, elevation, lat ) ); // bottom right
                             var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0.5, lineWidth: 1});
                             var road = new THREE.Line(geometry, asphalt);
                             scene.add(road);
                             //console.log("Add road", road, lon, lat);
-                            
+                            */
+                           
                             prevLon = lon;
                             prevLat = lat;
                         }
@@ -250,11 +267,12 @@ var MapRenderer = function() {
             } 
             */     
            
+           /*
             console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
             camera.position.x = ( panLon  ) * MAX_SCALE; 
             camera.position.z = ( panLat  ) * MAX_SCALE;
             console.log(camera.position);
-           
+           */
             console.log("Done drawing.");
 
         };

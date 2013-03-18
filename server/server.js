@@ -44,7 +44,7 @@ function handleProxy(request, response) {
 	//  http://api.openstreetmap.org/api/0.6/map
 	console.log("PROXY REQ: " + request.method);
 	console.dir(request.headers);
-	var proxy = http.createClient(8081, 'api.openstreetmap.org')
+	var proxy = http.createClient(80, 'api.openstreetmap.org')
 	var proxy_request = proxy.request(request.method, '/api/0.6/map' + request.url.substr(6), request.headers);
 	  proxy_request.addListener('response', function (proxy_response) {
 		proxy_response.addListener('data', function(chunk) {

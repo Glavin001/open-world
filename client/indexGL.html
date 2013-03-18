@@ -57,30 +57,33 @@
                         scene.add(cube2);
                        
                        
-                        for (var r=1; r<=10; r++)
+                        for (var r=1; r<=1; r++)
                         {
                             var geometry = new THREE.Geometry()
                             geometry.vertices.push( new THREE.Vector3( -10, -1, -11-(10*r) ));
                             geometry.vertices.push( new THREE.Vector3( -10, -1, 1-(10*r) ));
                             geometry.vertices.push( new THREE.Vector3( 10 , -1, 1-(10*r) ));
                             geometry.vertices.push( new THREE.Vector3( 10, -1, -11-(10*r) ) );
-                            //geometry.faces.push( new THREE.Face4( 0, 1, 2 , 3 ) );
-                            //geometry.computeBoundingSphere();
+                            geometry.faces.push( new THREE.Face4( 0, 1, 2 , 3 ) );
+                            geometry.computeBoundingSphere();
                             var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10 });
                             //var asphalt = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("img/asphalt.jpg") });
-                            //var model = new THREE.Mesh(geometry, asphalt);
-                            //scene.add(model);
-                            var line = new THREE.Line(geometry, asphalt);
-                            scene.add(line);
+                            var model = new THREE.Mesh(geometry, asphalt);
+                            scene.add(model);
+                            
+                            //var line = new THREE.Line(geometry, asphalt);
+                            //scene.add(line);
                         }
                         
-                        camera.position = {x:4812.5, y:900, z:1109};
+                        
+                        camera.position = {x:0, y:0, z:-23};
+                        //camera.position = {x:4812.5, y:900, z:1109};
                         /*
 			camera.position.z = 7;
                         camera.position.x = 0;
                         camera.position.y = 900;
                         */
-                       camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
+                       //camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
                         
 
                        
@@ -144,7 +147,7 @@
 			render();
                        
                         var rotation = 0;
-                        var s = 100;
+                        var s = 1;
                         $(document).keydown(function(event) {
                             if (event.which == 87){
                                 // W
