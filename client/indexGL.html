@@ -14,11 +14,10 @@
                     console.log(mapRenderer);
                     var la = 44.6488720;
                     var lo = -63.5792540;
-                   
                 }
                 $(document).ready(function() {
                     mapRenderer = new MapRenderer(ready);
-                 });
+                });
             </script>
 
 	</head>
@@ -152,34 +151,34 @@
                             if (event.which == 87){
                                 // W
                                 //console.log("W");
-                                camera.position.x -= s;
+                                camera.position.z -= s;
                             }
                             else if (event.which == 83){
                                 // S
                                 //console.log("S");                               
-                                camera.position.x += s;                            
+                                camera.position.z += s;                            
                             }
                             else if (event.which == 68){
                                 // D
                                 //console.log("D");
-                                camera.position.z -= s;
+                                camera.position.x += s;
                             }
                             else if (event.which == 65){
                                 // A
                                 //console.log("A");                               
-                                camera.position.z += s;                            
+                                camera.position.x -= s;                            
                             }
                             else if (event.which == 38){
                                 // Up
                                 //console.log("Up");
-                                camera.position.y -= s;
+                                camera.position.y += s;
+                                if (camera.position.y > 960)
+                                    camera.position.y = 960;
                             }
                             else if (event.which == 40){
                                 // Down
                                 //console.log("Down");                               
-                                camera.position.y += s;
-                                if (camera.position.y > 960)
-                                    camera.position.y = 960;
+                                camera.position.y -= s;
                             }
                             else if (event.which == 37){
                                 // Left
