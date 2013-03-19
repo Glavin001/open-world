@@ -150,7 +150,7 @@ var MapRenderer = function() {
                             console.log("Out of Bounds:", lat, minlat);
                         lon = ( lon - minlon ) * MAX_SCALE; 
                         lat = (lat - minlat) * MAX_SCALE;
-                        console.log(lat,lon);
+                        //console.log(lat,lon);
                         
                         if (startPoint)
                         {
@@ -256,7 +256,7 @@ var MapRenderer = function() {
                             console.log("Out of Bounds:", lat, minlat);
                         lon = ( lon - minlon ) * MAX_SCALE; 
                         lat = (lat - minlat) * MAX_SCALE;
-                        console.log(lat,lon);
+                        //console.log(lat,lon);
                         
                         if (startPoint)
                         {
@@ -339,8 +339,9 @@ var MapRenderer = function() {
             console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
             camera.position.x = ( panLon  ) * MAX_SCALE; 
             camera.position.z = ( panLat  ) * MAX_SCALE;
+            camera.position.y = 1; 
             console.log(camera.position);
-            camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
+            // camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
 
             console.log("Done drawing.");
 
