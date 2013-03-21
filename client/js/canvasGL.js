@@ -196,6 +196,17 @@ var MapRenderer = function() {
               prevLat = lat;
             }
           });
+          var combined = new THREE.Geometry();
+          while (sceneBuffer.length !== 0)
+          {
+            var current = sceneBuffer.pop();
+            THREE.GeometryUtils.merge(combined, current);
+          }
+          //var asphalt = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture("img/asphalt.jpg")});
+          var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10});
+          var mesh = new THREE.Mesh(combined, asphalt);
+          scene.add(mesh);
+
 
 
           /*
@@ -309,6 +320,17 @@ var MapRenderer = function() {
 
         }
       }
+      var combined = new THREE.Geometry();
+      while (sceneBuffer.length !== 0)
+      {
+        var current = sceneBuffer.pop();
+        THREE.GeometryUtils.merge(combined, current);
+      }
+      var wall = new THREE.MeshNormalMaterial();
+      var mesh = new THREE.Mesh(combined, wall);
+      scene.add(mesh);
+
+
       /*for (var key in buildings) {
        if (buildings.hasOwnProperty(key)) {
        var way = buildings[key];
@@ -357,30 +379,38 @@ var MapRenderer = function() {
       // camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
 
       setTimeout(this.processSceneBuffer, 1);
-      setTimeout(this.processSceneBuffer, 3);
-      setTimeout(this.processSceneBuffer, 5);
 
     };
 
     this.processSceneBuffer = function processSceneBuffer() {
       console.log(sceneBuffer.length);
-      var i = 0;
-      var max = 100;
-      while (sceneBuffer.length !== 0 && i < max)
+      /*
+       var i = 0;
+       var max = 100;
+       while (sceneBuffer.length !== 0 && i < max)
+       {
+       i++;
+       var current = sceneBuffer.pop();
+       scene.add(current);
+       }
+       if (sceneBuffer.length === 0)
+       {
+       renderer.render(scene, camera);
+       console.log("Done drawing.");
+       }
+       else
+       {
+       setTimeout(processSceneBuffer, 10);
+       }
+       */
+      var combined = new THREE.Geometry();
+      while (sceneBuffer.length !== 0)
       {
-        i++;
         var current = sceneBuffer.pop();
-        scene.add(current);
+        THREE.GeometryUtils.merge(combined, current);
       }
-      if (sceneBuffer.length === 0)
-      {
-        renderer.render(scene, camera);
-        console.log("Done drawing.");
-      }
-      else
-      {
-        setTimeout(processSceneBuffer, 10);
-      }
+      var mesh = new THREE.Mesh(combined, new THREE.MeshBasicMaterial({color: 0xff0000}));
+      scene.add(mesh);
     };
 
     this.handlenode = function(node) {
