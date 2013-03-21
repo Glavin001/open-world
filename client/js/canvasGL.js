@@ -35,11 +35,13 @@ var MapRenderer = function() {
     var la = panLat - PADDING_LAT;
     console.log(LON_WIDTH, LAT_HEIGHT);
 
-    //console.log("bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT));
+    console.log("bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT));
     //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
     //$.ajax({ url: "halifax1.xml" , method: "GET" })
     //$.ajax({ url: "germany1.xml" , method: "GET" })
-    $.ajax({url: "halifax2_large.xml", method: "GET"})
+    //$.ajax({url: "halifax2_large.xml", method: "GET"})
+    //$.ajax({url: "halifax3_large.xml", method: "GET"})
+    $.ajax({url: "halifax4_super_large.xml", method: "GET"})
             .done(function(mapData) {
       console.log("Done: Have Map Data");
       self.loadMap(mapData);
@@ -59,7 +61,7 @@ var MapRenderer = function() {
       minlon = parseFloat(bounds.attr('minlon'));
       maxlat = parseFloat(bounds.attr('maxlat'));
       maxlon = parseFloat(bounds.attr('maxlon'));
-      //console.log("Bounds:",minlon,minlat,maxlon,maxlat);
+      console.log("Bounds:", minlon, minlat, maxlon, maxlat);
 
       for (var c = 0, length = xmlDoc.documentElement.childNodes.length; c < length; c++)
       {
@@ -294,8 +296,17 @@ var MapRenderer = function() {
               geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
               geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
               geometry.computeBoundingSphere();
+
+              var material = new THREE.MeshPhongMaterial({
+                ambient: 0x444444,
+                color: 0x8844AA,
+                shininess: 300,
+                specular: 0x33AA33,
+                shading: THREE.SmoothShading
+                        //, map	: texture
+              });
               var wall = new THREE.MeshNormalMaterial();
-              var building = new THREE.Mesh(geometry, wall);
+              var building = new THREE.Mesh(geometry, material);
               building.matrixAutoUpdate = false;
               //scene.add(building);
               sceneBuffer.push(building);
@@ -326,9 +337,21 @@ var MapRenderer = function() {
         var current = sceneBuffer.pop();
         THREE.GeometryUtils.merge(combined, current);
       }
+      var material = new THREE.MeshPhongMaterial({
+        ambient: 0x444444,
+        color: 0x8844AA,
+        shininess: 300,
+        specular: 0x33AA33,
+        shading: THREE.SmoothShading
+                //, map	: texture
+      });
       var wall = new THREE.MeshNormalMaterial();
-      var mesh = new THREE.Mesh(combined, wall);
-      scene.add(mesh);
+      var mesh = new THREE.Mesh(combined, material);
+      var group = new THREE.Object3D();
+      group.add(mesh);
+      group.castShadow = true;
+      group.receiveShadow = true;
+      scene.add(group);
 
 
       /*for (var key in buildings) {

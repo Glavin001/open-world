@@ -75,7 +75,10 @@
         geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
         geometry.computeBoundingSphere();
         var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10});
-        //var asphalt = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("img/asphalt.jpg") });
+        var texture = THREE.ImageUtils.loadTexture("img/asphalt.jpg", {}, function( ) {
+          renderer.render(scene);
+        });
+        //var asphalt = new THREE.MeshBasicMaterial({ map: texture });
         var model = new THREE.Mesh(geometry, asphalt);
         scene.add(model);
 
@@ -98,12 +101,14 @@
       var light = new THREE.AmbientLight(0x404040); // soft white light
       light.castShadow = true;
       light.shadowDarkness = 0.5;
+      light.shadowCameraVisible = true;
       scene.add(light);
 
-      var directionalLight = new THREE.DirectionalLight(0xffffff);
+      var directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
       directionalLight.position.set(1, 1, 1).normalize();
       directionalLight.castShadow = true;
-      directionalLight.shadowDarkness = 0.5;
+      directionalLight.shadowDarkness = 1.0;
+      directionalLight.shadowCameraVisible = true;
       scene.add(directionalLight);
 
 
@@ -141,15 +146,15 @@
        scene.add(directionalLight);
        */
 
-      
+
       function render() {
         requestAnimationFrame(render);
         renderer.render(scene, camera);
       }
       render();
-      
-     
-     //renderer.render( scene, camera );
+
+
+      //renderer.render( scene, camera );
 
       /*
        // Code Source: http://stackoverflow.com/questions/4326845/how-can-i-determine-the-direction-of-a-jquery-scroll-event 
