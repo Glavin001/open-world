@@ -35,7 +35,7 @@ var MapRenderer = function() {
     var la = panLat - PADDING_LAT;
     console.log(LON_WIDTH, LAT_HEIGHT);
 
-    console.log("bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT));
+    console.log("bbox=" + (lo) + "," + (la) + "," + (lo + LON_WIDTH) + "," + (la + LAT_HEIGHT));
     //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
     //$.ajax({ url: "halifax1.xml" , method: "GET" })
     //$.ajax({ url: "germany1.xml" , method: "GET" })
@@ -198,17 +198,6 @@ var MapRenderer = function() {
               prevLat = lat;
             }
           });
-          var combined = new THREE.Geometry();
-          while (sceneBuffer.length !== 0)
-          {
-            var current = sceneBuffer.pop();
-            THREE.GeometryUtils.merge(combined, current);
-          }
-          //var asphalt = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture("img/asphalt.jpg")});
-          var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10});
-          var mesh = new THREE.Mesh(combined, asphalt);
-          scene.add(mesh);
-
 
 
           /*
@@ -249,6 +238,17 @@ var MapRenderer = function() {
 
         }
       }
+      var combined = new THREE.Geometry();
+      while (sceneBuffer.length !== 0)
+      {
+        var current = sceneBuffer.pop();
+        THREE.GeometryUtils.merge(combined, current);
+      }
+      //var asphalt = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture("img/asphalt.jpg")});
+      var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10});
+      var mesh = new THREE.Mesh(combined, asphalt);
+      scene.add(mesh);
+
 
 
       // Iterate throught the buildings
@@ -298,17 +298,15 @@ var MapRenderer = function() {
               geometry.computeBoundingSphere();
 
               var material = new THREE.MeshPhongMaterial({
-                ambient: 0x444444,
-                color: 0x8844AA,
-                shininess: 300,
-                specular: 0x33AA33,
-                shading: THREE.SmoothShading
-                        //, map	: texture
+                color: 0x0000bb
               });
-              var wall = new THREE.MeshNormalMaterial();
+              //var wall = new THREE.MeshNormalMaterial();
               var building = new THREE.Mesh(geometry, material);
               building.matrixAutoUpdate = false;
               //scene.add(building);
+              building.castShadow = true;
+              building.receiveShadow = true;
+
               sceneBuffer.push(building);
               /*
                setTimeout(function( ) {
@@ -337,21 +335,27 @@ var MapRenderer = function() {
         var current = sceneBuffer.pop();
         THREE.GeometryUtils.merge(combined, current);
       }
+      /*
+       var material = new THREE.MeshPhongMaterial({
+       ambient: 0x444444,
+       color: 0x8844AA,
+       shininess: 300,
+       specular: 0x33AA33,
+       shading: THREE.SmoothShading
+       //, map	: texture
+       });*/
       var material = new THREE.MeshPhongMaterial({
-        ambient: 0x444444,
-        color: 0x8844AA,
-        shininess: 300,
-        specular: 0x33AA33,
-        shading: THREE.SmoothShading
-                //, map	: texture
+        color: 0x0000bb
       });
-      var wall = new THREE.MeshNormalMaterial();
+      // var wall = new THREE.MeshNormalMaterial();
       var mesh = new THREE.Mesh(combined, material);
       var group = new THREE.Object3D();
-      group.add(mesh);
-      group.castShadow = true;
-      group.receiveShadow = true;
-      scene.add(group);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      //group.add(mesh);
+      //group.castShadow = true;
+      //group.receiveShadow = true;
+      scene.add(mesh);
 
 
       /*for (var key in buildings) {
@@ -393,12 +397,13 @@ var MapRenderer = function() {
        } 
        */
 
-
-      console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
-      camera.position.x = (panLon) * MAX_SCALE;
-      camera.position.z = (panLat) * MAX_SCALE;
-      camera.position.y = 1;
-      console.log(camera.position);
+      /*
+       console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
+       camera.position.x = (panLon) * MAX_SCALE;
+       camera.position.z = (panLat) * MAX_SCALE;
+       camera.position.y = 1;
+       console.log(camera.position);
+       */
       // camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
 
       setTimeout(this.processSceneBuffer, 1);
@@ -432,7 +437,12 @@ var MapRenderer = function() {
         var current = sceneBuffer.pop();
         THREE.GeometryUtils.merge(combined, current);
       }
-      var mesh = new THREE.Mesh(combined, new THREE.MeshBasicMaterial({color: 0xff0000}));
+      var material = new THREE.MeshPhongMaterial({
+        color: 0x0000bb
+      });
+      var mesh = new THREE.Mesh(combined, material);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
       scene.add(mesh);
     };
 

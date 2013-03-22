@@ -45,6 +45,17 @@
     if (player.keysDown.indexOf(RIGHT) !== -1)
       camera.rotation.y -= rotation;
 
+    // window.flashlight.position.set(camera.position.x, 500, camera.position.z);
+    window.flashlight.position = {x: camera.position.x, y: 20, z: camera.position.z};
+    /*
+    var cx = (10) / 2,
+              cy = (10) / 2,
+              dx = 10,
+              dy = 10,
+              dmax = Math.max(dx, dy);
+    window.flashlight.lookAt(new THREE.Vector3(cx, cy, 0));
+    window.flashlight.target.position.set(cx, cy, 0);
+    */
     setTimeout(player.updatePos, 2);
   };
 
