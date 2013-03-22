@@ -58,9 +58,6 @@
      */
     setTimeout(player.updatePos, 2);
   };
-  $(document).ready(function() {
-    setTimeout(player.updatePos, 2);
-  });
   /*
    $(document).keydown(function(event) {
    if (event.which == 87) {
