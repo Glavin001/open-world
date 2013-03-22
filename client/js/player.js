@@ -27,7 +27,7 @@
   });
 
   player.updatePos = function() {
-    console.log("Updating position");
+    //console.log("Updating position");
     if (player.keysDown.indexOf(W) !== -1)
       camera.position.z -= s;
     if (player.keysDown.indexOf(S) !== -1)
@@ -46,7 +46,7 @@
       camera.rotation.y -= rotation;
 
     // window.flashlight.position.set(camera.position.x, 500, camera.position.z);
-    window.flashlight.position = {x: camera.position.x, y: 20, z: camera.position.z};
+    // window.flashlight.position = {x: camera.position.x, y: 20, z: camera.position.z};
     /*
      var cx = (10) / 2,
      cy = (10) / 2,

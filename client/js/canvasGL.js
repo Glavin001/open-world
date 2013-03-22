@@ -345,8 +345,13 @@ var MapRenderer = function() {
        //, map	: texture
        });*/
       var material = new THREE.MeshPhongMaterial({
-        color: 0x0000bb
+        color: 0x0000bb,
+        shininess: 100.0,
+        ambient: 0xff0000,
+        emissive: 0x111111,
+        specular: 0xbbbbbb
       });
+      var material = new THREE.MeshLambertMaterial( { color: 0x000000, shading: THREE.FlatShading } );
       // var wall = new THREE.MeshNormalMaterial();
       var mesh = new THREE.Mesh(combined, material);
       var group = new THREE.Object3D();
