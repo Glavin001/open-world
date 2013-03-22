@@ -27,7 +27,7 @@
   });
 
   player.updatePos = function() {
-    //console.log("Updating position");
+    console.log("Updating position");
     if (player.keysDown.indexOf(W) !== -1)
       camera.position.z -= s;
     if (player.keysDown.indexOf(S) !== -1)
@@ -48,19 +48,19 @@
     // window.flashlight.position.set(camera.position.x, 500, camera.position.z);
     window.flashlight.position = {x: camera.position.x, y: 20, z: camera.position.z};
     /*
-    var cx = (10) / 2,
-              cy = (10) / 2,
-              dx = 10,
-              dy = 10,
-              dmax = Math.max(dx, dy);
-    window.flashlight.lookAt(new THREE.Vector3(cx, cy, 0));
-    window.flashlight.target.position.set(cx, cy, 0);
-    */
+     var cx = (10) / 2,
+     cy = (10) / 2,
+     dx = 10,
+     dy = 10,
+     dmax = Math.max(dx, dy);
+     window.flashlight.lookAt(new THREE.Vector3(cx, cy, 0));
+     window.flashlight.target.position.set(cx, cy, 0);
+     */
     setTimeout(player.updatePos, 2);
   };
-
-  setTimeout(player.updatePos, 2);
-
+  $(document).ready(function() {
+    setTimeout(player.updatePos, 2);
+  });
   /*
    $(document).keydown(function(event) {
    if (event.which == 87) {
