@@ -240,17 +240,16 @@
        scene.add(directionalLight);
        */
 
+      $(document).ready(function() {
+        setTimeout(player.updatePos, 2);
+      });
+  
 
       function render() {
         requestAnimationFrame(render);
         renderer.render(scene, camera);
       }
       render();
-
-      $(document).ready(function() {
-        setTimeout(player.updatePos, 2);
-      });
-  
 
       //renderer.render( scene, camera );
 
