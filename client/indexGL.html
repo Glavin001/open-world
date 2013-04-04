@@ -26,10 +26,13 @@
     <!-- <script src="https://raw.github.com/mrdoob/three.js/master/build/three.js"></script> -->
     <script src="js/three.min.js"></script>
     <!--    <script src="https://raw.github.com/mrdoob/three.js/master/build/js/controls/FlyControls.js"></script> -->
+    <script src="fonts/helvetiker_bold.typeface.js"></script>
+    <script src="fonts/helvetiker_regular.typeface.js"></script>
+
     <script>
 
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 10000);
       /*  var controls = new THREE.FirstPersonControls( camera );
        
        controls.movementSpeed = 1000;
@@ -122,10 +125,10 @@
 
       var light = new THREE.SpotLight();
       window.flashlight = light;
-      light.intensity = 1;
+      light.intensity = 0.7;
       light.distance = 5000;
       light.castShadow = true;
-      light.shadowDarkness = 0.9; // 0.5;
+      light.shadowDarkness = 0.5; // 0.5;
       light.shadowCameraFov = 5000; // 50;
       light.shadowCameraLeft = -3000;
       light.shadowCameraRight = 3000;
@@ -145,46 +148,46 @@
       //light.shadowCameraVisible = true;
       scene.add(light);
 
-/*
-      var directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-      window.flashlight = directionalLight;
-      directionalLight.position.set(800, 100, 800).normalize();
-//      directionalLight.position.set(1, 1, 1).normalize();
-      directionalLight.castShadow = true;
-      directionalLight.shadowDarkness = 0.9;
-      directionalLight.shadowCameraVisible = true;
-      scene.add(directionalLight);
-*/
+      /*
+       var directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+       window.flashlight = directionalLight;
+       directionalLight.position.set(800, 100, 800).normalize();
+       //      directionalLight.position.set(1, 1, 1).normalize();
+       directionalLight.castShadow = true;
+       directionalLight.shadowDarkness = 0.9;
+       directionalLight.shadowCameraVisible = true;
+       scene.add(directionalLight);
+       */
 
-/*
-      var cx = 0,
-              cy = 10,
-              cz = 0,
-              dx = 10,
-              dy = 10,
-              dmax = Math.max(dx, dy);
-      var shadowLight = new THREE.DirectionalLight(0xFFFFFF);
-      window.sun = shadowLight;
-      shadowLight.position.x = cx + dmax * 2;
-      shadowLight.position.y = cy - dmax * 2;
-      shadowLight.position.z = dmax * 4;
-      shadowLight.lookAt(new THREE.Vector3(cx, cy, cz));
-      shadowLight.target.position.set(cx, cy, cz);
-      shadowLight.castShadow = true;
-      shadowLight.onlyShadow = true;
-      shadowLight.shadowCameraNear = 0.1;
-      shadowLight.shadowCameraFar = dmax * 8;
-      shadowLight.shadowCameraLeft = -dmax * 2;
-      shadowLight.shadowCameraRight = dmax * 2;
-      shadowLight.shadowCameraBottom = -dmax * 2;
-      shadowLight.shadowCameraTop = dmax * 2;
-      shadowLight.shadowBias = 0.005;
-      shadowLight.shadowDarkness = 0.3;
-      shadowLight.shadowMapWidth = 512;
-      shadowLight.shadowMapHeight = 512;
-      shadowLight.shadowCameraVisible = true;
-      scene.add(shadowLight);
-*/
+      /*
+       var cx = 0,
+       cy = 10,
+       cz = 0,
+       dx = 10,
+       dy = 10,
+       dmax = Math.max(dx, dy);
+       var shadowLight = new THREE.DirectionalLight(0xFFFFFF);
+       window.sun = shadowLight;
+       shadowLight.position.x = cx + dmax * 2;
+       shadowLight.position.y = cy - dmax * 2;
+       shadowLight.position.z = dmax * 4;
+       shadowLight.lookAt(new THREE.Vector3(cx, cy, cz));
+       shadowLight.target.position.set(cx, cy, cz);
+       shadowLight.castShadow = true;
+       shadowLight.onlyShadow = true;
+       shadowLight.shadowCameraNear = 0.1;
+       shadowLight.shadowCameraFar = dmax * 8;
+       shadowLight.shadowCameraLeft = -dmax * 2;
+       shadowLight.shadowCameraRight = dmax * 2;
+       shadowLight.shadowCameraBottom = -dmax * 2;
+       shadowLight.shadowCameraTop = dmax * 2;
+       shadowLight.shadowBias = 0.005;
+       shadowLight.shadowDarkness = 0.3;
+       shadowLight.shadowMapWidth = 512;
+       shadowLight.shadowMapHeight = 512;
+       shadowLight.shadowCameraVisible = true;
+       scene.add(shadowLight);
+       */
 
       //add ground 
       var grassTex = THREE.ImageUtils.loadTexture('img/Grass_1.png');
@@ -252,7 +255,6 @@
         setTimeout(player.updatePos, 2);
       });
 
-
       function render() {
         requestAnimationFrame(render);
         renderer.render(scene, camera);
@@ -280,7 +282,6 @@
        */
 
     </script>
-
 
   </body>
 </html>

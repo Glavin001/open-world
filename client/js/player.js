@@ -45,8 +45,8 @@
     if (player.keysDown.indexOf(RIGHT) !== -1)
       camera.rotation.y -= rotation;
 
-    // window.flashlight.position.set(camera.position.x, 500, camera.position.z);
-    // window.flashlight.position = {x: camera.position.x, y: 20, z: camera.position.z};
+    window.flashlight.target.position.set(camera.position.x - 100, 0, camera.position.z - 100);
+    window.flashlight.position = {x: camera.position.x + 100, y: 500, z: camera.position.z + 100};
     /*
      var cx = (10) / 2,
      cy = (10) / 2,
