@@ -17,6 +17,7 @@ var MapRenderer = function() {
 
     // Map data
     var sceneBuffer = [];  // Stores all objects before pushing them to the scene
+    var streetSignBuffer = [];
     var nodes = {};
     var highways = {};
     var buildings = {};
@@ -243,7 +244,6 @@ var MapRenderer = function() {
             // Iterate throught the highways
             //var asphalt = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("img/asphalt.jpg") });  
             console.log("Highways:", highways);
-            var streetSignBuffer = [];
             for (var key in highways) {
                 if (highways.hasOwnProperty(key)) {
                     var way = highways[key];
@@ -311,32 +311,32 @@ var MapRenderer = function() {
                         }
                     });
 
-                    /*
-                     var theText = 'Street Name';
-                     var text3d = new THREE.TextGeometry(theText, {
-                     size: 10,
-                     height: 2,
-                     curveSegments: 2,
-                     font: "helvetiker"
-                     
-                     });
-                     text3d.computeBoundingBox();
-                     var centerOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
-                     var textMaterial = new THREE.MeshPhongMaterial({color: Math.random() * 0xffffff, overdraw: true});
-                     text = new THREE.Mesh(text3d, textMaterial);
-                     text.position.x = prevLon + centerOffset;
-                     text.position.y = elevation + 10;
-                     text.position.z = prevLat;
-                     text.rotation.x = 0;
-                     text.rotation.y = Math.PI * 2;
-                     var parent = new THREE.Object3D();
-                     parent.add(text);
-                     parent.receiveShadow = true;
-                     parent.doubleSided = true;
-                     parent.matrixAutoUpdate = false;
-                     streetSignBuffer.push(parent);
-                     //scene.add(parent);
-                     */
+                    // if (streetSignBuffer.length < 30) { // Limit the amount of Street Signs to be drawn
+                        var theText = 'Street Name';
+                        var text3d = new THREE.TextGeometry(theText, {
+                            size: 15,
+                            height: 10,
+                            curveSegments: 2,
+                            font: "helvetiker"
+                        });
+                        text3d.computeBoundingBox();
+                        var centerOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
+                        var textMaterial = new THREE.MeshPhongMaterial({color: Math.random() * 0xffffff, overdraw: true});
+                        var text = new THREE.Mesh(text3d, textMaterial);
+                        text.position.x = prevLon + centerOffset;
+                        text.position.y = elevation + 10;
+                        text.position.z = prevLat;
+                        text.rotation.x = 0;
+                        text.rotation.y = Math.PI * 2;
+                        //var parent = new THREE.Object3D();
+                        //parent.add(text);
+                        //parent.receiveShadow = true;
+                        //parent.doubleSided = true;
+                        //parent.matrixAutoUpdate = false;
+                        streetSignBuffer.push(text);
+                        console.log("Street Sign");
+                        //scene.add(parent);
+                    // }
 
                     /*
                      // Draw highway dotted while line
@@ -386,18 +386,18 @@ var MapRenderer = function() {
             var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10});
             var mesh = new THREE.Mesh(combined, asphalt);
             scene.add(mesh);
-            /*
-             var combinedStreets = new THREE.Geometry();
-             while (streetSignBuffer.length !== 0)
-             {
-             var current = streetSignBuffer.pop();
-             THREE.GeometryUtils.merge(combined, current);
-             }
-             //var asphalt = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture("img/asphalt.jpg")});
-             var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10});
-             var mesh = new THREE.Mesh(combinedStreets, asphalt);
-             scene.add(mesh);
-             */
+
+            var combinedStreets = new THREE.Geometry();
+            while (streetSignBuffer.length !== 0)
+            {
+                console.log("Street Buff");
+                var current = streetSignBuffer.pop();
+                THREE.GeometryUtils.merge(combinedStreets, current);
+            }
+            //var asphalt = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture("img/asphalt.jpg")});
+            //var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10});
+            var mesh2 = new THREE.Mesh(combinedStreets, asphalt);
+            scene.add(mesh2);
 
 
             // Iterate throught the buildings
