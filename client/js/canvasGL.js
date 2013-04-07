@@ -256,7 +256,7 @@ var MapRenderer = function() {
                     var roadWidth = 10;
 
                     var startPoint = true;
-                    $(way).each(function() {
+                    $(way.nd).each(function() {
                         var currNode = nodes[this];
                         var lat = currNode.lat;
                         var lon = currNode.lon;
@@ -311,8 +311,10 @@ var MapRenderer = function() {
                         }
                     });
 
-                    // if (streetSignBuffer.length < 30) { // Limit the amount of Street Signs to be drawn
-                        var theText = 'Street Name';
+                     if (streetSignBuffer.length < 30) { // Limit the amount of Street Signs to be drawn
+                        var theText = 'Unknown Street';
+                        console.log(way);
+                        theText = (way.name)?way.name:theText;
                         var text3d = new THREE.TextGeometry(theText, {
                             size: 15,
                             height: 10,
@@ -336,7 +338,7 @@ var MapRenderer = function() {
                         streetSignBuffer.push(text);
                         console.log("Street Sign");
                         //scene.add(parent);
-                    // }
+                     }
 
                     /*
                      // Draw highway dotted while line
@@ -583,7 +585,7 @@ var MapRenderer = function() {
             console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
             camera.position.x = (panLon) * MAX_SCALE;
             camera.position.z = (panLat) * MAX_SCALE;
-            camera.position.y = 1;
+            camera.position.y = 300;
             console.log(camera.position);
 
             // camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
@@ -651,9 +653,18 @@ var MapRenderer = function() {
             if ($(way).find("tag[k='highway']").length)
             {
                 // console.log("Is Highway");
-                highways[id] = $(way).find("nd").map(function() {
+                highways[id] = {};
+                highways[id].nd = $(way).find("nd").map(function() {
                     return $(this).attr('ref');
                 });
+                highways[id].tag = $(way).find("tag").map(function() {
+                    //var obj = {};
+                    //obj[$(this).attr('k')] = $(this).attr('v');
+                    console.log($(this));
+                    //console.log("k:",$(this).attr('k'),"v:",$(this).attr('v'));
+                    //highways[id].tag[$(this).attr('k')] = $(this).attr('v');
+                    return 0; //$(this).attr('v');
+                }); 
             }
             else if ($(way).find("tag[k='building']").length)
             {
