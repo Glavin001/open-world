@@ -311,14 +311,14 @@ var MapRenderer = function() {
                         }
                     });
 
-                    //if (streetSignBuffer.length < 100) { // Limit the amount of Street Signs to be drawn
+                   // if (streetSignBuffer.length < 30) { // Limit the amount of Street Signs to be drawn
                         var theText = 'Unknown Street';
                         console.log(way);
                         theText = (way.name) ? way.name : theText;
                         var text3d = new THREE.TextGeometry(theText, {
-                            size: 15,
-                            height: 10,
-                            curveSegments: 2,
+                            size: 3,
+                            height: 1,
+                            curveSegments: 1,
                             font: "helvetiker"
                         });
                         text3d.computeBoundingBox();
@@ -338,7 +338,7 @@ var MapRenderer = function() {
                         streetSignBuffer.push(text);
                         console.log("Street Sign");
                         //scene.add(parent);
-                    //}
+                    // }
 
                     /*
                      // Draw highway dotted while line
