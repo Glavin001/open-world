@@ -311,10 +311,10 @@ var MapRenderer = function() {
                         }
                     });
 
-                     if (streetSignBuffer.length < 30) { // Limit the amount of Street Signs to be drawn
+                    //if (streetSignBuffer.length < 100) { // Limit the amount of Street Signs to be drawn
                         var theText = 'Unknown Street';
                         console.log(way);
-                        theText = (way.name)?way.name:theText;
+                        theText = (way.name) ? way.name : theText;
                         var text3d = new THREE.TextGeometry(theText, {
                             size: 15,
                             height: 10,
@@ -338,7 +338,7 @@ var MapRenderer = function() {
                         streetSignBuffer.push(text);
                         console.log("Street Sign");
                         //scene.add(parent);
-                     }
+                    //}
 
                     /*
                      // Draw highway dotted while line
@@ -652,19 +652,24 @@ var MapRenderer = function() {
 
             if ($(way).find("tag[k='highway']").length)
             {
-                // console.log("Is Highway");
+                console.log("Is Highway", $(way).find("tag[k='name']").attr('v'));
+
                 highways[id] = {};
                 highways[id].nd = $(way).find("nd").map(function() {
                     return $(this).attr('ref');
                 });
-                highways[id].tag = $(way).find("tag").map(function() {
-                    //var obj = {};
-                    //obj[$(this).attr('k')] = $(this).attr('v');
-                    console.log($(this));
-                    //console.log("k:",$(this).attr('k'),"v:",$(this).attr('v'));
-                    //highways[id].tag[$(this).attr('k')] = $(this).attr('v');
-                    return 0; //$(this).attr('v');
-                }); 
+                /*
+                 highways[id].tag = $(way).find("tag").map(function() {
+                 //var obj = {};
+                 //obj[$(this).attr('k')] = $(this).attr('v');
+                 console.log($(this));
+                 //console.log("k:",$(this).attr('k'),"v:",$(this).attr('v'));
+                 //highways[id].tag[$(this).attr('k')] = $(this).attr('v');
+                 return 0; //$(this).attr('v');
+                 });
+                 */
+                if ($(way).find("tag[k='name']").length)
+                    highways[id].name = $(way).find("tag[k='name']").attr('v');
             }
             else if ($(way).find("tag[k='building']").length)
             {
