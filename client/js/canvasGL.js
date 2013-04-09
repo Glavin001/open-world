@@ -417,7 +417,7 @@ var MapRenderer = function() {
                     var roadWidth = 1;
 
                     var startPoint = true;
-                    //var buildingPoints = [];
+                    var buildingPoints = [];
 
                     $(way).each(function() {
                         var currNode = nodes[this];
@@ -438,14 +438,14 @@ var MapRenderer = function() {
                             prevLon = lon;
                             prevLat = lat;
 
-                            //buildingPoints.push(new THREE.Vector2(lon, lat));
+                            buildingPoints.push(new THREE.Vector2(lon, lat));
 
                         }
                         else
                         {
 
-                            //buildingPoints.push(new THREE.Vector2(lon, lat));
-
+                            buildingPoints.push(new THREE.Vector2(lon, lat));
+                            /*
                             var geometry = new THREE.Geometry();
                             geometry.vertices.push(new THREE.Vector3(prevLon, elevation, prevLat));
                             geometry.vertices.push(new THREE.Vector3(prevLon, elevation + buildingHeight, prevLat));
@@ -454,7 +454,7 @@ var MapRenderer = function() {
                             geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
                             geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
                             geometry.computeBoundingSphere();
-
+                            
                             var material = new THREE.MeshPhongMaterial({
                                 color: 0x0000bb
                             });
@@ -465,7 +465,8 @@ var MapRenderer = function() {
                             building.castShadow = true;
                             building.receiveShadow = true;
                             sceneBuffer.push(building);
-
+                            */
+                           
                             /*
                              setTimeout(function( ) {
                              scene.add(building);
@@ -484,7 +485,7 @@ var MapRenderer = function() {
                             prevLat = lat;
                         }
                     });
-                    /*
+                    
                      var buildingShape = new THREE.Shape(buildingPoints);
                      
                      var extrusionSettings = {
@@ -504,7 +505,7 @@ var MapRenderer = function() {
                      building.position.set(0, -1500, 0);
                      //scene.add(building);
                      sceneBuffer.push(building);
-                     */
+                     
 
                 }
             }
