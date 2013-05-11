@@ -29,3 +29,14 @@ WebGL demo: http://140.184.137.122:8081/indexGL.html
 - Physics
 - Vehicles
 - Players
+
+These are a few screenshots of similar projects, from a 3D display standpoint, **Open-World** will allow players to walk around and interact with the world that is rendered around them.
+![OSM-3D](http://wiki.openstreetmap.org/w/images/3/39/VintlItalienI.png?raw=true "OSM-3D")
+![Glosm](http://wiki.openstreetmap.org/w/images/3/37/Glosm1.png?raw=true "Glosm")
+![OSM2World](http://wiki.openstreetmap.org/w/images/f/f2/OSM2World_0.2.0_-_Passau_from_Inn_POV.png?raw=true "OSM2World")
+![XHouseT for X-Plane](http://wiki.openstreetmap.org/w/images/a/a1/XHouseT_xht1_04.jpg?raw=true "XHouseT for X-Plane")
+![osm2xp for X-Plane](http://wiki.openstreetmap.org/w/images/b/ba/Osm2xp.jpg?raw=true "osm2xp for X-Plane")
+
+Learn more about these projects here: http://wiki.openstreetmap.org/wiki/3D_Development
+
+ViziCities is another project to take a look at: http://vizicities.com/
