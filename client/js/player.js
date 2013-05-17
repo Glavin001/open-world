@@ -28,14 +28,28 @@
 
   player.updatePos = function() {
     //console.log("Updating position");
+    var angle = camera.rotation.y;
+    
     if (player.keysDown.indexOf(W) !== -1)
-      camera.position.z -= s;
+    {
+      camera.position.z -= Math.cos(angle) * s;
+      camera.position.x -= Math.sin(angle) * s;
+    }
     if (player.keysDown.indexOf(S) !== -1)
-      camera.position.z += s;
+    {
+      camera.position.z += Math.cos(angle) * s;
+      camera.position.x += Math.sin(angle) * s
+    }
     if (player.keysDown.indexOf(D) !== -1)
-      camera.position.x += s;
+    {
+      camera.position.z += Math.cos(angle + 90) * s;
+      camera.position.x += Math.sin(angle + 90) * s;
+    }
     if (player.keysDown.indexOf(A) !== -1)
-      camera.position.x -= s;
+    {
+      camera.position.z -= Math.cos(angle + 90) * s;
+      camera.position.x -= Math.sin(angle + 90) * s;
+    }
     if (player.keysDown.indexOf(UP) !== -1)
       camera.rotation.x += rotation;
     if (player.keysDown.indexOf(DOWN) !== -1)
