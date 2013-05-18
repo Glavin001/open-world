@@ -22,6 +22,7 @@ var MapRenderer = function() {
     var highways = {};
     var buildings = {};
     var otherWays = {};
+    var geo = {};
 
     var mapRenderer = function(callback) {
         var self = this;
@@ -38,14 +39,17 @@ var MapRenderer = function() {
 
         console.log("bbox=" + (lo) + "," + (la) + "," + (lo + LON_WIDTH) + "," + (la + LAT_HEIGHT));
         //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
-        //$.ajax({ url: "halifax1.xml" , method: "GET" })
+        $.ajax({ url: "halifax1.xml" , method: "GET" })
         //$.ajax({url: "germany1.xml", method: "GET"})
         //$.ajax({url: "halifax2_large.xml", method: "GET"})
         //$.ajax({url: "halifax3_large.xml", method: "GET"})
-        $.ajax({url: "halifax4_super_large.xml", method: "GET"})
+        //$.ajax({url: "halifax4_super_large.xml", method: "GET"})
                 .done(function(mapData) {
             console.log("Done: Have Map Data");
             self.loadMap(mapData);
+            var geo = osm2geo(mapData);
+            console.log("Done parsing to GeoJSON.");
+            console.log(geo);
             //self.drawMap(spritesLayerContext, panLat, panLon, 5000);
             callback.call();
         });
@@ -588,7 +592,7 @@ var MapRenderer = function() {
             console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
             camera.position.x = (panLon) * MAX_SCALE;
             camera.position.z = (panLat) * MAX_SCALE;
-            camera.position.y = 300;
+            camera.position.y = 10;
             console.log(camera.position);
 
             // camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
