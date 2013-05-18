@@ -62,7 +62,7 @@ var MapRenderer = function() {
             maxlat = parseFloat(bounds.attr('maxlat'));
             maxlon = parseFloat(bounds.attr('maxlon'));
             console.log("Bounds:", minlon, minlat, maxlon, maxlat);
-    		
+			
             var geo = osm2geo(xmlDoc);
             console.log("Done parsing to GeoJSON.");
             console.log(geo);
@@ -72,9 +72,10 @@ var MapRenderer = function() {
             {
 				var typeCheck = geo.features[c].properties;
 				
-				if(typeCheck.hasOwnProperty('building') || typeCheck.hasOwnProperty('amenity')) {
+				if(typeCheck.hasOwnProperty('building') || typeCheck.hasOwnProperty('amenity'))
 					buildings[c] = geo.features[c];
-				}
+				else if(typeCheck.hasOwnProperty('highway'))
+					highways[c] = geo.features[c];
             }
             console.log("Bounds:", minlon, minlat, maxlon, maxlat);
             panLat = (maxlat - minlat) / 2;
@@ -98,9 +99,9 @@ var MapRenderer = function() {
                         var lat = currNode.lat;
                         var lon = currNode.lon;
                         if (lon < minlon)
-                            console.log("Out of Bounds:", lon, minlon);
+                            console.log("otherWays Out of Bounds lon:", lon, minlon);
                         if (lat < minlat)
-                            console.log("Out of Bounds:", lat, minlat);
+                            console.log("otherWays Out of Bounds lat:", lat, minlat);
                         lon = (lon - minlon) * MAX_SCALE;
                         lat = (lat - minlat) * MAX_SCALE;
                         if (startPoint)
@@ -168,15 +169,26 @@ var MapRenderer = function() {
                     var roadWidth = 10;
 
                     var startPoint = true;
-                    $(way.nd).each(function() {
-                        var currNode = nodes[this];
-                        var lat = currNode.lat;
-                        var lon = currNode.lon;
+                    $(way.geometry.coordinates[0]).each(function(index) {
+						//Gets lat and lon from array
+						if(isNaN(way.geometry.coordinates[0]))
+						{
+							console.log('nan');
+                        	var lon = way.geometry.coordinates[index][0];
+                        	var lat = way.geometry.coordinates[index][1];
+						} else {
+							console.log('n');
+							var lon = way.geometry.coordinates[0];
+							var lat = way.geometry.coordinates[1];
+						}
+						
+						console.log(lon + " " + lat);
+						
                         // Scale lat and lon
                         if (lon < minlon)
-                            console.log("Out of Bounds:", lon, minlon);
+                            console.log("Highway Out of Bounds lon:", lon, minlon);
                         if (lat < minlat)
-                            console.log("Out of Bounds:", lat, minlat);
+                            console.log("Highway Out of Bounds lat:", lat, minlat);
                         lon = (lon - minlon) * MAX_SCALE;
                         lat = (lat - minlat) * MAX_SCALE;
                         //console.log(lat,lon);
@@ -210,7 +222,7 @@ var MapRenderer = function() {
 
 						var theText = 'Unknown Street';
                         console.log(way);
-                        theText = (way.name) ? way.name : theText;
+                        theText = (way.properties.name) ? way.properties.name : theText;
                         var text3d = new THREE.TextGeometry(theText, {
                             size: 3,
                             height: 1,
@@ -281,9 +293,9 @@ var MapRenderer = function() {
 												
                         // Scale lat and lon
                         if (lon < minlon)
-                            console.log("Out of Bounds:", lon, minlon);
+                            console.log("Building Out of Bounds Lon:", lon, minlon);
                         if (lat < minlat)
-                            console.log("Out of Bounds:", lat, minlat);
+                            console.log("Building Out of Bounds Lat:", lat, minlat);
                         lon = (lon - minlon) * MAX_SCALE;
                         lat = (lat - minlat) * MAX_SCALE;
 
