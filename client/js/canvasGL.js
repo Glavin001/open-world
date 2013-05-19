@@ -84,15 +84,15 @@ var MapRenderer = function() {
             panLat = (maxlat - minlat) / 2;
             panLon = (maxlon - minlon) / 2;
 			
-			var otherWayGen = new Worker('js/map_gen/otherWays.js');
+			var otherWayGen = new Worker('js/otherWays.js');
 			otherWayGen.postMessage({'otherWays': JSON.stringify(otherWays),
 				'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
 			
-			var highwayGen = new Worker('js/map_gen/highways.js');
+			var highwayGen = new Worker('js/highways.js');
 			highwayGen.postMessage({'highways': JSON.stringify(highways),
 				'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
 			
-			var buildingsGen = new Worker('js/map_gen/buildings.js');
+			var buildingsGen = new Worker('js/buildings.js');
 			buildingsGen.postMessage({'buildings': JSON.stringify(buildings),
 				'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
 			
