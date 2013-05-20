@@ -4,11 +4,13 @@ var MapRenderer = function() {
     var panLon = -63.5792540;
     var scaleXY = 100000;
     var minlat, minlon, maxlat, maxlon;
-
+    
+    //Sets constants for canvas rendering
     var CANVAS_WIDTH = 1024;
     var CANVAS_HEIGHT = 768;
     var CANVAS_BUF_WIDTH = 8 * CANVAS_WIDTH;
     var CANVAS_BUF_HEIGHT = 8 * CANVAS_HEIGHT;
+    //Sets constants for scaling coordinates from lon/lat
     var MAX_SCALE = 100000;
     var LON_WIDTH = CANVAS_BUF_WIDTH / MAX_SCALE;
     var LAT_HEIGHT = CANVAS_BUF_HEIGHT / MAX_SCALE;
@@ -18,9 +20,9 @@ var MapRenderer = function() {
     // Map data
     var sceneBuffer = [];
     var streetSignBuffer = [];
-    var highways = {};
-    var buildings = {};
-    var otherWays = {};
+    var highways = {};  //Holds all unrendered highways
+    var buildings = {}; //Holds all unrendered builds
+    var otherWays = {}; //Holds all unrendered elements which are not yet supported
     var geo = {};
 
     var mapRenderer = function(callback) {
@@ -35,8 +37,10 @@ var MapRenderer = function() {
         var lo = panLon - PADDING_LON;
         var la = panLat - PADDING_LAT;
         console.log(LON_WIDTH, LAT_HEIGHT);
-
+	
         console.log("bbox=" + (lo) + "," + (la) + "," + (lo + LON_WIDTH) + "," + (la + LAT_HEIGHT));
+        
+        //Retrieves the XML data from the server; Each XML is a different map, so only one is uncommented while testing
         //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
         $.ajax({ url: "halifax1.xml" , method: "GET" })
         //$.ajax({url: "germany1.xml", method: "GET"})
@@ -55,12 +59,12 @@ var MapRenderer = function() {
 
         this.loadMap = function(xmlDoc) {
 			
-			//Creates the GeoJSON from XML
+	    //Creates the GeoJSON from XML
             var geo = osm2geo(xmlDoc);
             console.log("Done parsing to GeoJSON.");
             console.log(geo);
 			
-			//Finds the boundaries of the scene
+	    //Finds the boundaries of the scene
             var bounds = $(xmlDoc).find("bounds");
             minlat = parseFloat(bounds.attr('minlat'));
             minlon = parseFloat(bounds.attr('minlon'));
@@ -68,15 +72,18 @@ var MapRenderer = function() {
             maxlon = parseFloat(bounds.attr('maxlon'));
             console.log("Bounds:", minlon, minlat, maxlon, maxlat);
 			
-			//Sorts GeoJSON elements into usable groups
+	    //Sorts GeoJSON elements into usable groups
             for (var c = 0, length = geo.features.length; c < length; c++)
             {
 				var typeCheck = geo.features[c].properties;
 				
+				//Moves a building into the building holder
 				if(typeCheck.hasOwnProperty('building') || typeCheck.hasOwnProperty('amenity'))
 					buildings[c] = geo.features[c];
+				//Moves a street into the street holder
 				else if(typeCheck.hasOwnProperty('highway') && typeCheck.highway != 'traffic_signals')
 					highways[c] = geo.features[c];
+				//Deals with all map elements not yet addressed
 				else
 					otherWays[c] = geo.features[c];
             }
@@ -84,28 +91,38 @@ var MapRenderer = function() {
             panLat = (maxlat - minlat) / 2;
             panLon = (maxlon - minlon) / 2;
 			
+			//Creates a web worker for rendering unsupported elements
+			//Sends all data required for rendering
 			var otherWayGen = new Worker('js/otherWays.js');
 			otherWayGen.postMessage({'otherWays': JSON.stringify(otherWays),
 				'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
 			
+			//Creates a web worker for rending highways
+			//Sends all data required for rendering
 			var highwayGen = new Worker('js/highways.js');
 			highwayGen.postMessage({'highways': JSON.stringify(highways),
 				'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
 			
+			//Creates a web worker for rendering buidlings
+			//Sends all data required for rendering
 			var buildingsGen = new Worker('js/buildings.js');
 			buildingsGen.postMessage({'buildings': JSON.stringify(buildings),
 				'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
 			
+			//Handles messages from the otherWayGen web worker
 			otherWayGen.onmessage = function(e) {
 				switch(e.data.type) {
+					//Logs an object to the console
 					case 'log_obj':
 						console.log("OtherWays:", JSON.parse(e.data.post));
 						break;
-						
+					
+					//Logs text to the console
 					case 'log_txt':
-						console.log("OtherWays:" + e.data.post);
+						console.log("OtherWays:", e.data.post);
 						break;
-						
+					
+					//Renders the position of unsupported objects
 					case 'render_misc':
 						var geometry = new THREE.Geometry();
 						geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation,
@@ -134,16 +151,20 @@ var MapRenderer = function() {
 				}
 			}
 			
+			//Handles messages from highwayGen web worker
 			highwayGen.onmessage = function(e) {
 				switch(e.data.type) {
+					//Logs an object to the console
 					case 'log_obj':
 						console.log("Highways:", JSON.parse(e.data.post));
 						break;
-						
+					
+					//Logs text to the console
 					case 'log_txt':
 						console.log("Highways:", e.data.post);
 						break;
-						
+					
+					//Renders roads onto the map
 					case 'render_road':
 						var geometry = new THREE.Geometry();
 						geometry.vertices.push(new THREE.Vector3(e.data.prevLon,
@@ -163,7 +184,8 @@ var MapRenderer = function() {
 						scene.add(road);
 						console.log("Road segment added");
 						break;
-						
+					
+					//Renders names on top of roads (for testing purposes?)
 					case 'render_sign':
 						var text3d = new THREE.TextGeometry(e.data.theText, {
 							size: 3,
@@ -187,16 +209,20 @@ var MapRenderer = function() {
 				}
 			}
 			
+			//Handles messages from buildingsGen web worker
 			buildingsGen.onmessage = function(e) {
 				switch(e.data.type) {
+					//Logs objects to the console
 					case 'log_obj':
 						console.log("Buildings:", JSON.parse(e.data.post));
 						break;
-						
+					
+					//Logs text to the console
 					case 'log_txt':
-						console.log("Buildings:" + e.data.post);
+						console.log("Buildings:", e.data.post);
 						break;
-						
+					
+					//Renders builds onto the map
 					case 'render_building':
 						var geometry = new THREE.Geometry();
 						geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation,
