@@ -25,6 +25,11 @@ WebGL demo: http://140.184.137.122:8081/indexGL.html
 - Retrieving OpenStreetMaps data; and
 - Display in 3D on a canvas with Three.js
 
+### Installation
+- Install Node.js
+- npm install socket.io
+- The 3D GL version is the file ```indexGL.html``` in the client directory.
+
 ## Future
 - Physics
 - Vehicles
