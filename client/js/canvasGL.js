@@ -111,142 +111,148 @@ var MapRenderer = function() {
 			
 			//Handles messages from the otherWayGen web worker
 			otherWayGen.onmessage = function(e) {
-				switch(e.data.type) {
-					//Logs an object to the console
-					case 'log_obj':
-						console.log("OtherWays:", JSON.parse(e.data.post));
-						break;
-					
-					//Logs text to the console
-					case 'log_txt':
-						console.log("OtherWays:", e.data.post);
-						break;
-					
-					//Renders the position of unsupported objects
-					case 'render_misc':
-						var geometry = new THREE.Geometry();
-						geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation,
-							e.data.prevLat));
-						geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation +
-							e.data.buildingHeight, e.data.prevLat));
-						geometry.vertices.push(new THREE.Vector3(e.data.lon, e.data.elevation + 
-							e.data.buildingHeight, e.data.lat));
-						geometry.vertices.push(new THREE.Vector3(e.data.lon, e.data.elevation, 
-							e.data.lat));
-						geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
-						geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
-						geometry.computeBoundingSphere();
-			
-						var material = new THREE.MeshPhongMaterial({
-							color: 0x0000bb
-						});
-						var unknownObj = new THREE.Mesh(geometry, material);
-						unknownObj.matrixAutoUpdate = false;
-						unknownObj.castShadow = true;
-						unknownObj.receiveShadow = true;
-			
-						scene.add(unknownObj);
-						console.log("Misc added");
-						break;
-				}
+				setTimeout(function() {
+					switch(e.data.type) {
+						//Logs an object to the console
+						case 'log_obj':
+							console.log("OtherWays:", JSON.parse(e.data.post));
+							break;
+						
+						//Logs text to the console
+						case 'log_txt':
+							console.log("OtherWays:", e.data.post);
+							break;
+						
+						//Renders the position of unsupported objects
+						case 'render_misc':
+							var geometry = new THREE.Geometry();
+							geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation,
+								e.data.prevLat));
+							geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation +
+								e.data.buildingHeight, e.data.prevLat));
+							geometry.vertices.push(new THREE.Vector3(e.data.lon, e.data.elevation + 
+								e.data.buildingHeight, e.data.lat));
+							geometry.vertices.push(new THREE.Vector3(e.data.lon, e.data.elevation, 
+								e.data.lat));
+							geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
+							geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
+							geometry.computeBoundingSphere();
+				
+							var material = new THREE.MeshPhongMaterial({
+								color: 0x0000bb
+							});
+							var unknownObj = new THREE.Mesh(geometry, material);
+							unknownObj.matrixAutoUpdate = false;
+							unknownObj.castShadow = true;
+							unknownObj.receiveShadow = true;
+				
+							scene.add(unknownObj);
+							console.log("Misc added");
+							break;
+					}
+				}, 0);
 			}
 			
 			//Handles messages from highwayGen web worker
 			highwayGen.onmessage = function(e) {
-				switch(e.data.type) {
-					//Logs an object to the console
-					case 'log_obj':
-						console.log("Highways:", JSON.parse(e.data.post));
-						break;
-					
-					//Logs text to the console
-					case 'log_txt':
-						console.log("Highways:", e.data.post);
-						break;
-					
-					//Renders roads onto the map
-					case 'render_road':
-						var geometry = new THREE.Geometry();
-						geometry.vertices.push(new THREE.Vector3(e.data.prevLon,
-							e.data.elevation, e.data.prevLat));
-						geometry.vertices.push(new THREE.Vector3(e.data.prevLon,
-							e.data.elevation, e.data.prevLat - e.data.roadWidth));
-						geometry.vertices.push(new THREE.Vector3(e.data.lon, 
-							e.data.elevation, e.data.lat - e.data.roadWidth));
-						geometry.vertices.push(new THREE.Vector3(e.data.lon,
-							e.data.elevation, e.data.lat));
-						geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
-						geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
-						geometry.computeBoundingSphere();
-						var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10});
-						var road = new THREE.Mesh(geometry, asphalt);
-						road.matrixAutoUpdate = false;
-						scene.add(road);
-						console.log("Road segment added");
-						break;
-					
-					//Renders names on top of roads (for testing purposes?)
-					case 'render_sign':
-						var text3d = new THREE.TextGeometry(e.data.theText, {
-							size: 3,
-							height: 1,
-							curveSegments: 1,
-							font: "helvetiker"
-						});
-						text3d.computeBoundingBox();
-						var centerOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
-						var textMaterial = new THREE.MeshPhongMaterial({color: e.data.color,
-							overdraw: true});
-						var text = new THREE.Mesh(text3d, textMaterial);
-						text.position.x = e.data.prevLon + centerOffset;
-						text.position.y = e.data.elevation + 10;
-						text.position.z = e.data.prevLat;
-						text.rotation.x = 0;
-						text.rotation.y = Math.PI * 2;
-						scene.add(text);
-						console.log("Street Sign");
-						break;
+				setTimeout(function() {
+					switch(e.data.type) {
+						//Logs an object to the console
+						case 'log_obj':
+							console.log("Highways:", JSON.parse(e.data.post));
+							break;
+						
+						//Logs text to the console
+						case 'log_txt':
+							console.log("Highways:", e.data.post);
+							break;
+						
+						//Renders roads onto the map
+						case 'render_road':
+							var geometry = new THREE.Geometry();
+							geometry.vertices.push(new THREE.Vector3(e.data.prevLon,
+								e.data.elevation, e.data.prevLat));
+							geometry.vertices.push(new THREE.Vector3(e.data.prevLon,
+								e.data.elevation, e.data.prevLat - e.data.roadWidth));
+							geometry.vertices.push(new THREE.Vector3(e.data.lon, 
+								e.data.elevation, e.data.lat - e.data.roadWidth));
+							geometry.vertices.push(new THREE.Vector3(e.data.lon,
+								e.data.elevation, e.data.lat));
+							geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
+							geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
+							geometry.computeBoundingSphere();
+							var asphalt = new THREE.MeshBasicMaterial({color: 0x000000, lineWidth: 10});
+							var road = new THREE.Mesh(geometry, asphalt);
+							road.matrixAutoUpdate = false;
+							scene.add(road);
+							console.log("Road segment added");
+							break;
+						
+						//Renders names on top of roads (for testing purposes?)
+						case 'render_sign':
+							var text3d = new THREE.TextGeometry(e.data.theText, {
+								size: 3,
+								height: 1,
+								curveSegments: 1,
+								font: "helvetiker"
+							});
+							text3d.computeBoundingBox();
+							var centerOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
+							var textMaterial = new THREE.MeshPhongMaterial({color: e.data.color,
+								overdraw: true});
+							var text = new THREE.Mesh(text3d, textMaterial);
+							text.position.x = e.data.prevLon + centerOffset;
+							text.position.y = e.data.elevation + 10;
+							text.position.z = e.data.prevLat;
+							text.rotation.x = 0;
+							text.rotation.y = Math.PI * 2;
+							scene.add(text);
+							console.log("Street Sign");
+							break;
+					}
+					}, 0);
 				}
-			}
-			
+				
 			//Handles messages from buildingsGen web worker
 			buildingsGen.onmessage = function(e) {
-				switch(e.data.type) {
-					//Logs objects to the console
-					case 'log_obj':
-						console.log("Buildings:", JSON.parse(e.data.post));
-						break;
-					
-					//Logs text to the console
-					case 'log_txt':
-						console.log("Buildings:", e.data.post);
-						break;
-					
-					//Renders builds onto the map
-					case 'render_building':
-						var geometry = new THREE.Geometry();
-						geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation,
-							e.data.prevLat));
-						geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation +
-							e.data.buildingHeight, e.data.prevLat));
-						geometry.vertices.push(new THREE.Vector3(e.data.lon, e.data.elevation +
-							e.data.buildingHeight, e.data.lat));
-						geometry.vertices.push(new THREE.Vector3(e.data.lon, e.data.elevation, e.data.lat));
-						geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
-						geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
-						geometry.computeBoundingSphere();
-						
-						var material = new THREE.MeshPhongMaterial({
-							color: 0x0000bb
-						});
-						var building = new THREE.Mesh(geometry, material);
-						building.matrixAutoUpdate = false;
-						building.castShadow = true;
-						building.receiveShadow = true;
-						scene.add(building);
-						console.log("Building added");
-						break;
-				}
+				setTimeout(function() {
+					switch(e.data.type) {
+						case 'log_obj':
+							console.log("Buildings:", JSON.parse(e.data.post));
+							break;
+							
+						case 'log_txt':
+							console.log("Buildings:" + e.data.post);
+							break;
+							
+						case 'render_building':
+							var geometry, building;
+							
+							geometry = new THREE.Geometry();
+							geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation,
+								e.data.prevLat));
+							geometry.vertices.push(new THREE.Vector3(e.data.prevLon, e.data.elevation +
+								e.data.buildingHeight, e.data.prevLat));
+							geometry.vertices.push(new THREE.Vector3(e.data.lon, e.data.elevation +
+								e.data.buildingHeight, e.data.lat));
+							geometry.vertices.push(new THREE.Vector3(e.data.lon, e.data.elevation, e.data.lat));
+							geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
+							geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
+							geometry.computeBoundingSphere();
+							
+							var material = new THREE.MeshBasicMaterial({
+								color: 0x666666
+							});
+							
+							building = new THREE.Mesh(geometry, material);
+							building.matrixAutoUpdate = false;
+							building.castShadow = true;
+							building.receiveShadow = true;
+							scene.add(building);
+							console.log("Building added");
+							break;
+					}
+				}, 0);
 			}
 
             console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
