@@ -241,7 +241,7 @@ var MapRenderer = function() {
 							geometry.computeBoundingSphere();
 							
 							var material = new THREE.MeshBasicMaterial({
-								color: 0x666666
+								color: e.data.color
 							});
 							
 							building = new THREE.Mesh(geometry, material);

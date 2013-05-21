@@ -1,5 +1,5 @@
 onmessage = function(e) {
-  var buildings = JSON.parse(e.data.buildings);
+	var buildings = JSON.parse(e.data.buildings);
 	var minlon = e.data.minlon;
 	var minlat = e.data.minlat;
 	var MAX_SCALE = e.data.MAX_SCALE;
@@ -14,6 +14,8 @@ onmessage = function(e) {
 			var prevLat = 0;
 			var elevation = 0;
 			var buildingHeight = 50;
+			var textureType = 0;
+			var color;
 
 			for(var c = 0, length = way.geometry.coordinates[0].length; c < length; c++) {
 				//Gets lat and lon from array
@@ -38,6 +40,38 @@ onmessage = function(e) {
 				
 				if (startPoint)
 				{
+					textureType = Math.floor( 1000 * ( lat + lon ) % 7 );
+					
+					switch(textureType) {
+						case 0:
+							color = 0xa69d86;
+							break;
+							
+						case 1:
+							color = 0x8256a4;
+							break;
+							
+						case 2:
+							color = 0x025076;
+							break;
+							
+						case 3:
+							color = 0xd6b6e6;
+							break;
+							
+						case 4:
+							color = 0x93c572;
+							break;
+							
+						case 5:
+							color = 0x53868b;
+							break;
+							
+						case 6:
+							color = 0xffffff;
+							break;
+					}
+					
 					startPoint = false;
 					prevLon = lon;
 					prevLat = lat;
@@ -46,7 +80,7 @@ onmessage = function(e) {
 				{
 					postMessage({'type': 'render_building', 'prevLon': prevLon, 'prevLat': prevLat,
 						'elevation': elevation, 'buildingHeight': buildingHeight, 'lat': lat,
-						'lon': lon});
+						'lon': lon, 'color': color});
 					prevLon = lon;
 					prevLat = lat;
 				}
