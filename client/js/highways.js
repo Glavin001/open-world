@@ -84,7 +84,7 @@ onmessage = function(e) {
 						'x_4': lon,
 						'y_4': lat,
 						'z_4': elevation,
-						'lineWidth': lineWidth,
+						'lineWidth': roadWidth,
 						'shadows': shadows,
 						'color': color
 					});
