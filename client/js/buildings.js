@@ -3,6 +3,11 @@ onmessage = function(e) {
 	var minlon = e.data.minlon;
 	var minlat = e.data.minlat;
 	var MAX_SCALE = e.data.MAX_SCALE;
+	var element = 'Building';
+	var elevation = 0;
+	var buildingHeight = 50;
+	var lineWidth = 1;
+	var shadows = true;
 	
 	for (var key in buildings) {
 		if (buildings.hasOwnProperty(key)) {
@@ -12,8 +17,6 @@ onmessage = function(e) {
 			var startPoint = true;
 			var prevLon = 0;
 			var prevLat = 0;
-			var elevation = 0;
-			var buildingHeight = 50;
 			var textureType = 0;
 			var color;
 
@@ -30,18 +33,26 @@ onmessage = function(e) {
 										
 				// Scale lat and lon
 				if (lon < minlon)
-					postMessage({'type': 'log_txt',
-						'post': "Out of Bounds lon: " + " " + lon + " " + minlon});
+					postMessage({
+						'type': 'log_txt',
+						'post': "Out of Bounds lon: " + " " + lon + " " + minlon,
+						'element': element
+					});
 				if (lat < minlat)
-					postMessage({'type': 'log_txt',
-						'post': "Out of Bounds lat: " + " " + lat + " " + minlat});
+					postMessage({
+						'type': 'log_txt',
+						'post': "Out of Bounds lat: " + " " + lat + " " + minlat,
+						'element': element
+					});
 				lon = (lon - minlon) * MAX_SCALE;
 				lat = (lat - minlat) * MAX_SCALE;
 				
 				if (startPoint)
 				{
+					//Calculates number corresponding to building's texture
 					textureType = Math.floor( 1000 * ( lat + lon ) % 7 );
 					
+					//Sets texture relative to number
 					switch(textureType) {
 						case 0:
 							color = 0xa69d86;
@@ -78,9 +89,26 @@ onmessage = function(e) {
 				}
 				else
 				{
-					postMessage({'type': 'render_building', 'prevLon': prevLon, 'prevLat': prevLat,
-						'elevation': elevation, 'buildingHeight': buildingHeight, 'lat': lat,
-						'lon': lon, 'color': color});
+					postMessage({
+						'type': 'render_element',
+						'element': element,
+						'x_1': prevLon,
+						'y_1': prevLat,
+						'z_1': elevation,
+						'x_2': prevLon,
+						'y_2': prevLat,
+						'z_2': elevation + buildingHeight,
+						'x_3': lon,
+						'y_3': lat,
+						'z_3': elevation + buildingHeight,
+						'x_4': lon,
+						'y_4': lat,
+						'z_4': elevation,
+						'lineWidth': lineWidth,
+						'shadows': shadows,
+						'color': color
+					});
+					
 					prevLon = lon;
 					prevLat = lat;
 				}
