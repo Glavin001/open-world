@@ -111,7 +111,6 @@ var MapRenderer = function() {
 							case 'Building':
 								THREE.GeometryUtils.merge(buildingHolder, geometry);
 								if(message.renderNow)
-									console.log('TESSSSSSSSSSSSSSSSSSSSSsdfdsfdfsdfsSSSSSSSSSSSSSSS');
 									scene.add(buildingHolder);
 								break;
 							case 'Highway':
