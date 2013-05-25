@@ -10,79 +10,85 @@ onmessage = function(e) {
 	var color = 0x000000;
 	var shadows = true;
 	
-	for (var key in otherWays) {
-		if (otherWays.hasOwnProperty(key)) {
-			var way = otherWays[key];
-		
-			// Draw highway blacktop
-			var startPoint = true;
-			var prevLon = 0;
-			var prevLat = 0;
-		
-			for(var c = 0, length = way.geometry.coordinates.length; c < length; c++) {
-				//Gets lat and lon from array
-				if(isNaN(way.geometry.coordinates[0]))
-				{
-					var lon = way.geometry.coordinates[0][c][0];
-					var lat = way.geometry.coordinates[0][c][1];
-				} else {
-					var lon = way.geometry.coordinates[0];
-					var lat = way.geometry.coordinates[1];
+	for (var i = 0, number = otherWays.length; i < number; i++) {
+		var way = otherWays[i];
+	
+		// Draw highway blacktop
+		var startPoint = true;
+		var prevLon = 0;
+		var prevLat = 0;
+		var renderNow = false;
+	
+		for(var c = 0, length = way.geometry.coordinates.length; c < length; c++) {
+			if(i + 1 === number)
+				renderNow = true;
+			
+			//Gets lat and lon from array
+			if(isNaN(way.geometry.coordinates[0]))
+			{
+				var lon = way.geometry.coordinates[0][c][0];
+				var lat = way.geometry.coordinates[0][c][1];
+			} else {
+				var lon = way.geometry.coordinates[0];
+				var lat = way.geometry.coordinates[1];
+			}
+			
+			postMessage({
+				'type': 'log_txt',
+				'post': lat + " " + lon,
+				'element': element
+			});
+			
+			// Scale lat and lon
+			if (lon < minlon)
+				postMessage({
+					'type': 'log_txt',
+					'post': "Out of Bounds lon: " + " " + lon + " " + minlon,
+					'element': element
+				});
+			if (lat < minlat)
+				postMessage({
+					'type': 'log_txt',
+					'post': "Out of Bounds lon: " + " " + lon + " " + minlon,
+					'element': element
+					});
+					
+			lon = (lon - minlon) * MAX_SCALE;
+			lat = (lat - minlat) * MAX_SCALE;
+			
+			if (startPoint)
+			{
+				startPoint = false;
+				prevLon = lon;
+				prevLat = lat;
+			}
+			else
+			{
+				if(renderNum = 40) {
 				}
 				
 				postMessage({
-					'type': 'log_txt',
-					'post': lat + " " + lon,
-					'element': element
+					'type': 'render_plane',
+					'element': element,
+					'x_1': prevLon,
+					'y_1': prevLat,
+					'z_1': elevation,
+					'x_2': prevLon,
+					'y_2': prevLat,
+					'z_2': elevation + buildingHeight,
+					'x_3': lon,
+					'y_3': lat,
+					'z_3': elevation + buildingHeight,
+					'x_4': lon,
+					'y_4': lat,
+					'z_4': elevation,
+					'lineWidth': lineWidth,
+					'shadows': shadows,
+					'color': color,
+					'renderNow': renderNow
 				});
-				
-				// Scale lat and lon
-				if (lon < minlon)
-					postMessage({
-						'type': 'log_txt',
-						'post': "Out of Bounds lon: " + " " + lon + " " + minlon,
-						'element': element
-					});
-				if (lat < minlat)
-					postMessage({
-						'type': 'log_txt',
-						'post': "Out of Bounds lon: " + " " + lon + " " + minlon,
-						'element': element
-						});
-						
-				lon = (lon - minlon) * MAX_SCALE;
-				lat = (lat - minlat) * MAX_SCALE;
-				
-				if (startPoint)
-				{
-					startPoint = false;
-					prevLon = lon;
-					prevLat = lat;
-				}
-				else
-				{
-					postMessage({
-						'type': 'render_element',
-						'element': element,
-						'x_1': prevLon,
-						'y_1': prevLat,
-						'z_1': elevation,
-						'x_2': prevLon,
-						'y_2': prevLat,
-						'z_2': elevation + buildingHeight,
-						'x_3': lon,
-						'y_3': lat,
-						'z_3': elevation + buildingHeight,
-						'x_4': lon,
-						'y_4': lat,
-						'z_4': elevation,
-						'lineWidth': lineWidth,
-						'shadows': shadows,
-						'color': color
-					});
-					prevLon = lon;
-					prevLat = lat;
-				}
+				prevLon = lon;
+				prevLat = lat;
 			}
 		}
 	}

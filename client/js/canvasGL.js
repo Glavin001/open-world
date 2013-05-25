@@ -20,9 +20,9 @@ var MapRenderer = function() {
     // Map data
     var sceneBuffer = [];
     var streetSignBuffer = [];
-    var highways = {};  //Holds all unrendered highways
-    var buildings = {}; //Holds all unrendered builds
-    var otherWays = {}; //Holds all unrendered elements which are not yet supported
+    var highways = []; //Holds all unrendered highways
+    var buildings = []; //Holds all unrendered builds
+    var otherWays = []; //Holds all unrendered elements which are not yet supported
     var geo = {};
 
     var mapRenderer = function(callback) {
@@ -59,74 +59,98 @@ var MapRenderer = function() {
     (function() {
 
         this.loadMap = function(xmlDoc) {
-		
-		//Function which processes a rendering web worker's messages and adds to the map
-		var processMessage = function(message) {
-			switch(message.type) {
-				//Logs an object to the console
-				case 'log_obj':
-					console.log(message.element + ":", JSON.parse(message.post));
-					break;
-		
-				//Logs text to the console
-				case 'log_txt':
-					console.log(message.element + ":", message.post);
-					break;
-		
-				//Renders roads onto the map
-				case 'render_element':
-					var geometry = new THREE.Geometry();
-					geometry.vertices.push(new THREE.Vector3(message.x_1,
-						message.z_1, message.y_1));
-					geometry.vertices.push(new THREE.Vector3(message.x_2,
-						message.z_2, message.y_2));
-					geometry.vertices.push(new THREE.Vector3(message.x_3, 
-						message.z_3, message.y_3));
-					geometry.vertices.push(new THREE.Vector3(message.x_4,
-						message.z_4, message.y_4));
-					geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
-					geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
-					geometry.computeBoundingSphere();
-					
-					var texture = new THREE.MeshBasicMaterial({
-						color: message.color,
-						lineWidth: message.lineWidth
-					});
-					var feature = new THREE.Mesh(geometry, texture);
-					feature.matrixAutoUpdate = false;
-					if (message.shadows)
-					{
-						feature.castShadow = true;
-						feature.receiveShadow = true;
-					}
-					scene.add(feature);
-					console.log(message.element + " added");
-					break;
-		
-				//Renders names on top of roads (for testing purposes?)
-				case 'render_sign':
-					var text3d = new THREE.TextGeometry(message.theText, {
-						size: 3,
-						height: 1,
-						curveSegments: 1,
-						font: "helvetiker"
-					});
-					text3d.computeBoundingBox();
-					var centerOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
-					var textMaterial = new THREE.MeshPhongMaterial({
-						color: message.color,
-						overdraw: true});
-					var text = new THREE.Mesh(text3d, textMaterial);
-					text.position.x = message.prevLon + centerOffset;
-					text.position.y = message.elevation + 10;
-					text.position.z = message.prevLat;
-					text.rotation.x = 0;
-					text.rotation.y = Math.PI * 2;
-					scene.add(text);
-					console.log("Street Sign");
-					break;
+			var buildingHolder = new THREE.Geometry;
+			var otherWayHolder = new THREE.Geometry;
+			var highwayHolder  = new THREE.Geometry;
+			
+			//Function which processes a rendering web worker's messages and adds to the map
+			var processMessage = function(message) {
+				switch(message.type) {
+					//Logs an object to the console
+					case 'log_obj':
+						console.log(message.element + ":", JSON.parse(message.post));
+						break;
+			
+					//Logs text to the console
+					case 'log_txt':
+						console.log(message.element + ":", message.post);
+						break;
+			
+					//Renders roads onto the map
+					case 'render_plane':
+						var geometry = new THREE.Geometry();
+						
+						geometry.vertices.push(new THREE.Vector3(message.x_1,
+							message.z_1, message.y_1));
+						geometry.vertices.push(new THREE.Vector3(message.x_2,
+							message.z_2, message.y_2));
+						geometry.vertices.push(new THREE.Vector3(message.x_3, 
+							message.z_3, message.y_3));
+						geometry.vertices.push(new THREE.Vector3(message.x_4,
+							message.z_4, message.y_4));
+						geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
+						geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
+						geometry.computeBoundingSphere();
+						
+						var texture = new THREE.MeshBasicMaterial({
+							color: message.color,
+							lineWidth: message.lineWidth
+						});
+						var feature = new THREE.Mesh(geometry, texture);
+						feature.matrixAutoUpdate = false;
+						if (message.shadows)
+						{
+							feature.castShadow = true;
+							feature.receiveShadow = true;
+						}
+						//scene.add(feature);
+						console.log(message.element + " added");
+						
+						switch(message.element) 
+						{
+							case 'Building':
+								THREE.GeometryUtils.merge(buildingHolder, geometry);
+								if(message.renderNow)
+									console.log('TESSSSSSSSSSSSSSSSSSSSSsdfdsfdfsdfsSSSSSSSSSSSSSSS');
+									scene.add(buildingHolder);
+								break;
+							case 'Highway':
+								THREE.GeometryUtils.merge(otherWayHolder, geometry);
+								if(message.renderNow)
+									scene.add(otherWayHolder);
+								break;
+							case 'Misc':
+								THREE.GeometryUtils.merge(highwayHolder, geometry);
+								if(message.renderNow)
+									scene.add(highwayHolder);
+								break;
+						}
+						break;
+			
+					//Renders names on top of roads (for testing purposes?)
+					case 'render_sign':
+						var text3d = new THREE.TextGeometry(message.theText, {
+							size: 3,
+							height: 1,
+							curveSegments: 1,
+							font: "helvetiker"
+						});
+						text3d.computeBoundingBox();
+						var centerOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
+						var textMaterial = new THREE.MeshPhongMaterial({
+							color: message.color,
+							overdraw: true});
+						var text = new THREE.Mesh(text3d, textMaterial);
+						text.position.x = message.prevLon + centerOffset;
+						text.position.y = message.elevation + 10;
+						text.position.z = message.prevLat;
+						text.rotation.x = 0;
+						text.rotation.y = Math.PI * 2;
+						scene.add(text);
+						console.log("Street Sign");
+						break;
+				}
 			}
-		}
 
 	    //Creates the GeoJSON from XML
             var geo = osm2geo(xmlDoc);
@@ -148,13 +172,13 @@ var MapRenderer = function() {
 
 				//Moves a building into the building holder
 				if(typeCheck.hasOwnProperty('building') || typeCheck.hasOwnProperty('amenity'))
-					buildings[c] = geo.features[c];
+					buildings.push(geo.features[c]);
 				//Moves a street into the street holder
 				else if(typeCheck.hasOwnProperty('highway') && typeCheck.highway != 'traffic_signals')
-					highways[c] = geo.features[c];
+					highways.push(geo.features[c]);
 				//Deals with all map elements not yet addressed
 				else
-					otherWays[c] = geo.features[c];
+					otherWays.push(geo.features[c]);
             }
 
             panLat = (maxlat - minlat) / 2;
@@ -180,17 +204,17 @@ var MapRenderer = function() {
 
 			//Handles messages from the otherWayGen web worker
 			otherWayGen.onmessage = function(e) {
-				setTimeout(processMessage(e.data));
+				setTimeout(processMessage(e.data), 0);
 			}
 
 			//Handles messages from highwayGen web worker
 			highwayGen.onmessage = function(e) {
-				setTimeout(processMessage(e.data));
+				setTimeout(processMessage(e.data), 0);
 			}
 				
 			//Handles messages from buildingsGen web worker
 			buildingsGen.onmessage = function(e) {
-				setTimeout(processMessage(e.data));
+				setTimeout(processMessage(e.data), 0);
 			}
 
             console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
