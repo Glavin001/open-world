@@ -157,76 +157,81 @@ var MapRenderer = function() {
 				}
 			}
 
-	    //Creates the GeoJSON from XML
-            var geo = osm2geo(xmlDoc);
-            console.log("Done parsing to GeoJSON.");
-            console.log(geo);
-
-	    //Finds the boundaries of the scene
-            var bounds = $(xmlDoc).find("bounds");
-            minlat = parseFloat(bounds.attr('minlat'));
-            minlon = parseFloat(bounds.attr('minlon'));
-            maxlat = parseFloat(bounds.attr('maxlat'));
-            maxlon = parseFloat(bounds.attr('maxlon'));
-            console.log("Bounds:", minlon, minlat, maxlon, maxlat);
-
-	    //Sorts GeoJSON elements into usable groups
-            for (var c = 0, length = geo.features.length; c < length; c++)
-            {
-				var typeCheck = geo.features[c].properties;
-
-				//Moves a building into the building holder
-				if(typeCheck.hasOwnProperty('building'))
-					buildings.push(geo.features[c]);
-				//Moves a street into the street holder
-				else if(typeCheck.hasOwnProperty('highway') && typeCheck.highway != 'traffic_signals')
-					highways.push(geo.features[c]);
-				//Deals with all map elements not yet addressed
-				else
-					otherWays.push(geo.features[c]);
-            }
-
-            panLat = (maxlat - minlat) / 2;
-            panLon = (maxlon - minlon) / 2;
-
-			//Creates a web worker for rendering unsupported elements
-			//Sends all data required for rendering
-			var otherWayGen = new Worker('js/otherWays.js');
-			otherWayGen.postMessage({'otherWays': JSON.stringify(otherWays),
-				'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
-
-			//Creates a web worker for rending highways
-			//Sends all data required for rendering
-			var highwayGen = new Worker('js/highways.js');
-			highwayGen.postMessage({'highways': JSON.stringify(highways),
-				'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
-
-			//Creates a web worker for rendering buidlings
-			//Sends all data required for rendering
-			var buildingsGen = new Worker('js/buildings.js');
-			buildingsGen.postMessage({'buildings': JSON.stringify(buildings),
-				'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
-
-			//Handles messages from the otherWayGen web worker
-			otherWayGen.onmessage = function(e) {
-				setTimeout(processMessage(e.data), 0);
-			}
-
-			//Handles messages from highwayGen web worker
-			highwayGen.onmessage = function(e) {
-				setTimeout(processMessage(e.data), 0);
-			}
+		    //Creates the GeoJSON from XML
+			setTimeout(function() {
+				geo = osm2geo(xmlDoc);
+				console.log("Done parsing to GeoJSON.");
+				console.log(geo);
 				
-			//Handles messages from buildingsGen web worker
-			buildingsGen.onmessage = function(e) {
-				setTimeout(processMessage(e.data), 0);
+				ready();
+			}, 0);
+			
+			var ready = function() {
+				//Finds the boundaries of the scene
+				minlon = geo.bbox[0];
+				minlat = geo.bbox[1];
+				maxlon = geo.bbox[2];
+				maxlat = geo.bbox[3];
+				console.log("Bounds:", minlon, minlat, maxlon, maxlat);
+	
+				//Sorts GeoJSON elements into usable groups
+				for (var c = 0, length = geo.features.length; c < length; c++)
+				{
+					var typeCheck = geo.features[c].properties;
+	
+					//Moves a building into the building holder
+					if(typeCheck.hasOwnProperty('building'))
+						buildings.push(geo.features[c]);
+					//Moves a street into the street holder
+					else if(typeCheck.hasOwnProperty('highway') && typeCheck.highway != 'traffic_signals')
+						highways.push(geo.features[c]);
+					//Deals with all map elements not yet addressed
+					else
+						otherWays.push(geo.features[c]);
+				}
+	
+				panLat = (maxlat - minlat) / 2;
+				panLon = (maxlon - minlon) / 2;
+	
+				//Creates a web worker for rendering unsupported elements
+				//Sends all data required for rendering
+				var otherWayGen = new Worker('js/otherWays.js');
+				otherWayGen.postMessage({'otherWays': JSON.stringify(otherWays),
+					'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
+	
+				//Creates a web worker for rending highways
+				//Sends all data required for rendering
+				var highwayGen = new Worker('js/highways.js');
+				highwayGen.postMessage({'highways': JSON.stringify(highways),
+					'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
+	
+				//Creates a web worker for rendering buidlings
+				//Sends all data required for rendering
+				var buildingsGen = new Worker('js/buildings.js');
+				buildingsGen.postMessage({'buildings': JSON.stringify(buildings),
+					'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
+	
+				//Handles messages from the otherWayGen web worker
+				otherWayGen.onmessage = function(e) {
+					setTimeout(processMessage(e.data), 0);
+				}
+	
+				//Handles messages from highwayGen web worker
+				highwayGen.onmessage = function(e) {
+					setTimeout(processMessage(e.data), 0);
+				}
+					
+				//Handles messages from buildingsGen web worker
+				buildingsGen.onmessage = function(e) {
+					setTimeout(processMessage(e.data), 0);
+				}
+	
+				console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
+				camera.position.x = (panLon) * MAX_SCALE;
+				camera.position.z = (panLat) * MAX_SCALE;
+				camera.position.y = 10;
+				console.log(camera.position);
 			}
-
-            console.log(panLon, minlon, panLat, minlat, MAX_SCALE);
-            camera.position.x = (panLon) * MAX_SCALE;
-            camera.position.z = (panLat) * MAX_SCALE;
-            camera.position.y = 10;
-            console.log(camera.position);
         };
     }).call(mapRenderer.prototype);
 
