@@ -10,6 +10,12 @@ onmessage = function(e) {
 	var lineWidth = 1;
 	var shadows = true;
 	
+	postMessage({
+		'type': 'log_obj', 
+		'post': JSON.stringify(buildings),
+		'element': element
+	});
+	
 	for (var i = 0, number = buildings.length; i < number; i++) {
 		var way = buildings[i];
 
@@ -21,7 +27,7 @@ onmessage = function(e) {
 		var color;
 
 		for(var c = 0, length = way.geometry.coordinates[0].length; c < length; c++) {
-			if(i + 1 === number)
+			if(i + 1 === number && c + 1 === length)
 				renderNow = true;
 			
 			//Gets lat and lon from array

@@ -59,9 +59,9 @@ var MapRenderer = function() {
     (function() {
 
         this.loadMap = function(xmlDoc) {
-			var buildingHolder = new THREE.Geometry;
-			var otherWayHolder = new THREE.Geometry;
-			var highwayHolder  = new THREE.Geometry;
+			var buildingHolder = new THREE.Object3D();
+			var otherWayHolder = new THREE.Object3D();
+			var highwayHolder  = new THREE.Object3D();
 			
 			//Function which processes a rendering web worker's messages and adds to the map
 			var processMessage = function(message) {
@@ -109,20 +109,25 @@ var MapRenderer = function() {
 						switch(message.element) 
 						{
 							case 'Building':
-								THREE.GeometryUtils.merge(buildingHolder, geometry);
+								buildingHolder.add(feature);
 								if(message.renderNow)
-									console.log('TESSSSSSSSSSSSSSSSSSSSSsdfdsfdfsdfsSSSSSSSSSSSSSSS');
+								{
 									scene.add(buildingHolder);
+								}
 								break;
-							case 'Highway':
-								THREE.GeometryUtils.merge(otherWayHolder, geometry);
+							case 'Highways':
+								highwayHolder.add(feature);
 								if(message.renderNow)
-									scene.add(otherWayHolder);
+								{
+									scene.add(highwayHolder);
+								}
 								break;
 							case 'Misc':
-								THREE.GeometryUtils.merge(highwayHolder, geometry);
+								otherWayHolder.add(feature);
 								if(message.renderNow)
-									scene.add(highwayHolder);
+								{
+									scene.add(otherWayHolder);
+								}
 								break;
 						}
 						break;
@@ -171,7 +176,7 @@ var MapRenderer = function() {
 				var typeCheck = geo.features[c].properties;
 
 				//Moves a building into the building holder
-				if(typeCheck.hasOwnProperty('building') || typeCheck.hasOwnProperty('amenity'))
+				if(typeCheck.hasOwnProperty('building'))
 					buildings.push(geo.features[c]);
 				//Moves a street into the street holder
 				else if(typeCheck.hasOwnProperty('highway') && typeCheck.highway != 'traffic_signals')
@@ -222,28 +227,7 @@ var MapRenderer = function() {
             camera.position.z = (panLat) * MAX_SCALE;
             camera.position.y = 10;
             console.log(camera.position);
-
-            setTimeout(this.processSceneBuffer, 1);
-
         };
-
-        this.processSceneBuffer = function processSceneBuffer() {
-            console.log(sceneBuffer.length);
-            var combined = new THREE.Geometry();
-            while (sceneBuffer.length !== 0)
-            {
-                var current = sceneBuffer.pop();
-                THREE.GeometryUtils.merge(combined, current);
-            }
-            var material = new THREE.MeshPhongMaterial({
-                color: 0x0000bb
-            });
-            var mesh = new THREE.Mesh(combined, material);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            scene.add(mesh);
-        };
-		
     }).call(mapRenderer.prototype);
 
     return mapRenderer;

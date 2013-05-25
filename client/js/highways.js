@@ -23,13 +23,11 @@ onmessage = function(e) {
 		var prevLon = 0;
 		var prevLat = 0;
 		var renderNow = false;
-
 		
 		var startPoint = true;
 		for(var c = 0, length = way.geometry.coordinates.length; c < length; c++) {
-			if(i + 1 === number)
+			if(i + 1 === number && c + 1 === length)
 				renderNow = true;
-			
 			
 			//Gets lat and lon from array
 			if(isNaN(way.geometry.coordinates[0]))
