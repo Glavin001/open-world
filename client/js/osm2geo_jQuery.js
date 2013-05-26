@@ -18,7 +18,9 @@
  *
  * ***********************************************************************/
 var osm2geo = function(osm){
-    var xml = osm.documentElement;
+    // Check wether the argument is a Jquery object and act accordingly
+    // Assuming it as a raw server response for now
+    var $xml = jQuery(osm);
     // Initialize the empty GeoJSON object
     var geo = {
         "type" : "FeatureCollection",
@@ -27,22 +29,21 @@ var osm2geo = function(osm){
     // setting the bounding box [minX,minY,maxX,maxY]; x -> long, y -> lat
     function getBounds(bounds){
         var bbox = new Array;
-        bbox.push(parseFloat(bounds.getAttribute("minlon")));
-        bbox.push(parseFloat(bounds.getAttribute("minlat")));
-        bbox.push(parseFloat(bounds.getAttribute("maxlon")));
-        bbox.push(parseFloat(bounds.getAttribute("maxlat")));
+        bbox.push(parseFloat(bounds.attr("minlon")));
+        bbox.push(parseFloat(bounds.attr("minlat")));
+        bbox.push(parseFloat(bounds.attr("maxlon")));
+        bbox.push(parseFloat(bounds.attr("maxlat")));
         return bbox;
     }
-    geo["bbox"] = getBounds(xml.getElementsByTagName("bounds")[0]);
-    
+    geo["bbox"] = getBounds($xml.find("bounds"));
+
     // Function to set props for a feature
     function setProps(element){
         var properties = {};
-        var tags = element.getElementsByTagName("tag");
-        for (var t=0; t<tags.length; t++ ) {
-            var tag = tags[t];
-            properties[tag.getAttribute("k")] = tag.getAttribute("v");
-        }
+        var tags = $(element).find("tag");
+        tags.each(function(index, tag){
+            properties[$(tag).attr("k")] = $(tag).attr("v");
+        });
         return properties;
     }
     // Generic function to create a feature of given type
@@ -57,31 +58,21 @@ var osm2geo = function(osm){
         };
     }
     // Ways
-    var ways = xml.getElementsByTagName("way");
-    for (var w=0; w < ways.length; w++ ) {
-        var way = ways[w];
+    var $ways = $("way", $xml);
+    $ways.each(function(index, ele){
         var feature = new Object;
         // List all the nodes
-        var nodes = way.getElementsByTagName("nd");
+        var nodes = $(ele).find("nd");
         // If first and last nd are same, then its a polygon
-        if(nodes[0].getAttribute("ref") === nodes[nodes.length-1].getAttribute("ref")) {
-            feature = getFeature(way, "Polygon");
+        if($(nodes).last().attr("ref") === $(nodes).first().attr("ref")){
+            feature = getFeature(ele, "Polygon");
             feature.geometry.coordinates.push([]);
         }else{
-            feature = getFeature(way, "LineString");
+            feature = getFeature(ele, "LineString");
         }
-        for (var n=0; n < nodes.length; n++ ){
-            var nd = nodes[n];
-            var node = undefined;
-            for (var i=0, nods=xml.getElementsByTagName("node"); i<nods.length; i++) {
-              // find the node with id ref'ed in way
-              if (nods[i].getAttribute("id")===nd.getAttribute("ref")) {
-                node = nods[i];
-                break;
-              }  
-            }
-            // var node = xml.find("node[id='"+$(nd).attr("ref")+"']"); 
-            var cords = [parseFloat(node.getAttribute("lon")), parseFloat(node.getAttribute("lat"))]; // get the lat,lon of the node
+        nodes.each(function(index, nd){
+            var node = $xml.find("node[id='"+$(nd).attr("ref")+"']"); // find the node with id ref'ed in way
+            var cords = [parseFloat(node.attr("lon")), parseFloat(node.attr("lat"))]; // get the lat,lon of the node
             // If polygon push it inside the cords[[]]
             if(feature.geometry.type === "Polygon"){
                 feature.geometry.coordinates[0].push(cords);
@@ -89,26 +80,20 @@ var osm2geo = function(osm){
             else{
                 feature.geometry.coordinates.push(cords);
             }
-        }
+        });
        // Save the LineString in the Main object
         geo.features.push(feature);
-    }
+    });
     
     // Points (POI)
-    var points = new Array; // $("node:has('tag')", $xml);
-    for (var p=0, ps=xml.getElementsByTagName("node"); p<ps.length; p++) {
-        if ( ps[p].getElementsByTagName("tag").length !== 0  )
-            points.push( ps[p] );
-    }
-    for (var p=0; p<points.length; p++) {
-        var ele = points[p];
+    var $points = $("node:has('tag')", $xml);
+    $points.each(function(index, ele){
         var feature = getFeature(ele, "Point");
-        feature.geometry.coordinates.push(parseFloat(ele.getAttribute('lon')));
-        feature.geometry.coordinates.push(parseFloat(ele.getAttribute('lat')));
+        feature.geometry.coordinates.push(parseFloat($(ele).attr('lon')));
+        feature.geometry.coordinates.push(parseFloat($(ele).attr('lat')));
        // Save the point in Main object
         geo.features.push(feature);
-    }
-    
+    });
     // Finally return the GeoJSON object
     return geo;
 

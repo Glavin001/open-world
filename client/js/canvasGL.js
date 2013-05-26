@@ -43,13 +43,14 @@ var MapRenderer = function() {
         
         //Retrieves the XML data from the server; Each XML is a different map, so only one is uncommented while testing
         //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
-        $.ajax({ url: "halifax1.xml" , method: "GET" })
+        $.ajax({ url: "halifax1.xml" , method: "GET", dataType:"xml" })
         //$.ajax({url: "germany1.xml", method: "GET"})
         //$.ajax({url: "halifax2_large.xml", method: "GET"})
         //$.ajax({url: "halifax3_large.xml", method: "GET"})
         //$.ajax({url: "halifax4_super_large.xml", method: "GET"})
                 .done(function(mapData) {
             console.log("Done: Have Map Data");
+            console.log(mapData);
             self.loadMap(mapData);
             callback.call();
         });
@@ -160,9 +161,7 @@ var MapRenderer = function() {
 		    //Creates the GeoJSON from XML
 			setTimeout(function() {
 				geo = osm2geo(xmlDoc);
-				console.log("Done parsing to GeoJSON.");
-				console.log(geo);
-				
+				console.log("Done parsing to GeoJSON.");				
 				ready();
 			}, 0);
 			
