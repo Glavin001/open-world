@@ -3,14 +3,11 @@
  * OSM to GeoJSON converter takes in a .osm XML file as input and produces
  * corresponding GeoJSON object.
  *
- * AUTHOR: P.Arunmozhi <aruntheguy@gmail.com>
- * DATE  : 26 / Nov / 2011 
- * LICENSE : WTFPL - Do What The Fuck You Want To Public License
- * LICENSE URL: http://sam.zoy.org/wtfpl/
- *
- * DEPENDENCY: OSM2GEO entirely depends on jQuery for the XML parsing and
- * DOM traversing. Make sure you include <script src="somewhere/jquery.js">
- * </script> before you include osm2geo.js
+ * AUTHOR: Glavin Wiechert
+ * CREATION DATE: Sunday, May 26, 2013
+ * SPECIAL THANKS TO: P.Arunmozhi <aruntheguy@gmail.com>
+ * 
+ * DEPENDENCY: OSM2GEO does not depend on jQuery :).
  *
  * USAGE: This script contains a single function -> geojson osm2geo(osmXML)
  * It takes in a .osm (xml) as parameter and returns the corresponding 
@@ -80,7 +77,6 @@ var osm2geo = function(osm){
                 break;
               }  
             }
-            // var node = xml.find("node[id='"+$(nd).attr("ref")+"']"); 
             var cords = [parseFloat(node.getAttribute("lon")), parseFloat(node.getAttribute("lat"))]; // get the lat,lon of the node
             // If polygon push it inside the cords[[]]
             if(feature.geometry.type === "Polygon"){
@@ -95,7 +91,7 @@ var osm2geo = function(osm){
     }
     
     // Points (POI)
-    var points = new Array; // $("node:has('tag')", $xml);
+    var points = new Array;
     for (var p=0, ps=xml.getElementsByTagName("node"); p<ps.length; p++) {
         if ( ps[p].getElementsByTagName("tag").length !== 0  )
             points.push( ps[p] );
