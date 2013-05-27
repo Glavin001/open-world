@@ -43,14 +43,13 @@ var MapRenderer = function() {
         
         //Retrieves the XML data from the server; Each XML is a different map, so only one is uncommented while testing
         //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
-        $.ajax({ url: "halifax1.xml" , method: "GET", dataType:"xml" })
+        $.ajax({ url: "halifax1.xml" , method: "GET", dataType:"text" })
         //$.ajax({url: "germany1.xml", method: "GET"})
         //$.ajax({url: "halifax2_large.xml", method: "GET"})
         //$.ajax({url: "halifax3_large.xml", method: "GET"})
         //$.ajax({url: "halifax4_super_large.xml", method: "GET"})
                 .done(function(mapData) {
             console.log("Done: Have Map Data");
-            console.log(mapData);
             self.loadMap(mapData);
             callback.call();
         });
@@ -159,6 +158,7 @@ var MapRenderer = function() {
 			}
 			
 			var ready = function() {
+			
 				//Finds the boundaries of the scene
 				minlon = geo.bbox[0];
 				minlat = geo.bbox[1];
@@ -227,21 +227,27 @@ var MapRenderer = function() {
 			
 		    //Creates the GeoJSON from XML
 			//geo = osm2geo(xmlDoc);
-			/*var converter = new Worker('js/converter.js');
-			converter.postMessage((new XMLSerializer()).serializeToString(xmlDoc));*/
+			var converter = new Worker('js/converter.js');
+			//console.log(xmlDoc)
+			converter.postMessage(xmlDoc);
 			
+			//converter.postMessage((new XMLSerializer()).serializeToString(xmlDoc));
+			/*
 			var test_1 = (new XMLSerializer()).serializeToString(xmlDoc);
 			var parser = new DOMImplementation();
-			var test_2 = parser.loadXML(test_1);
+			var test_2 = parser.loadXML(xmlDoc);
 			console.log(test_2);
-			console.log((new XMLSerializer()).serializeToString(xmlDoc));
-			console.log(xmlDoc);
+			*/
+			//window.xmlGeo = test_2;
+			//console.log((new XMLSerializer()).serializeToString(xmlDoc));
+			//console.log(xmlDoc);
 			
-			/*converter.onmessage = function(e) {
+			converter.onmessage = function(e) {
 				geo = e.data;
 				console.log("Done parsing to GeoJSON.");				
 				ready();
-			}*/
+			}
+			
         };
     }).call(mapRenderer.prototype);
 

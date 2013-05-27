@@ -14,7 +14,7 @@
  * GeoJson object.
  *
  * ***********************************************************************/
-var osm2geo = function(osm){
+var osm2geo = function(osm){    
     var xml = osm.documentElement;
     // Initialize the empty GeoJSON object
     var geo = {
