@@ -157,13 +157,6 @@ var MapRenderer = function() {
 						break;
 				}
 			}
-
-		    //Creates the GeoJSON from XML
-			setTimeout(function() {
-				geo = osm2geo(xmlDoc);
-				console.log("Done parsing to GeoJSON.");				
-				ready();
-			}, 0);
 			
 			var ready = function() {
 				//Finds the boundaries of the scene
@@ -231,6 +224,24 @@ var MapRenderer = function() {
 				camera.position.y = 10;
 				console.log(camera.position);
 			}
+			
+		    //Creates the GeoJSON from XML
+			//geo = osm2geo(xmlDoc);
+			/*var converter = new Worker('js/converter.js');
+			converter.postMessage((new XMLSerializer()).serializeToString(xmlDoc));*/
+			
+			var test_1 = (new XMLSerializer()).serializeToString(xmlDoc);
+			var parser = new DOMImplementation();
+			var test_2 = parser.loadXML(test_1);
+			console.log(test_2);
+			console.log((new XMLSerializer()).serializeToString(xmlDoc));
+			console.log(xmlDoc);
+			
+			/*converter.onmessage = function(e) {
+				geo = e.data;
+				console.log("Done parsing to GeoJSON.");				
+				ready();
+			}*/
         };
     }).call(mapRenderer.prototype);
 
