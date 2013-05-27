@@ -1,5 +1,5 @@
 onmessage = function(e) {
-  var highways = JSON.parse(e.data.highways);
+	var highways = JSON.parse(e.data.highways);
 	var minlon = e.data.minlon;
 	var minlat = e.data.minlat;
 	var MAX_SCALE = e.data.MAX_SCALE;
@@ -8,6 +8,8 @@ onmessage = function(e) {
 	var roadWidth = 10;
 	var color = 0x000000;
 	var shadows = false;
+	var chunkSize = e.data.chunk_size;
+	var counter = 0;
 	
 	postMessage({
 		'type': 'log_obj', 
@@ -26,8 +28,13 @@ onmessage = function(e) {
 		
 		var startPoint = true;
 		for(var c = 0, length = way.geometry.coordinates.length; c < length; c++) {
-			if(i + 1 === number && c + 1 === length)
+			counter++;
+			
+			if((i + 1 === number && c + 1 === length) || counter === chunkSize)
+			{
+				counter = 0;
 				renderNow = true;
+			}
 			
 			//Gets lat and lon from array
 			if(isNaN(way.geometry.coordinates[0]))

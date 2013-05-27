@@ -1,5 +1,5 @@
 var MapRenderer = function() {
-
+	//Sets ?
     var panLat = 44.6488720;
     var panLon = -63.5792540;
     var scaleXY = 100000;
@@ -17,13 +17,14 @@ var MapRenderer = function() {
     var PADDING_LON = (CANVAS_BUF_WIDTH - CANVAS_WIDTH) / 2 / MAX_SCALE;
     var PADDING_LAT = (CANVAS_BUF_HEIGHT - CANVAS_HEIGHT) / 2 / MAX_SCALE;
 
-    // Map data
-    var sceneBuffer = [];
-    var streetSignBuffer = [];
+    //Map data
     var highways = []; //Holds all unrendered highways
     var buildings = []; //Holds all unrendered builds
     var otherWays = []; //Holds all unrendered elements which are not yet supported
     var geo = {};
+	
+	//Rendering constants
+	var chunk_size = 0;
 
     var mapRenderer = function(callback) {
 		
@@ -189,19 +190,22 @@ var MapRenderer = function() {
 				//Sends all data required for rendering
 				var otherWayGen = new Worker('js/otherWays.js');
 				otherWayGen.postMessage({'otherWays': JSON.stringify(otherWays),
-					'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
+					'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE,
+					'chunk_size': chunk_size});
 	
 				//Creates a web worker for rending highways
 				//Sends all data required for rendering
 				var highwayGen = new Worker('js/highways.js');
 				highwayGen.postMessage({'highways': JSON.stringify(highways),
-					'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
+					'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE,
+					'chunk_size': chunk_size});
 	
 				//Creates a web worker for rendering buidlings
 				//Sends all data required for rendering
 				var buildingsGen = new Worker('js/buildings.js');
 				buildingsGen.postMessage({'buildings': JSON.stringify(buildings),
-					'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE});
+					'minlon': minlon, 'minlat': minlat, "MAX_SCALE": MAX_SCALE,
+					'chunk_size': chunk_size});
 	
 				//Handles messages from the otherWayGen web worker
 				otherWayGen.onmessage = function(e) {

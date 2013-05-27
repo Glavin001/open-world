@@ -1,5 +1,5 @@
 onmessage = function(e) {
-  var otherWays = JSON.parse(e.data.otherWays);
+	var otherWays = JSON.parse(e.data.otherWays);
 	var minlon = e.data.minlon;
 	var minlat = e.data.minlat;
 	var MAX_SCALE = e.data.MAX_SCALE;
@@ -9,6 +9,8 @@ onmessage = function(e) {
 	var lineWidth = 1;
 	var color = 0x000000;
 	var shadows = true;
+	var chunkSize = e.data.chunk_size;
+	var counter = 0;
 	
 	for (var i = 0, number = otherWays.length; i < number; i++) {
 		var way = otherWays[i];
@@ -20,8 +22,13 @@ onmessage = function(e) {
 		var renderNow = false;
 		
 		for(var c = 0, length = way.geometry.coordinates.length; c < length; c++) {
-			if(i + 1 === number && c + 1 === length)
+			counter++;
+			
+			if((i + 1 === number && c + 1 === length) || counter === chunkSize)
+			{
+				counter = 0;
 				renderNow = true;
+			}
 			
 			//Gets lat and lon from array
 			if(isNaN(way.geometry.coordinates[0]))

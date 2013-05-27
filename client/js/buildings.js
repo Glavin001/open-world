@@ -9,6 +9,8 @@ onmessage = function(e) {
 	var buildingHeight = 50;
 	var lineWidth = 1;
 	var shadows = true;
+	var chunkSize = e.data.chunk_size;
+	var counter = 0;
 	
 	postMessage({
 		'type': 'log_obj', 
@@ -27,8 +29,13 @@ onmessage = function(e) {
 		var color;
 
 		for(var c = 0, length = way.geometry.coordinates[0].length; c < length; c++) {
-			if(i + 1 === number && c + 1 === length)
+			counter++;
+			
+			if((i + 1 === number && c + 1 === length) || counter === chunkSize)
+			{
+				counter = 0;
 				renderNow = true;
+			}
 			
 			//Gets lat and lon from array
 			if(isNaN(way.geometry.coordinates[0]))
