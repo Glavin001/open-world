@@ -104,7 +104,7 @@ var MapRenderer = function() {
 							feature.castShadow = true;
 							feature.receiveShadow = true;
 						}
-						//scene.add(feature);
+						
 						console.log(message.element + " added");
 						
 						switch(message.element) 
