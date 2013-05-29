@@ -11,7 +11,7 @@ BLACKBEAR.world = BLACKBEAR.world || new Object(BLACKBEAR.object);
 BLACKBEAR.world.actors;
 
 BLACKBEAR.world.tick = function() {
-	for (target in actors) {
+	for (target in this.actors) {
 		target.callTick();
 	}
 };
@@ -22,7 +22,7 @@ BLACKBEAR.world.spawn = function(template,location,rotation,owner) {
 		actor.setLocation(location);
 		actor.setRotation(rotation);
 		actor.setOwner(owner);
-		actors[actors.length] = actor;
+		this.actors[actors.length] = actor;
 		return actor;
 	}
 };

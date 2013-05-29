@@ -30,13 +30,13 @@ BLACKBEAR.actor.tick = function(deltaTime) {
 };
 
 BLACKBEAR.actor.callTick = function() {
-	var currentTick = getTime();
+	var currentTick = this.date.getTime();
 	
-	deltaTime = currentTick - lastTick;
+	this.deltaTime = currentTick - this.lastTick;
 	
-	lastTick = currentTick;
+	this.lastTick = currentTick;
 	
-	tick(deltaTime);
+	this.tick(deltaTime);
 };
 
 BLACKBEAR.actor.setLocation = function(newLocation) {
