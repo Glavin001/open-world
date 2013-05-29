@@ -16,8 +16,8 @@ BLACKBEAR.world.tick = function() {
 	}
 };
 
-BLACKBEAR.world.spawn = function(templateObject,location,rotation,owner) {
-	if (typeof class === "object") {
+BLACKBEAR.world.spawn = function(template,location,rotation,owner) {
+	if (typeof template === "object") {
 		var actor = template;
 		actor.setLocation(location);
 		actor.setRotation(rotation);

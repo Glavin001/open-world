@@ -18,7 +18,6 @@ BLACKBEAR.object.strips;
 BLACKBEAR.object.test = function() {
 	console.log(this.date.getTime());
 	
-	test2('not self');
 	this.test2('self');
 };
 
@@ -31,6 +30,6 @@ BLACKBEAR.object.test2 = function(message) {
 	strips = ' stripsstring test';
 	console.log(strips);
 	
-	strips = ' stripstring self test';
+	this.strips = ' stripstring self test';
 	console.log(this.strips);
 };
