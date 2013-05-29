@@ -1,0 +1,275 @@
+<html>
+    <head>
+    <title>Worldly Playground</title>
+    <style>canvas { width: 100%; height: 100% }</style>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/osm2geo.js"></script>
+    <script src="js/canvasGL.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/tinyxmlsax.js"></script>
+    <script src="js/tinyxmlw3cdom.js"></script>
+    <script>
+		var xoff = 0;
+		var yoff = 0;
+		var zoom = 50000;
+		/*var mapRenderer;
+		var ready = function()
+		{
+		console.log(mapRenderer);
+		var la = 44.6488720;
+		var lo = -63.5792540;
+		}
+		$(document).ready(function() {
+		mapRenderer = new MapRenderer(ready);
+		});*/
+    </script>
+    
+    </head>
+    <body>
+    <!-- <script src="https://raw.github.com/mrdoob/three.js/master/build/three.js"></script> -->
+    <script src="js/three.min.js"></script>
+    <!--    <script src="https://raw.github.com/mrdoob/three.js/master/build/js/controls/FlyControls.js"></script> -->
+	<script src="fonts/helvetiker_bold.typeface.js"></script>
+    <script src="fonts/helvetiker_regular.typeface.js"></script>
+    
+    <script>
+    
+		var scene = new THREE.Scene();
+		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 10000);
+
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+		renderer.setClearColorHex(0x1BD3E0, 0.5);
+		renderer.shadowCameraNear = .2;
+		renderer.shadowCameraFar = 200;
+		renderer.shadowCameraFov = 200; //50;
+		renderer.shadowMapBias = 1;
+		renderer.shadowMapDarkness = 1;
+		renderer.shadowMapWidth = 32768; // 1024;
+		renderer.shadowMapHeight = 32768; //1024;
+		renderer.shadowMapEnabled = true;
+		renderer.shadowMapSoft = true;
+		
+		var geometry1 = new THREE.CubeGeometry(1, 2, 1);
+		//var material1 = new THREE.MeshBasicMaterial({color: 0x000000});
+		var material1 = new THREE.MeshLambertMaterial({
+		map: THREE.ImageUtils.loadTexture("img/crate.jpg")
+		});
+		var cube1 = new THREE.Mesh(geometry1, material1);
+		cube1.translateX(2);
+		cube1.castShadow = true;
+		cube1.receiveShadow = true;
+		scene.add(cube1);
+		
+		var geometry2 = new THREE.CubeGeometry(5, 10, 5);
+		//var material2 = new THREE.MeshBasicMaterial({color: 0x00ff00});
+		var material2 = new THREE.MeshLambertMaterial({
+		map: THREE.ImageUtils.loadTexture("img/asphalt.jpg")
+		});
+		var cube2 = new THREE.Mesh(geometry2, material2);
+		cube2.translateX(-2);
+		cube2.castShadow = true;
+		cube2.receiveShadow = true;
+		scene.add(cube2);
+		
+		for (var r = 1; r <= 1; r++)
+		{
+			var geometry = new THREE.Geometry();
+			geometry.vertices.push(new THREE.Vector3(-10, 0.1, -11 - (10 * r)));
+			geometry.vertices.push(new THREE.Vector3(-10, 0.1, 1 - (10 * r)));
+			geometry.vertices.push(new THREE.Vector3(10, 0.1, 1 - (10 * r)));
+			geometry.vertices.push(new THREE.Vector3(10, 0.1, -11 - (10 * r)));
+			geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
+			geometry.computeBoundingSphere();
+			geometry.computeFaceNormals();
+			geometry.computeVertexNormals();
+			var asphalt = new THREE.MeshLambertMaterial({color: 0x000000, shading: THREE.SmoothShading});
+			/*
+			var texture = THREE.ImageUtils.loadTexture("img/asphalt.jpg", {}, function( ) {
+			renderer.render(scene);
+			});
+			 */
+			//var asphalt = new THREE.MeshLambertMaterial({ map: texture });
+			var model = new THREE.Mesh(geometry, asphalt);
+			model.receiveShadow = true;
+			model.castShadow = true;
+			scene.add(model);
+			
+			//var line = new THREE.Line(geometry, asphalt);
+			//scene.add(line);
+		}
+		
+		
+		camera.position = {x: 10, y: 5, z: -30};
+		camera.rotation.y = -3.3;
+		//camera.position = {x:4812.5, y:900, z:1109};
+		/*
+		camera.position.z = 7;
+		camera.position.x = 0;
+		camera.position.y = 900;
+		*/
+		//camera.lookAt( { x: camera.position.x + 0, y: camera.position.y - 10 , z: camera.position.z } );
+		
+		
+		//add sunlight 
+		/*
+		var light = new THREE.SpotLight();
+		light.position.set(0, 500, 0);
+		scene.add(light);
+		*/
+		
+		var dirLight = new THREE.DirectionalLight(0xfafad2, 1, 200);
+		window.flashlight = dirLight;
+		dirLight.castShadow = true;
+		dirLight.shadowDarkness = 0.5; // 0.5;
+		dirLight.shadowCameraFov = 5000; // 50;
+		dirLight.shadowCameraLeft = -3000;
+		dirLight.shadowCameraRight = 3000;
+		dirLight.shadowCameraTop = 3500;
+		dirLight.shadowCameraBottom = -3000;
+		dirLight.shadowCameraVisible = true;
+		//light.position.set(828, 20, 797);
+		dirLight.position.set(0, 1, 0);
+		scene.add(dirLight);
+		
+		var ambLight = new THREE.AmbientLight(0x404040);
+		scene.add(ambLight);
+		
+		/*
+		var directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+		window.flashlight = directionalLight;
+		directionalLight.position.set(800, 100, 800).normalize();
+		//      directionalLight.position.set(1, 1, 1).normalize();
+		directionalLight.castShadow = true;
+		directionalLight.shadowDarkness = 0.9;
+		directionalLight.shadowCameraVisible = true;
+		scene.add(directionalLight);
+		*/
+		
+		/*
+		var cx = 0,
+		cy = 10,
+		cz = 0,
+		dx = 10,
+		dy = 10,
+		dmax = Math.max(dx, dy);
+		var shadowLight = new THREE.DirectionalLight(0xFFFFFF);
+		window.sun = shadowLight;
+		shadowLight.position.x = cx + dmax * 2;
+		shadowLight.position.y = cy - dmax * 2;
+		shadowLight.position.z = dmax * 4;
+		shadowLight.lookAt(new THREE.Vector3(cx, cy, cz));
+		shadowLight.target.position.set(cx, cy, cz);
+		shadowLight.castShadow = true;
+		shadowLight.onlyShadow = true;
+		shadowLight.shadowCameraNear = 0.1;
+		shadowLight.shadowCameraFar = dmax * 8;
+		shadowLight.shadowCameraLeft = -dmax * 2;
+		shadowLight.shadowCameraRight = dmax * 2;
+		shadowLight.shadowCameraBottom = -dmax * 2;
+		shadowLight.shadowCameraTop = dmax * 2;
+		shadowLight.shadowBias = 0.005;
+		shadowLight.shadowDarkness = 0.3;
+		shadowLight.shadowMapWidth = 512;
+		shadowLight.shadowMapHeight = 512;
+		shadowLight.shadowCameraVisible = true;
+		scene.add(shadowLight);
+		*/
+		
+		//add ground 
+		var grassTex = THREE.ImageUtils.loadTexture('img/Grass_1.png');
+		grassTex.wrapS = THREE.RepeatWrapping;
+		grassTex.wrapT = THREE.RepeatWrapping;
+		grassTex.repeat.x = 256;
+		grassTex.repeat.y = 256;
+		var groundMat = new THREE.MeshPhongMaterial({map: grassTex});
+		var groundGeo = new THREE.PlaneGeometry(10000, 10000);
+		var ground = new THREE.Mesh(groundGeo, groundMat);
+		ground.position.y = -0.1; //-1.9; //lower it 
+		ground.rotation.x = -Math.PI / 2; //-90 degrees around the xaxis 
+		////IMPORTANT, draw on both sides 
+		ground.doubleSided = true;
+		ground.receiveShadow = true;
+		scene.add(ground);
+		
+		/*
+		var ground = new THREE.CubeGeometry(10000, 0.1, 10000);
+		ground.dynamic = true;
+		var material = new THREE.MeshPhongMaterial({
+		color: 0x00bb00
+		});
+		var mesh = new THREE.Mesh(ground, material);
+		mesh.position.y = -1;
+		scene.add(mesh);
+		*/
+		
+		
+		/*
+		// Source: http://www.html5canvastutorials.com/webgl/html5-canvas-webgl-ambient-lighting-with-three-js/ 
+		// renderer
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+		
+		// camera
+		var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+		camera.position.z = 700;
+		
+		// scene
+		var scene = new THREE.Scene();
+		
+		// material
+		var material = new THREE.MeshLambertMaterial({
+		color: 0x0000ff
+		});
+		
+		// cube
+		var cube = new THREE.Mesh(new THREE.CubeGeometry(300, 300, 300), material);
+		cube.overdraw = true;
+		scene.add(cube);
+		
+		// add subtle ambient lighting
+		var ambientLight = new THREE.AmbientLight(0x555555);
+		scene.add(ambientLight);
+		
+		// add directional light source
+		var directionalLight = new THREE.DirectionalLight(0xffffff);
+		directionalLight.position.set(1, 1, 1).normalize();
+		scene.add(directionalLight);
+		*/
+		
+		$(document).ready(function() {
+		setTimeout(player.updatePos, 2);
+		});
+		
+		function render() {
+		requestAnimationFrame(render);
+		renderer.render(scene, camera);
+		}
+		render();
+		
+		//renderer.render( scene, camera );
+		
+		/*
+		// Code Source: http://stackoverflow.com/questions/4326845/how-can-i-determine-the-direction-of-a-jquery-scroll-event 
+		var lastScrollTop = 0;
+		$(window).scroll(function(event){
+		var st = $(this).scrollTop();
+		if (st > lastScrollTop) {
+		// downscroll code
+		camera.position.z -= 1;
+		
+		} else {
+		// upscroll code
+		camera.position.z += 1;
+		
+		}
+		lastScrollTop = st;
+		});
+		*/
+    
+    </script>
+    
+    </body>
+</html>
