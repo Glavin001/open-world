@@ -16,21 +16,21 @@ BLACKBEAR.object.bacon = ' baconstring test';
 BLACKBEAR.object.strips;
 
 BLACKBEAR.object.test = function() {
-	console.log(date.getTime());
+	console.log(this.date.getTime());
 	
 	test2('not self');
-	self.test2('self');
+	this.test2('self');
 };
 
 BLACKBEAR.object.test2 = function(message) {
 	console.log(message);
 	
 	console.log(bacon);
-	console.log(self.bacon);
+	console.log(this.bacon);
 	
 	strips = ' stripsstring test';
 	console.log(strips);
 	
 	strips = ' stripstring self test';
-	console.log(self.strips);
+	console.log(this.strips);
 };
