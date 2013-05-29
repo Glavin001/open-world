@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="BlackBear/|fonts/|js/|cloudsDemo/js/" kind="src" path="client"/>
+	<classpathentry kind="src" path="client/BlackBear"/>
+	<classpathentry kind="src" path="client/cloudsDemo/js"/>
+	<classpathentry kind="src" path="client/fonts"/>
+	<classpathentry kind="src" path="client/js"/>
+	<classpathentry kind="src" path="server"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
