@@ -1,5 +1,7 @@
 Open-World
 ===========
+### *OW, powered by the IB Engine: A painfully better gaming experience*
+
 ![Halifax Sideview](https://f.cloud.github.com/assets/1885333/348208/267f485c-9f32-11e2-9931-1fdff5f4e3b6.png?raw=true "Halifax sideview")
 
 The original idea behind "[Open-GTA](https://github.com/tim-speed/openmap-gta)", by [Tim Speed](https://github.com/tim-speed/), was that open data would be used to create a map for an old-style, 2D, GTA clone. 
