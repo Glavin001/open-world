@@ -1,6 +1,6 @@
 Open-World
 ===========
-### *OW, powered by the IB Engine: A painfully better gaming experience*
+### *[OW](https://github.com/Glavin001/open-world), powered by the [IB Engine](https://github.com/Glavin001/icebear): A painfully better gaming experience*
 
 ![Halifax Sideview](https://f.cloud.github.com/assets/1885333/348208/267f485c-9f32-11e2-9931-1fdff5f4e3b6.png?raw=true "Halifax sideview")
 
