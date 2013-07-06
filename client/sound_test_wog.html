@@ -6,31 +6,26 @@
         <script type="text/javascript" src="js/3d_sound.js"></script>
         
         <script>
-			initSound();
+			var master = new SoundController();
 			
-			loadSound(
-				[
-					"sounds/telephone-ring-4.wav",
-					"sounds/telephone-ring-4.wav"
-				]
-			);
-			
-			console.log('Loading complete');
-			
-			//var test_sound = new sound_3d(0, 0, 0, 1, 10, "sounds/telephone-ring-4.wav");
-			
-			/*
-			//test_sound.updateVolume(0, 0, 0);
-			function test() {
-				test_sound.play();
+			function begin() {
+				console.log('Loading complete');
+				
+				var test = new Sound_3d("sounds/telephone-ring-4.wav", {x:0, y:0, z:0}, 1, 30);
+				
+				test.create();
+				
+				test.updateLevels({x:0, y:0, z:0}, 0);
+				
+				test.play();
 			}
 			
-			setTimeout(test(), 3000);
-			
-			var timer = setInterval(function() {
-				test_sound.updateVolume(0, 20, 20);
-			}, 1000);
-			*/
+			master.loadSound(
+				[
+					"sounds/telephone-ring-4.wav"
+				],
+				begin
+			);
 		</script>
 	</head>
 
