@@ -1,26 +1,60 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>BlackBear Testing</title>
+		<title>IceBear Testing</title>
 		
-		<script type="text/javascript" src="BlackBear/Object.js"></script>
-		<script type="text/javascript" src="BlackBear/Actor.js"></script>
-		<script type="text/javascript" src="BlackBear/World.js"></script>
+        <link rel="stylesheet" href="css/game.css">
+        
+		<script src="IceBear/lib/jquery.min.js"></script>
+		<script src="IceBear/lib/canvasGL.js"></script>
+		<script src="IceBear/lib/three.min.js"></script>
+		
+		<script src="IceBear/Object.js"></script>
+			<script src="IceBear/AchievementHandler.js"></script>
+			<script src="IceBear/Actor.js"></script>
+				<script src="IceBear/Controller.js"></script>
+					<script src="IceBear/AIController.js"></script>
+					<script src="IceBear/PlayerController.js"></script>
+				<script src="IceBear/Pawn.js"></script>
+					<script src="IceBear/Vehicle.js"></script>
+			<script src="IceBear/BuildingFactory.js"></script>
+			<script src="IceBear/Console.js"></script>
+			<script src="IceBear/Engine.js"></script>
+			<script src="IceBear/GUIHandler.js"></script>
+			<script src="IceBear/HUD.js"></script>
+			<script src="IceBear/Light.js"></script>
+			<script src="IceBear/MapHandler.js"></script>
+			<script src="IceBear/Menu.js"></script>
+			<script src="IceBear/Network.js"></script>
+			<script src="IceBear/ObjectUtilities.js"></script>
+			<script src="IceBear/Player.js"></script>
+			<script src="IceBear/PlayerInput.js"></script>
+			<script src="IceBear/World.js"></script>
+			
+			<script src="OpenWorld/OW.js"></script>
+				<script src="OpenWorld/PlayerController.js"></script>
+				
+				<!-- Core -->
+				<script src="OpenWorld/Game.js"></script>
+				<script src="OpenWorld/Network.js"></script>
+				<script src="OpenWorld/Player.js"></script>
+				<script src="OpenWorld/World.js"></script>
 	</head>
 
 	<body>
 		<script type="text/javascript">
-		
-			function initWorld() {
-				
-			}
+			/*
+				temp.test = new Object();
+				temp.test.bacon = 2;
+				temp.test2 = Object.create(temp.test);
+				console.log(temp.test2);
+				temp.test2.bacon++;
+				console.log(temp.test2);
+				console.log(temp.test);
+			*/
 			
-			function startGame() {
-				
-			}
+			IB.engine.initEngine();
 			
-			initWorld();
-		
 		</script>
 	</body>
 </html>
