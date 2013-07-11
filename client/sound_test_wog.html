@@ -6,21 +6,13 @@
         <script type="text/javascript" src="js/3d_sound.js"></script>
         
         <script>
-			var master = new SoundController();
-			
 			function begin() {
 				console.log('Loading complete');
 				
-				var test = new Sound_3d("sounds/telephone-ring-4.wav", {x:0, y:0, z:0}, 1, 30);
-				
-				test.create();
-				
-				test.updateLevels({x:0, y:0, z:0}, 0);
-				
-				test.play();
+				createSound3D("sounds/telephone-ring-4.wav", {x:0, y:0, z:0}, 1, 30);
 			}
 			
-			master.loadSound(
+			Sound.loadSound(
 				[
 					"sounds/telephone-ring-4.wav"
 				],

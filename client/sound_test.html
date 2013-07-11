@@ -105,9 +105,7 @@
       ground.doubleSided = true;
       ground.receiveShadow = true;
       scene.add(ground);
-	  
-		var master = new SoundController();
-			
+
 		function begin() {
 			console.log('Loading complete');
 			
@@ -122,7 +120,7 @@
 			test.play();
 		}
 		
-		master.loadSound(
+		SoundController.loadSound(
 			[
 				"sounds/telephone-ring-4.wav"
 			],
