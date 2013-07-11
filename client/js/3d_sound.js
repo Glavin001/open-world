@@ -259,3 +259,6 @@ Background_Music.loadPlaylist = function(songNames, setRandom) {
 		this.playlist[i] = Sound.soundList[songNames[i]];
 	}
 }
+
+Background_Music.selectSong = function() {
+}
