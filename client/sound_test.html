@@ -108,19 +108,15 @@
 
 		function begin() {
 			console.log('Loading complete');
-			
-			var test = new Sound_3d("sounds/telephone-ring-4.wav", {x: 10, y: 5, z: -30}, 1, 150);
-			
-			test.create();
-			
+				
+			IB.sound.createSound3D("sounds/telephone-ring-4.wav", {x: 10, y: 5, z: -30}, 1, 150);
+				
 			var timer = setInterval(function() {
-				test.updateLevels(camera.position, 0)
+				IB.sound.tick(camera.position, camera.rotation)
 			}, 2);
-			
-			test.play();
 		}
-		
-		SoundController.loadSound(
+			
+		IB.sound.loadSound(
 			[
 				"sounds/telephone-ring-4.wav"
 			],
