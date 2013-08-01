@@ -21,7 +21,7 @@ IB.engine.customStartupFunctions2 = [];
 
 IB.engine.customStartupFunctions3 = [];
 
-IB.engine.renderer = null;
+IB.engine.renderer = {};
 
 IB.engine.WIDTH = window.innerWidth;
 
@@ -42,7 +42,7 @@ IB.logo = {};
 /////////////////////////////////////
 
 IB.logo.stopLogoFader = function () {
-	document.getElementById("EngineLogo").remove();
+	$("EngineLogo").remove();
     clearInterval(IB.logo.logoFader);
     delete IB.logo;
 
@@ -91,6 +91,8 @@ IB.engine.continueInitGame = function () {
     }
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
+    this.renderer.autoUpdateObjects = true;
+    this.renderer.autoUpdateScene = true;
     document.body.appendChild(this.renderer.domElement);
     for (i = 0; i < this.customStartupFunctions3.length; i++) {
         this.customStartupFunctions3[i].apply(this);
@@ -98,6 +100,7 @@ IB.engine.continueInitGame = function () {
     for (i = 0; i < this.gameNoticeList; i++) {
         this.gameNoticeList[i].gameStart();
     }
+
     this.startTickLoop();
 };
 

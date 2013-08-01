@@ -1,3 +1,3 @@
 var IB = IB || new Object();
 
-IB.light = IB.light || Object.create(IB.object);
+IB.camera = IB.camera || Object.create(IB.object);

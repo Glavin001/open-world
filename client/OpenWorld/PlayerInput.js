@@ -14,6 +14,8 @@ OW.Input = function () {
 
 OW.Input.prototype = Object.create(IB.input);
 
+OW.Input.prototype.name = "OpenWorldPlayerInput";
+
 /////////////////////////////////////////////
 
 OW.Input.prototype.mappings = {
@@ -26,12 +28,16 @@ OW.Input.prototype.mappings = {
 	SHIFT: "boost"
 };
 
-OW.Input.prototype.controls = {
-	forward: 0,
-	lstrafe: 0,
-	backward: 0,
-	rstrafe: 0,
-	down: 0,
-	up: 0,
-	boost: 0
-};
+OW.Input.prototype.forward = 0;
+
+OW.Input.prototype.lstrafe = 0;
+
+OW.Input.prototype.backward = 0;
+
+OW.Input.prototype.rstrafe = 0; 
+
+OW.Input.prototype.down = 0;
+
+OW.Input.prototype.up = 0;
+
+OW.Input.prototype.boost = 0;

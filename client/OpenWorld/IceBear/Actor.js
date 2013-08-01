@@ -5,50 +5,52 @@
 
 var IB = IB || new Object();
 
-IB.actor = IB.actor || Object.create(IB.object);
+IB.actor = IB.actor || Object.create(new THREE.Mesh());
 
-//////////////////////////////////////////////////////////////////
+IB.actor.__proto__.__proto__.__proto__.__proto__ = IB.object;
 
-IB.actor.lastTick = null;
+////////////////////////////////////////////////
 
-IB.actor.deltaTime = null;
+IB.actor.lastTick = 0;
 
-IB.actor.location = THREE.Vector3();
+IB.actor.deltaTime = 0;
 
-IB.actor.rotation = null;
+IB.actor.position = THREE.Vector3();
+
+IB.actor.rotation = THREE.Vector3();
 
 IB.actor.velocity = null;
 
 IB.actor.acceleration = null;
 
-////////////////////////////////////////////
+/////////////////////////////////////
 
 IB.actor.tick = function(deltaTime) {
 	
 };
 
 IB.actor.callTick = function() {
-	var currentTick = this.date.getTime();
+	var currentTick = new Date().getTime();
 	
-	this.deltaTime = currentTick - this.lastTick;
+	this.deltaTime = (currentTick - this.lastTick) / 1000;
 	
 	this.lastTick = currentTick;
 	
-	this.tick(deltaTime);
+	this.tick(this.deltaTime);
 };
 
-IB.actor.setLocation = function(newLocation) {
-	
+IB.actor.setPosition = function(newPosition) {
+	if (typeof newPosition === "object") {
+		this.position = newPosition;
+	}
 };
 
 IB.actor.setRotation = function(newRotation) {
-	
+	if (typeof newRotation === "object") {
+		this.rotation = newRotation;
+	}
 };
 
 IB.actor.gameStart = function() {
 	//called to all objects when game starts
-};
-
-IB.actor.construct = function() {
-	//register for messages etc.
 };
