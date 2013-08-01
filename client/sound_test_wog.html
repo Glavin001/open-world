@@ -3,16 +3,18 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>3D Sound Test</title>
         
+		<script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/3d_sound.js"></script>
         
         <script>
 			function begin() {
 				console.log('Loading complete');
 				
-				createSound3D("sounds/telephone-ring-4.wav", {x:0, y:0, z:0}, 1, 30);
+				IB.sound.createSound3D("sounds/telephone-ring-4.wav", {x:0, y:0, z:0}, 1, 30);
+				IB.sound.tick((x:0,y:0,z:0), 0);
 			}
 			
-			Sound.loadSound(
+			IB.sound.loadSound(
 				[
 					"sounds/telephone-ring-4.wav"
 				],
