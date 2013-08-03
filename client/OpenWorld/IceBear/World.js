@@ -20,15 +20,9 @@ IB.world.tick = function () {
 
 IB.world.spawn = function (template, position, rotation, owner, extras, newName) {
 	"use strict";
-
+	
 	var i;
-	
-	for (i = 0; i < arguments.length; i++) {
-		if (arguments[i] == null) {
-			arguments[i] = undefined;
-		}
-	} 
-	
+
 	if (typeof template === "object") {
 		this.actors.push(Object.create(template, (extras || {})));
 		var actor = this.actors[this.actors.length - 1];
@@ -43,14 +37,14 @@ IB.world.spawn = function (template, position, rotation, owner, extras, newName)
 		else {
 			actor.setName(template.name + "_" + (this.actors.length - 1));
 		}
-		
-		this.sceneAdd(actor);
-		if (actor.geometry) {
-			if (actor.geometry.computeBoundingBox) {
-				actor.geometry.computeBoundingBox();
+		if (actor.components.length !== 0) {
+			for (i = 0; i < actor.components.length; i++) {
+				if (typeof actor.components[i] === "object") {
+					this.sceneAdd(actor.components[i]);
+				}
 			}
 		}
-		console.log(actor);
+
 		return actor;
 	}
 	else {

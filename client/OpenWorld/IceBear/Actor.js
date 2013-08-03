@@ -5,9 +5,7 @@
 
 var IB = IB || new Object();
 
-IB.actor = IB.actor || Object.create(new THREE.Mesh());
-
-IB.actor.__proto__.__proto__.__proto__.__proto__ = IB.object;
+IB.actor = IB.actor || Object.create(IB.object);
 
 ////////////////////////////////////////////////
 
@@ -22,6 +20,8 @@ IB.actor.rotation = THREE.Vector3();
 IB.actor.velocity = null;
 
 IB.actor.acceleration = null;
+
+IB.actor.components = [];
 
 /////////////////////////////////////
 
@@ -54,3 +54,7 @@ IB.actor.setRotation = function(newRotation) {
 IB.actor.gameStart = function() {
 	//called to all objects when game starts
 };
+
+//Object.freeze(IB.actor);
+
+//Object.seal(IB.actor);

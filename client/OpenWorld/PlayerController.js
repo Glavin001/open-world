@@ -30,12 +30,16 @@ OW.pc.getDefault = function (def) {
 };
 
 OW.pc.getPawn = function () {
-	this.pawn = OW.world.spawn(this.getDefault("DEFAULT_PAWN"), undefined, undefined, this, {geometry: {value: new THREE.CubeGeometry(16, 16, 50)}, material: {value: new THREE.MeshLambertMaterial({color: 0xCC0000})}});
+	this.pawn = OW.world.spawn(this.getDefault("DEFAULT_PAWN"), undefined, undefined, this);
 };
 
 OW.pc.tick = function (deltaTime) {
 	this.__proto__.__proto__.tick.apply(this, [deltaTime]);
 	
+	this.processControls.apply(this, [deltaTime]);
+};
+
+OW.pc.processControls = function (deltaTime) {
 	if (this.input.forward && !this.input.backward) {
 		this.pawn.position.z += (50 * deltaTime) + (50 * deltaTime * this.input.boost);
 	}
@@ -43,9 +47,18 @@ OW.pc.tick = function (deltaTime) {
 		this.pawn.position.z -= (50 * deltaTime) + (50 * deltaTime * this.input.boost);
 	}
 	
+	if (this.input.lstrafe && !this.input.rstrafe) {
+		this.pawn.position.x += (50 * deltaTime) + (50 * deltaTime * this.input.boost);
+	}
+	else if (this.input.rstrafe && !this.input.lstrafe) {
+		this.pawn.position.x -= (50 * deltaTime) + (50 * deltaTime * this.input.boost);
+	}
+	
 	this.camera.position.y = this.pawn.position.y + (this.camDistance * Math.sin(this.camAngle*Math.PI/180));
 	
 	this.camera.position.z = this.pawn.position.z - (this.camDistance * Math.cos(this.camAngle*Math.PI/180));
+	
+	this.camera.position.x = this.pawn.position.x;
 	
 	this.camera.lookAt(this.pawn.position);
 };

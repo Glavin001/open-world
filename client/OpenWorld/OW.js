@@ -37,8 +37,7 @@ OW.customStartupFunctions3.push(function () {
 	var circle = new THREE.Mesh(new THREE.CubeGeometry(2, 2, 6), new THREE.MeshLambertMaterial({color: 0xCC0000}));
 	circle.useQuaternion = false;
 	OW.daCirc = circle;
-	console.log(circle);
-	this.world.sceneAdd(circle);
+	//this.world.sceneAdd(circle);
 	this.world.sceneAdd(new THREE.AmbientLight(0x555555));
 	OW.daQuat = function (a, b, c, d) {circle.quaternion.x = a; circle.quaternion.y = b; circle.quaternion.z = c; circle.quaternion.w = d; console.log("quat called");};
 	OW.daRot = function (a, b, c) {circle.rotation.x = a;circle.rotation.y = b;circle.rotation.z = c;console.log("rot called");};
