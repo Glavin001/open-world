@@ -8,7 +8,7 @@ The original idea behind "[Open-GTA](https://github.com/tim-speed/openmap-gta)",
 I felt that 3D is much cooler and also I wanted to focus more on the environment/scenery and the interactiveness with the player, than the feel of GTA. 
 I forked the original project in hopes to solidate my goal: to create an open-ended "game" where players could do whatever they wanted in a world that resembled their own.
 
-Test out our current build here: http://140.184.137.122:8081/indexGL.html
+Test out our current build here: http://glavin001.github.io/open-world/client/indexGL.html
 
 ## Screenshots
 These are old screenshots of walking around Halifax. The current build is much more sophisticated and will become even more appealing in the near future.
