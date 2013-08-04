@@ -23,10 +23,13 @@ var osm2geo = function(osm){
     // Initialize the empty GeoJSON object
     var geo = {
         "type" : "FeatureCollection",
+        "bbox": [-63.6092540,44.6088720,-63.5592540,44.6688720],
         "features" : []
     };
     // setting the bounding box [minX,minY,maxX,maxY]; x -> long, y -> lat
     function getBounds(bounds){
+        if (!bounds)
+            return geo["bbox"];
         var bbox = new Array;
         bbox.push(parseFloat( obj2Str (bounds.getAttribute("minlon"))));
         bbox.push(parseFloat( obj2Str (bounds.getAttribute("minlat"))));

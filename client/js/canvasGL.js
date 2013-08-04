@@ -44,13 +44,21 @@ var MapRenderer = function() {
         
         //Retrieves the XML data from the server; Each XML is a different map, so only one is uncommented while testing
         //$.ajax({ url: "/proxy?bbox="+(lo)+","+(la)+","+(lo+LON_WIDTH)+","+(la+LAT_HEIGHT) , method: "GET" })
-        $.ajax({ url: "halifax1.xml" , method: "GET", dataType:"text" })
+        var minlat = 44.6488720, // 44.6288720,  
+        minlon = -63.5792540,  // -63.5992540, 
+        maxlat = 44.6496050, // 44.6688720, 
+        maxlon = -63.5725590; // -63.5592540; 
+        var url = 'http://overpass.osm.rambler.ru/cgi/interpreter?data=(node('+minlat+','+minlon+','+maxlat+','+maxlon+');%3C;%3E;);out%20meta;';
+        // var url = "halifax1.xml";
+        console.log(url);
+        $.ajax({ url: url , method: "GET", dataType:"text" })
         //$.ajax({url: "germany1.xml", method: "GET"})
         //$.ajax({url: "halifax2_large.xml", method: "GET"})
         //$.ajax({url: "halifax3_large.xml", method: "GET"})
         //$.ajax({url: "halifax4_super_large.xml", method: "GET"})
                 .done(function(mapData) {
             console.log("Done: Have Map Data");
+            console.dir(mapData);
             self.loadMap(mapData);
             callback.call();
         });
