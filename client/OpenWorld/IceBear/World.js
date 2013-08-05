@@ -60,6 +60,10 @@ IB.world.loadMap = function(caller, callBack) {
 	;
 };
 
+IB.world.finishLoadMap = function (info) {
+	;
+};
+
 IB.world.sceneAdd = function (component) {
 	this.scene.add(component);
 };

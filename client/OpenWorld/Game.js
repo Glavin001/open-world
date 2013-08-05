@@ -1,0 +1,13 @@
+OW.game = Object.create(IB.game);
+
+/////////////////////////////////
+
+////////////////////////////////////
+
+OW.game.DEFAULT_MAP = "overpassMap";
+
+/////////////////////////////////////
+
+OW.game.getDefault = function (def) {
+	return OW[this[def]];
+};
