@@ -1,0 +1,3 @@
+[submodule "client/OpenWorld/IceBear/lib/tQuery"]
+	path = client/OpenWorld/IceBear/lib/tQuery
+	url = https://github.com/jeromeetienne/tquery.git
