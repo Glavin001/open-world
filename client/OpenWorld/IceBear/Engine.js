@@ -42,7 +42,7 @@ IB.logo = {};
 /////////////////////////////////////
 
 IB.logo.stopLogoFader = function () {
-	$("EngineLogo").remove();
+	$("#EngineLogo").remove();
     clearInterval(IB.logo.logoFader);
     delete IB.logo;
 
@@ -50,8 +50,6 @@ IB.logo.stopLogoFader = function () {
 };
 
 IB.engine.initEngine = function () {
-    document.write("<div id='EngineLogo'><img src='img/IceBear.png' height='600px'></img></div>");
-
     IB.logo = IB.logo || {};
     IB.logo.time = 0;
     IB.logo.logoFader = setInterval(function () {
@@ -91,8 +89,6 @@ IB.engine.continueInitGame = function () {
     }
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
-    this.renderer.autoUpdateObjects = true;
-    this.renderer.autoUpdateScene = true;
     document.body.appendChild(this.renderer.domElement);
     for (i = 0; i < this.customStartupFunctions3.length; i++) {
         this.customStartupFunctions3[i].apply(this);

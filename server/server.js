@@ -44,7 +44,7 @@ function handleProxy(request, response) {
 	//  http://api.openstreetmap.org/api/0.6/map
 	console.log("PROXY REQ: " + request.method);
 	console.dir(request.headers);
-	var proxy = http.createClient(80, 'api.openstreetmap.org')
+	var proxy = http.createClient(80, 'api.openstreetmap.org');
 	var proxy_request = proxy.request(request.method, '/api/0.6/map' + request.url.substr(6), request.headers);
 	  proxy_request.addListener('response', function (proxy_response) {
 		proxy_response.addListener('data', function(chunk) {
@@ -94,53 +94,50 @@ var players = 0,
 
 
 function genInitData(playerId) {
-	var tPlayerData = {
-			you : {
-				playerId: playerId,
-				playerName: playerSockets[playerId].playerName,
-				lastKnownLocation: playerSockets[playerId].lastKnownLocation
-			},
-			otherPlayers : {}
-		};
-	for (var pid in playerSockets) {
+	return {
+		playerId: playerId,
+		playerName: playerSockets[playerId].playerName,
+		//lastKnownLocation: playerSockets[playerId].lastKnownLocation}
+	};
+	/*for (var pid in playerSockets) {
 		if (pid !== playerId) {
 			tPlayerData.otherPlayers[pid] = {
 				playerId: pid,
 				playerName: playerSockets[pid].playerName,
 				lastKnownLocation: playerSockets[pid].lastKnownLocation
-			}
+			};
 		}
-	}
-	return tPlayerData;
+	}*/
 }
 
 io.sockets.on('connection', function (socket) {
   	
 	// Create a player object for this socket
 	// TODO: Re-Link old players
-	var playerId = "Player " + (++players),
+	var playerID = "Player " + (++players),
 		playerObj = {
-			playerId: playerId,
-			playerName: playerId, // Player name is the id by default
-			socket: socket,
-			lastKnownLocation: {
-				latitude: 200,
-				longitude: 250
-			}
+			id: playerID,
+			name: playerID, // if logged into clay.io can use that username
+			position: {},
+			
 		};
-	playerSockets[playerId] = playerObj;
-	socket.playerId = playerId;
+	playerSockets[playerID] = playerObj;
+	socket.playerID = playerID;
 
 	// Send the player data of themselves and others
-	socket.emit('init', genInitData(playerId));
+	socket.emit('init', genInitData(playerID));
+	
+	socket.on("updatePos", function (data) {
+		
+	});
 	// Let everyone else know there is a new player
-	socket.broadcast.emit('newPlayer', {
+/*	socket.broadcast.emit('newPlayer', {
 		playerId: playerObj.playerId,
 		playerName: playerObj.playerName,
 		lastKnownLocation: playerObj.lastKnownLocation
-	});
+	});*/
 
-	socket.on('setName', function(data) {
+/*	socket.on('setName', function(data) {
 		// Update the player's name
 		playerSockets[socket.playerId].playerName = data.playerName;
 		// Send it out to everyone
@@ -148,25 +145,25 @@ io.sockets.on('connection', function (socket) {
 			playerName: data.playerName,
 			playerId: socket.playerId
 		});
-	});
+	});*/
 
-	socket.on('update', function(data) {
+/*	socket.on('update', function(data) {
 		// Tell everyone else this player's new location
 		socket.broadcast.emit('update', {
 			playerId: socket.playerId,
 			lastKnownLocation: data.lastKnownLocation,
 			orientation: data.orientation
 		});
-	});
+	});*/
 	
 
 
-/// BREAKS THE SOCKET
+/*/// BREAKS THE SOCKET
 	socket.on('query', function (data) {
     	console.log(data);
 		fetchMapData(data.query, function(error, data) {
 			socket.emit('query_data', { error: error, data: data });
 		});
-	});
+	});*/
 
 });

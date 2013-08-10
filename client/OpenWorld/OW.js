@@ -8,9 +8,9 @@ OW.NEAR = 0.01;
 
 OW.FAR = 1000;
 
-/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
-OW.customStartupFunctions0.push(function () {OW.network.connectToMainServer();});
+OW.customStartupFunctions0.push(function () {OW.network.connectToServer();});
 
 OW.customStartupFunctions3.push(function () {
 	var grassTex = THREE.ImageUtils.loadTexture('img/Grass_1.png');
@@ -42,6 +42,11 @@ OW.customStartupFunctions3.push(function () {
 	OW.daQuat = function (a, b, c, d) {circle.quaternion.x = a; circle.quaternion.y = b; circle.quaternion.z = c; circle.quaternion.w = d; console.log("quat called");};
 	OW.daRot = function (a, b, c) {circle.rotation.x = a;circle.rotation.y = b;circle.rotation.z = c;console.log("rot called");};
 	OW.temRot = new THREE.Quaternion(-1,1,1,1);
+	
+	/*$.ajax({ url: "", method: "GET", dataType: "text"}).done(function(mapData) {
+        console.log("Done: Have Map Data");
+        console.dir(mapData);
+	});*/
 });
 
 OW.startTickLoop = function () {

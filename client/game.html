@@ -5,59 +5,80 @@
 		
 		<meta charset="UTF-8">
 		
-        <link rel="stylesheet" href="css/game.css">
+        <link rel="stylesheet" href="css/game.css" type="text/css">
         
-		<script src="OpenWorld/IceBear/lib/jquery.min.js"></script>
-		<script src="OpenWorld/IceBear/lib/canvasGL.js"></script>
-		<script src="OpenWorld/IceBear/lib/three.min.js"></script>
+		<script type="text/javascript" src="OpenWorld/IceBear/lib/jquery.min.js"></script>
+		<script type="text/javascript" src="OpenWorld/IceBear/lib/canvasGL.js"></script>
+		<script type="text/javascript" src="OpenWorld/IceBear/lib/three.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
 		
-		<script src="OpenWorld/IceBear/Object.js"></script>
-			<script src="OpenWorld/IceBear/AchievementHandler.js"></script>
-			<script src="OpenWorld/IceBear/Actor.js"></script>
-				<script src="OpenWorld/IceBear/Controller.js"></script>
-					<script src="OpenWorld/IceBear/AIController.js"></script>
-					<script src="OpenWorld/IceBear/PlayerController.js"></script>
+		<script type="text/javascript" src="OpenWorld/fonts/helvetiker_regular.typeface.js"></script>
+        <script type="text/javascript" src="OpenWorld/fonts/helvetiker_bold.typeface.js"></script>
+		
+		<script type="text/javascript" src="OpenWorld/IceBear/Object.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/AchievementHandler.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/Actor.js"></script>
+				<script type="text/javascript" src="OpenWorld/IceBear/Controller.js"></script>
+					<script type="text/javascript" src="OpenWorld/IceBear/AIController.js"></script>
+					<script type="text/javascript" src="OpenWorld/IceBear/PlayerController.js"></script>
 					
-				<script src="OpenWorld/IceBear/MapHandler.js"></script>
-				<script src="OpenWorld/IceBear/Pawn.js"></script>
-					<script src="OpenWorld/IceBear/Vehicle.js"></script>
+				<script type="text/javascript" src="OpenWorld/IceBear/MapHandler.js"></script>
+				<script type="text/javascript" src="OpenWorld/IceBear/Pawn.js"></script>
+					<script type="text/javascript" src="OpenWorld/IceBear/Vehicle.js"></script>
 					
-			<script src="OpenWorld/IceBear/BuildingFactory.js"></script>
-			<script src="OpenWorld/IceBear/Console.js"></script>
-			<script src="OpenWorld/IceBear/Engine.js"></script>
-			<script src="OpenWorld/IceBear/Game.js"></script>
-			<script src="OpenWorld/IceBear/GUIHandler.js"></script>
-			<script src="OpenWorld/IceBear/HUD.js"></script>
-			<script src="OpenWorld/IceBear/Light.js"></script>
-			<script src="OpenWorld/IceBear/Menu.js"></script>
-			<script src="OpenWorld/IceBear/Network.js"></script>
-			<script src="OpenWorld/IceBear/Player.js"></script>
-			<script src="OpenWorld/IceBear/PlayerInput.js"></script>
-			<script src="OpenWorld/IceBear/Utilities.js"></script>
-			<script src="OpenWorld/IceBear/World.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/BuildingFactory.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/Console.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/Engine.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/Game.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/GUIHandler.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/HUD.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/Light.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/Menu.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/Network.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/Player.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/PlayerInput.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/Utilities.js"></script>
+			<script type="text/javascript" src="OpenWorld/IceBear/World.js"></script>
 			
 			<!-- make static resources by importing a script then locking the object -->
 			
 			<!-- could use a .get() to load all the scripts during the loading screen -->
 			
 			<script src="OpenWorld/OW.js"></script>
-				<script src="OpenWorld/OverpassMapLoader.js"></script>
-				<script src="OpenWorld/Pawn.js"></script>
-				<script src="OpenWorld/PlayerController.js"></script>
-				<script src="OpenWorld/PlayerInput.js"></script>
+				<script type="text/javascript" src="OpenWorld/OverpassMapLoader.js"></script>
+				<script type="text/javascript" src="OpenWorld/Pawn.js"></script>
+				<script type="text/javascript" src="OpenWorld/PlayerController.js"></script>
+				<script type="text/javascript" src="OpenWorld/PlayerInput.js"></script>
 				
 				<!-- Core -->
-				<script src="OpenWorld/Game.js"></script>
-				<script src="OpenWorld/Network.js"></script>
-				<script src="OpenWorld/Player.js"></script>
-				<script src="OpenWorld/World.js"></script>
+				<script type="text/javascript" src="OpenWorld/Game.js"></script>
+				<script type="text/javascript" src="OpenWorld/Network.js"></script>
+				<script type="text/javascript" src="OpenWorld/Player.js"></script>
+				<script type="text/javascript" src="OpenWorld/World.js"></script>
 	</head>
 
 	<body>
+		
+		<div id='EngineLogo' style="opacity: 0"><img src='img/IceBear.png' height='600px'></img></div>
+		
 		<script type="text/javascript">
-
-			OW.initEngine();
-
+			var Clay = Clay || {};
+			Clay.gameKey = "openworld";
+			Clay.readyFunctions = [];
+			Clay.ready = function ( fn ) {
+    			Clay.readyFunctions.push( fn );
+			};
+			Clay.ready(function () {
+				Clay.Player.requireLogin(function (response) {
+					OW.player.initPlayer(Clay.Player.identifier, Clay.Player.data.username);
+					OW.initEngine();
+				});
+			});
+			( function () {
+    			var clay = document.createElement("script"); clay.async = true;
+    			clay.src = ( "https:" == document.location.protocol ? "https://" : "http://" ) + "clay.io/api/api.js"; 
+    			var tag = document.getElementsByTagName("script")[0]; tag.parentNode.insertBefore(clay, tag);
+			} )();
 		</script>
 	</body>
 </html>
