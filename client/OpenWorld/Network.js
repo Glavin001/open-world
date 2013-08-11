@@ -16,5 +16,6 @@ OW.network.connectToServer = function() {
 	this.server.on("connect", function () {
 		OW.network.server.emit("init", {id: OW.player.id, username: OW.player.username, willServe: true});
 	});
+	
 	this.server.on("init", function (data) {console.log(data);});
 };

@@ -10,6 +10,84 @@ IB.util.newNew = function(func, arguments) {
 	return (typeof result === "object" && result) || that;
 };
 
+IB.util.loadScript = function(identifier, source, callback) {
+	console.log('Loading "'+identifier+'" ('+source+")");
+	//  Ensure their is a valid identifier
+	identifier = identifier || source;  
+	// Async load external JavaScript file
+	(function(d, s, id, src){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return callback && callback(true);}
+     js = d.createElement(s); js.id = id;
+     js.type = "text/javascript";
+     js.src = src;
+     js.async = true;
+     js.onload = function(event) {
+     	//console.log('Finished loading', event);
+     	return callback && callback({'successful':true});
+     };
+     js.onerror = function(event) {
+     	console.error('An error occured loading script.', event);
+     	return callback && callback({'successful':false});
+     };
+     /*
+     js.onprogress = function(event) {
+     	console.log("Progress", event);
+     };
+     */
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', identifier, source));
+};
+
+/*
+scripts = [ ["identifier", "source"],... ] or [ "source", ...] or [ {id:"identifier", "source" }]
+progressCallback = function( {'successful': isSuccessful, 'pending': pendingScripts, 'total': totalScripts)
+*/
+IB.util.loadScripts = function(scripts, progressCallback) {
+	// Verify that scripts is an array
+	if (scripts instanceof Array) {
+		var completed=0, errors=0, total=scripts.length;
+		var onCompletion = function() {
+			if ( (completed+errors) <= total ) {
+				return progressCallback && progressCallback({'successful':true, 'completed': completed, 'total': total});
+			}
+		}
+		// Iterate thru all scripts
+		for (var i=0; i<total; i++) {
+			var curr = scripts[i];
+			var s = {'id':null, 'src':null};
+			// Validate formatting
+			if (typeof curr === "string") {
+				s.id = curr;
+				s.src = curr;
+			} else if (curr instanceof Array) {
+				s.id = curr[0];
+				s.src = curr[1] || curr[0];			
+			} else if (curr instanceof Object) {
+				s.id = curr.id || curr.src;
+				s.src = curr.src;
+			} else {
+				console.warn && console.warn('Invalid script to load: ',curr, "Must be in Array format [identifier, source].");
+			 	progressCallback && progressCallback({'successful':false, 'completed': completed, 'total': total});
+			 	errors++;
+			 	continue; // Skip the rest of the for loop iteration
+			}
+			// Load
+			IB.util.loadScript(s.id, s.src, function(result) {
+				//if (result.successful) {} // Doesn't matter
+				completed++;
+				onCompletion();
+			});
+
+		}
+		onCompletion();
+	} else {
+		return progressCallback && progressCallback({'successful':false, 'completed': null, 'total': null});
+	}
+};
+
+
+
 IB.util.keys = {
 		a: "65",
 		b: "66",
@@ -111,3 +189,4 @@ IB.util.keys = {
 		90: "z"
 		//http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes dont have all of them yet
 };
+
