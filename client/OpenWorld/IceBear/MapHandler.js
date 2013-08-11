@@ -39,57 +39,75 @@ IB.map.getPlayerGeoLocation = function(callback, errorCallback) {
 	}
 };
 
-IB.map.geocoding = function(address, callback) {
-	var url = "http://maps.googleapis.com/maps/api/geocode/json?address="+encodeURIComponent(address)+"&sensor=false";
-	$.getJSON(url, function(data) {
-		return callback && callback(data);
+IB.map.currentPlayerLonLat = function(callback) {
+	var self = this;
+	self.getPlayerGeoLocation(function(geoposition){
+		var p = self.LatLonPoint(geoposition.coords.latitude, geoposition.coords.longitude, geoposition.coords.altitude);
+		return callback && callback(p);
+	}, function(data) {
+		return callback && callback(null);
 	});
+};
+
+IB.map.geocoding = function(address, callback) {
+	if (typeof address === "string") {
+		var url = "http://maps.googleapis.com/maps/api/geocode/json?address="+encodeURIComponent(address)+"&sensor=false";
+		$.getJSON(url, function(data) {
+			return callback && callback(data);
+		});
+	} else {
+		return callback && callback(null);
+	}
 };
 
 IB.map.reverseGeocoding = function(latLonPoint, callback) {
-	var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latLonPoint.getLatitude()+","+latLonPoint.getLongitude()+"&sensor=false"; 
-	$.getJSON(url, function(data) {
-		return callback && callback(data);
-	});
+	if (latLonPoint instanceof IB.map.LatLonPoint) {
+		var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latLonPoint.getLatitude()+","+latLonPoint.getLongitude()+"&sensor=false"; 
+		$.getJSON(url, function(data) {
+			return callback && callback(data);
+		});
+	} else {
+		return callback && callback(null);
+	}
 };
 
 // Points
-var LatLonPoint = function(lat, lon, altitude) {
-	if (!(this instanceof LatLonPoint)) {
-      return new LatLonPoint(lat, lon, altitude);
+IB.map.LatLonPoint = function(lat, lon, altitude) {
+	if (!(this instanceof IB.map.LatLonPoint)) {
+      return new IB.map.LatLonPoint(lat, lon, altitude);
     }
 	this.latitude = lat || 0.0;
 	this.longitude = lon || 0.0;
   	this.altitude = altitude || 0.0;
+  	return this;
 };
-IB.map.LatLonPoint = LatLonPoint;
 
-LatLonPoint.prototype.setLatLon = function(lat, lon) {
+IB.map.LatLonPoint.prototype.setLatLon = function(lat, lon) {
 	this.latitude = lat;
 	this.longitude = lon;
 };
 
-LatLonPoint.prototype.setAltitude = function(altitude) {
+IB.map.LatLonPoint.prototype.setAltitude = function(altitude) {
 	this.altitude = altitude;
 };
-LatLonPoint.prototype.distance = function(otherLatLonPoint) {
+IB.map.LatLonPoint.prototype.distance = function(otherLatLonPoint) {
 
 	return 0.0;
 };
 
-LatLonPoint.prototype.getLatitude = function() {
+IB.map.LatLonPoint.prototype.getLatitude = function() {
 	return this.latitude;
 };
 
-LatLonPoint.prototype.getLongitude = function() {
+IB.map.LatLonPoint.prototype.getLongitude = function() {
 	return this.longitude;
 };
 
-LatLonPoint.prototype.getAltitude = function() {
+IB.map.LatLonPoint.prototype.getAltitude = function() {
 	return this.altitude;
 };
 
-LatLonPoint.prototype.fromLatLonToMeters = function() {
+IB.map.LatLonPoint.prototype.fromLatLonToMeters = function() {
 	
 	// Source: http://stackoverflow.com/a/2689261/2578205 
 
@@ -107,4 +125,30 @@ LatLonPoint.prototype.fromLatLonToMeters = function() {
 
 	//p.x and p.y are now EPSG:3785 in meters
 	return p;
+};
+
+IB.map.LatLonPoint.prototype.setToMeters = function(x,y,z) {
+	
+	// Source: http://stackoverflow.com/a/2689261/2578205 
+
+	// creating source and destination Proj4js objects
+	// once initialized, these may be re-used as often as needed
+	var source = new Proj4js.Proj('EPSG:3785');    //source coordinates will be in Longitude/Latitude, WGS84
+	var dest = new Proj4js.Proj('EPSG:4326');     //destination coordinates in meters, global spherical mercators projection, see http://spatialreference.org/ref/epsg/3785/
+
+	// transforming point coordinates
+	var p = new Proj4js.Point(x,y);   //any object will do as long as it has 'x' and 'y' properties
+	Proj4js.transform(source, dest, p);      //do the transformation.  x and y are modified in place
+
+	// Set
+	this.setLatLon(p.x, p.y);
+	this.setAltitude(z);
+
+	return this;
+};
+
+IB.map.LatLonPoint.prototype.getAddress = function(callback) {
+	IB.map.reverseGeocoding(this, function(data) {
+		return callback && callback(data);
+	});
 };
