@@ -85,7 +85,7 @@ IB.map.LatLonPoint = function(lat, lon, altitude) {
 };
 
 IB.map.LatLonPoint.prototype.toString = function() {
-	return "("+this.getLatitude()+","+this.getLongitude()+")";
+	return "(Latitude:"+this.getLatitude()+", Longitude:"+this.getLongitude()+", Altitude:"+this.getAltitude()+")";
 };
 
 IB.map.LatLonPoint.prototype.setLatLon = function(lat, lon) {
@@ -170,8 +170,8 @@ IB.map.LatLonPoint.prototype.setToThreePosition = function(x,y,z) {
 	*/
 	var threeToMetersScale = IB.map.threeToMetersScale;
 	this.setToMeters( 
-		x*threeToMetersScale, 		// Longitude/horizontal
 		z*threeToMetersScale, 		// Latitude/vertical
+		x*threeToMetersScale, 		// Longitude/horizontal
 		y*threeToMetersScale ); 	// Altitude
 };
 

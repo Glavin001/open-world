@@ -60,7 +60,7 @@ OW.customStartupFunctions3.push(function () {
     console.log('Setup');
     var onWindowResize = function() {
 	    var camera = OW.player.pc.camera, renderer = OW.renderer;
-	    console.log(camera,renderer);
+	    //console.log(camera,renderer);
 	    camera.aspect = window.innerWidth / window.innerHeight;
 	    camera.updateProjectionMatrix();
 	    renderer.setSize( window.innerWidth, window.innerHeight );

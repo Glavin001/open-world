@@ -28,23 +28,29 @@ OW.player.preGameStart = function () {
 
     self.pc.initPlayerController();
 
-	/*
+	
     // Move player to current Geolocation
-    IB.map.currentPlayerLatLon( function(lonLatPoint) {
-		// *lonLatPoint* variable is now an instance of LonLatPoint with the values of the Geolocation
-		console.log(lonLatPoint);
+    IB.map.currentPlayerLatLon( function(latLonPoint) {
+		// *latLonPoint* variable is now an instance of LatLatPoint with the values of the Geolocation
+		console.log(latLonPoint);
 		console.log(self.pc);
 
-		var m = lonLatPoint.fromLatLonToMeters();
+		var m = latLonPoint.fromLatLonToMeters();
 		console.log(m);
 
 		var pos = self.pc.pawn.position;
+		/*
 		pos.x = m.x;
 		pos.y = m.z;
 		pos.z = m.y;
-
+		*/
+		var newPos = latLonPoint.fromLatLonToThreePosition();
+		pos.x = newPos.x;
+		pos.y= newPos.y;
+		pos.z = newPos.z;
+		
 	});
-	*/
+	
 };
 
 OW.player.getDefault = function (def) {

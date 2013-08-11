@@ -2,6 +2,10 @@ OW.overpassMap = Object.create(IB.map);
 
 ///////////////////////////////////////
 
+OW.overpassMap.chunkDiameter = 100.0; // In meters
+
+OW.overpassMap.chunks = {  };
+
 OW.overpassMap.startLoad = function (worldRef, info) {
 	//...
 	
