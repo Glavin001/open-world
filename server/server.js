@@ -92,43 +92,20 @@ function fetchMapData(query, callback) {
 var players = 0,
 	playerSockets = {};
 
-
-function genInitData(playerId) {
-	return {
-		playerId: playerId,
-		playerName: playerSockets[playerId].playerName,
-		//lastKnownLocation: playerSockets[playerId].lastKnownLocation}
-	};
-	/*for (var pid in playerSockets) {
-		if (pid !== playerId) {
-			tPlayerData.otherPlayers[pid] = {
-				playerId: pid,
-				playerName: playerSockets[pid].playerName,
-				lastKnownLocation: playerSockets[pid].lastKnownLocation
-			};
-		}
-	}*/
-}
-
-io.sockets.on('connection', function (socket) {
-  	
-	// Create a player object for this socket
-	// TODO: Re-Link old players
-	var playerID = "Player " + (++players),
-		playerObj = {
-			id: playerID,
-			name: playerID, // if logged into clay.io can use that username
+io.sockets.on("connection", function (socket) {
+  	socket.on("init", function (data) {
+		var playerObj = {
+			id: data.id,
+			name: data.username, // if logged into clay.io can use that username
 			position: {},
-			
+			willServe: data.willServe
 		};
-	playerSockets[playerID] = playerObj;
-	socket.playerID = playerID;
+		playerSockets[data.id] = playerObj;
+		socket.emit("init", playerSockets[data.id]);
+  	});
 
-	// Send the player data of themselves and others
-	socket.emit('init', genInitData(playerID));
-	
 	socket.on("updatePos", function (data) {
-		
+		;
 	});
 	// Let everyone else know there is a new player
 /*	socket.broadcast.emit('newPlayer', {
