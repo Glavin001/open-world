@@ -12,10 +12,12 @@ OW.subEngines.push(OW.network);
 
 OW.network.connectToServer = function() {
 	this.__proto__.connectToServer.apply(this);
-	console.log(this.server);
-	this.server.on("connect", function () {
-		console.log(this.server);
-		this.server.emit("init", {id: OW.player.id, username: OW.player.username, willServe: true});
+	//IB.network.connectToServer.apply(this);
+	var self = this;
+	console.log(self.server);
+	self.server.on("connect", function () {
+		console.log(self.server);
+		self.server.emit("init", {id: OW.player.id, username: OW.player.username, willServe: true});
 	});
-	this.server.on("init", function (data) {console.log(data);});
+	self.server.on("init", function (data) {console.log(data);});
 };
