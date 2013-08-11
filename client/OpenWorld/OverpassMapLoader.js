@@ -58,38 +58,56 @@ OW.overpassMap.addMapChunk = function (overpassData) {
 	this.addMapGeo(processedGeometry);
 };
 
+OW.overpassMap.queriesPerSecond = 3, OW.overpassMap.pendingQueries = [], OW.overpassMap.lastQueryTime = null; // Max is 5 requests per second, and then errors occur.
 OW.overpassMap.loadMapChunkAtLatLonPoint = function(latLonPoint, options, callback) {
 	var self = this;
-	/*
-	var minlat = 44.6468720, // 44.6488720, // 44.6288720,  
-    minlon = -63.5812540,  // -63.5792540,  // -63.5992540, 
-    maxlat = 44.6516050,  // 44.6496050, // 44.6688720, 
-    maxlon = -63.5705590;  // -63.5725590; // -63.5592540; 
-    */
-    options = options || { };
-    options.radius = options.radius || 0.01; // In lon/lat
-    var centerLat = latLonPoint.getLatitude(), centerLon = latLonPoint.getLongitude();
-    var minlat = centerLat - options.radius,
-    minlon = centerLon - options.radius,
-    maxlat = centerLat + options.radius,
-    maxlon = centerLon + options.radius;
-    var outputFormat = options.out || "json"; // "xml";
-    var url = 'http://overpass.osm.rambler.ru/cgi/interpreter?data=[out:'+outputFormat+'(node('+minlat+','+minlon+','+maxlat+','+maxlon+');%3C;%3E;);out%20meta;';
-    console.log(url);
-    $.ajax({ url: url , method: "GET", dataType:"text/"+outputFormat })
-    .done(function(mapData) {
-        //console.log("Done: Have Map Data");
-        //console.dir(mapData);
-        return callback && callback(mapData); // self.addMapChunk(mapData);
-    })
-    .fail(function(event) {
-    	console.error( event.error() );
-    	return callback && callback(false);
-    })
-    .always(function(){
-    	// console.log('Finished loading map data from Overpass.');
-    });
-    return url;
+	
+	// Add to pending
+	if (latLonPoint && latLonPoint instanceof IB.map.LatLonPoint) {
+		
+		options = options || { };
+	    options.radius = options.radius || 0.01; // In lon/lat
+	    var centerLat = latLonPoint.getLatitude(), centerLon = latLonPoint.getLongitude();
+	    var minlat = centerLat - options.radius,
+	    minlon = centerLon - options.radius,
+	    maxlat = centerLat + options.radius,
+	    maxlon = centerLon + options.radius;
+	    var outputFormat = options.out || "json"; // "xml";
+	    var url = 'http://overpass.osm.rambler.ru/cgi/interpreter?data=[out:'+outputFormat+'];(node('+minlat+','+minlon+','+maxlat+','+maxlon+');%3C;%3E;);out%20meta;';
+	    console.log(url);
+	   	
+	    var newPending = {'url':url, 'callback':callback};
+
+		self.pendingQueries.push(newPending);
+	}
+
+	// Check if available to query
+	var currTime = +new Date(),
+	diffTime = currTime - self.lastQueryTime;
+
+	if ( diffTime > (1000 / self.queriesPerSecond) ) {
+	    // Remove from pending
+	    var curr = self.pendingQueries.shift();
+		
+		self.lastQueryTime = +new Date(); // Record this time
+
+	    $.ajax({ url: curr.url , method: "GET", dataType:"text/"+outputFormat })
+	    .done(function(mapData) {
+	        //console.log("Done: Have Map Data");
+	        //console.dir(mapData);
+	        return curr.callback && curr.callback(mapData); // self.addMapChunk(mapData);
+	    })
+	    .fail(function(event) {
+	    	console.error( event.error() );
+	    	return curr.callback && curr.callback(false);
+	    })
+	    .always(function(){
+	    	// console.log('Finished loading map data from Overpass.');
+
+	    });
+	    return url;
+
+	}
 };
 
 OW.overpassMap.MapRenderer = function(chunkRef) {
@@ -109,9 +127,10 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
     self.renderAtLatLonPoint = function(latLonPoint) {
 		var mainChunkId = self.chunkIdFromLatLonPoint(latLonPoint),
 		mainChunkIdStr = JSON.stringify(mainChunkId);
-    	if (pendingLoads >= maxPendingLoads) {
-    		console.log('Currently loading...');
-    	} else if ( loadedChunkIds.indexOf(mainChunkIdStr) === -1 ) {
+    	//if (pendingLoads >= maxPendingLoads) {
+    	//	console.log('Currently loading...');
+    	//} else 
+    	if ( loadedChunkIds.indexOf(mainChunkIdStr) === -1 ) {
     		// Has not already been loaded.
 
     		// Check if already prepped to be loaded 
