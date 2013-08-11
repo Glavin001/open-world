@@ -2,10 +2,13 @@ OW.overpassMap = Object.create(IB.map);
 
 ///////////////////////////////////////
 
-OW.overpassMap.chunks = {  };
+OW.overpassMap.chunks = {  }; // { Lat : { chunk },  }
 
 OW.overpassMap.startLoad = function (worldRef, info) {
 	//...
+
+	// Create Map Chunk Handler
+
 	
 	this.finishInitialLoad(worldRef, info);
 };
@@ -48,7 +51,7 @@ OW.overpassMap.addMapChunk = function (overpassData) {
 	this.addMapGeo(processedGeometry);
 };
 
-OW.overpassMap.loadMapChunkAtLonLatPoint = function(lonLatPoint, radius) {
+OW.overpassMap.loadMapChunkAtLatLonPoint = function(latLonPoint, radius) {
 	var self = this;
 	/*
 	var minlat = 44.6468720, // 44.6488720, // 44.6288720,  
@@ -57,7 +60,7 @@ OW.overpassMap.loadMapChunkAtLonLatPoint = function(lonLatPoint, radius) {
     maxlon = -63.5705590;  // -63.5725590; // -63.5592540; 
     */
     radius = radius || 0.001; // In lon/lat
-    var centerLat = lonLatPoint.getLatitude(), centerLon = lonLatPoint.getLongitude();
+    var centerLat = latLonPoint.getLatitude(), centerLon = latLonPoint.getLongitude();
     var minlat = centerLat - radius,
     minlon = centerLon - radius,
     maxlat = centerLat + radius,
@@ -76,22 +79,62 @@ OW.overpassMap.loadMapChunkAtLonLatPoint = function(lonLatPoint, radius) {
 OW.overpassMap.MapChunkHandler = function(chunkRef) {
 	var self = this;
 	if (!(self instanceof OW.overpassMap.MapChunkHandler)) {
-      return new OW.overpassMap.MapChunkHandler());
+      return new OW.overpassMap.MapChunkHandler();
     }
 
     // Properties
-    self.chunks = chunkRef;
+    self.chunks = chunkRef || { };
 	var maxLat = 100.0, maxLon = 100.0; // Maximum size of chunk, in meters
 
     // Functions
-    self.chunkNameFromLonLatPoint = function(lonLatPoint) {
-    	
+    self.chunkIdFromLatLonPoint = function(latLonPoint) {
+    	// Number is fastest Object property name for retrieval (see JSPerfs below) 
+		var latChunkId, lonChunkId;
+
+		var p = latLonPoint.fromLatLonToMeters();
+
+    	// Calculate
+    	latChunkId = parseInt(p.x / maxLat )*maxLat;
+    	lonChunkId = parseInt(p.y / maxLon )*maxLon;
+
+		return {lat: latChunkId, lon: lonChunkId };    	
+    };
+
+    self.getChunkWithId = function(chunkId) {
+    	// Check to see if exists
+    	// See JSPerf for performance: http://jsperf.com/property-lookup-vs-linear-scan 
+    	if (chunkId.lat in self.chunks ) {
+    		// Exists
+    		// Retrieve it
+    		// See JSPerf: http://jsperf.com/performance-of-array-vs-object/3 and http://jsperf.com/string-vs-integer-object-indices 
+    		var latChunks = self.chunks[chunkId.lat];
+    		// Check to see if lonChunk exists
+    		if (chunkId.lon in latChunks) {
+    			// Exists
+    			var lonChunk = latChunks[chunkId.lon];
+    			return lonChunk;
+    		} else {
+	    		// Does not exist
+	    		// Create chunk!
+	    		latChunks[chunkId.lon] = { };
+	    		var lonChunk = latChunks[chunkId.lon];
+	    		return lonChunk;
+    		}
+    	} else {
+    		// Does not exist
+    		// Create chunk!
+    		self.chunks[chunkId.lat] = { };
+    		var latChunks = self.chunks[chunkId.lat];
+    		latChunks[chunkId.lon] = { };
+    		var lonChunk = latChunks[chunkId.lon];
+    		return lonChunk;
+    	}
     };
 
 };
 
 // Map Chunk
-OW.overpassMap.MapChunk = function( minLonLatPoint, maxLonLatPoint ) { // Bounding box
+OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Bounding box
 	var self = this;
 	if (!(self instanceof OW.overpassMap.MapChunk)) {
       return new OW.overpassMap.MapChunk(options);
@@ -118,7 +161,7 @@ OW.overpassMap.MapChunk = function( minLonLatPoint, maxLonLatPoint ) { // Boundi
 		// Check if already loaded
 		if (dirtyChunk || loaded) {
 			// Requires loading
-			OW.overpassMap.loadMapChunkAtLonLatPoint
+			OW.overpassMap.loadMapChunkAtLatLonPoint
 		} else {
 			// Already loaded
 			return callback && callback();

@@ -78,10 +78,15 @@ IB.map.LatLonPoint = function(lat, lon, altitude) {
 	if (!(this instanceof IB.map.LatLonPoint)) {
       return new IB.map.LatLonPoint(lat, lon, altitude);
     }
-	this.latitude = lat || 0.0;
-	this.longitude = lon || 0.0;
-  	this.altitude = altitude || 0.0;
-  	return this;
+
+	if (!lon && !altitude && lat instanceof THREE.Vector3) {
+		this.setToThreePosition(lat); 
+	} else {
+		this.latitude = lat || 0.0;
+		this.longitude = lon || 0.0;
+	  	this.altitude = altitude || 0.0;
+	  	return this;
+	 }
 };
 
 IB.map.LatLonPoint.prototype.toString = function() {
@@ -89,8 +94,8 @@ IB.map.LatLonPoint.prototype.toString = function() {
 };
 
 IB.map.LatLonPoint.prototype.setLatLon = function(lat, lon) {
-	this.latitude = lat;
-	this.longitude = lon;
+	if (typeof lat === "number") this.latitude = lat || 0.0;
+	if (typeof lon === "number") this.longitude = lon || 0.0;
 	return this;
 };
 
