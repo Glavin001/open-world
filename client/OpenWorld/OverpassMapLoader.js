@@ -2,18 +2,17 @@ OW.overpassMap = Object.create(IB.map);
 
 ///////////////////////////////////////
 
-OW.overpassMap.chunks = {  }; // { Lat : { chunk },  }
-
 OW.overpassMap.startLoad = function (worldRef, info) {
 	//...
-
+	var self = this;
 	// Create Map Chunk Handler
-
+	self.mapRenderer = new self.MapRenderer();
 	
-	this.finishInitialLoad(worldRef, info);
+	self.finishInitialLoad(worldRef, info);
 };
 
 OW.overpassMap.tick = function (deltaTime) {
+	var self = this;
 	//might want reference OW.player.pc.pawn.position
 	//...
 	// console.log(OW.player.pc.pawn.position);
@@ -39,6 +38,13 @@ OW.overpassMap.tick = function (deltaTime) {
 	OW.player.pc.nameTag = newNameTag;
 	OW.world.sceneAdd( newNameTag );
 
+	// Load Map
+
+	// Create Map Chunk Handler
+	self.mapRenderer = self.mapRenderer || new self.MapRenderer();
+
+	self.mapRenderer.renderAtLatLonPoint(gpos);
+
 };
 
 OW.overpassMap.addMapGeo = function (geometry) {
@@ -47,11 +53,12 @@ OW.overpassMap.addMapGeo = function (geometry) {
 
 OW.overpassMap.addMapChunk = function (overpassData) {
 	//...
-	
+	this.mapRenderer.rendererOverpassMapData(overpassMap);
+
 	this.addMapGeo(processedGeometry);
 };
 
-OW.overpassMap.loadMapChunkAtLatLonPoint = function(latLonPoint, radius) {
+OW.overpassMap.loadMapChunkAtLatLonPoint = function(latLonPoint, options, callback) {
 	var self = this;
 	/*
 	var minlat = 44.6468720, // 44.6488720, // 44.6288720,  
@@ -59,34 +66,91 @@ OW.overpassMap.loadMapChunkAtLatLonPoint = function(latLonPoint, radius) {
     maxlat = 44.6516050,  // 44.6496050, // 44.6688720, 
     maxlon = -63.5705590;  // -63.5725590; // -63.5592540; 
     */
-    radius = radius || 0.001; // In lon/lat
+    options = options || { };
+    options.radius = options.radius || 0.01; // In lon/lat
     var centerLat = latLonPoint.getLatitude(), centerLon = latLonPoint.getLongitude();
-    var minlat = centerLat - radius,
-    minlon = centerLon - radius,
-    maxlat = centerLat + radius,
-    maxlon = centerLon + radius;
-    var url = 'http://overpass.osm.rambler.ru/cgi/interpreter?data=(node('+minlat+','+minlon+','+maxlat+','+maxlon+');%3C;%3E;);out%20meta;';
+    var minlat = centerLat - options.radius,
+    minlon = centerLon - options.radius,
+    maxlat = centerLat + options.radius,
+    maxlon = centerLon + options.radius;
+    var outputFormat = options.out || "json"; // "xml";
+    var url = 'http://overpass.osm.rambler.ru/cgi/interpreter?data=[out:'+outputFormat+'(node('+minlat+','+minlon+','+maxlat+','+maxlon+');%3C;%3E;);out%20meta;';
     console.log(url);
-    $.ajax({ url: url , method: "GET", dataType:"text" })
-            .done(function(mapData) {
-        console.log("Done: Have Map Data");
-        console.dir(mapData);
-        self.addMapChunk(mapData);
+    $.ajax({ url: url , method: "GET", dataType:"text/"+outputFormat })
+    .done(function(mapData) {
+        //console.log("Done: Have Map Data");
+        //console.dir(mapData);
+        return callback && callback(mapData); // self.addMapChunk(mapData);
+    })
+    .fail(function(event) {
+    	console.error( event.error() );
+    	return callback && callback(false);
+    })
+    .always(function(){
+    	// console.log('Finished loading map data from Overpass.');
     });
-
+    return url;
 };
 
-OW.overpassMap.MapChunkHandler = function(chunkRef) {
+OW.overpassMap.MapRenderer = function(chunkRef) {
 	var self = this;
-	if (!(self instanceof OW.overpassMap.MapChunkHandler)) {
-      return new OW.overpassMap.MapChunkHandler();
+	if (!(self instanceof OW.overpassMap.MapRenderer)) {
+      return new OW.overpassMap.MapRenderer();
     }
 
     // Properties
-    self.chunks = chunkRef || { };
-	var maxLat = 100.0, maxLon = 100.0; // Maximum size of chunk, in meters
-
+    self.chunks = chunkRef || {  }; // { Lat : { Lon Chunk,... },..}
+	var maxLat = 100.0, maxLon = 100.0, // Maximum size of chunk, in meters
+	pendingLoads = 0, maxPendingLoads = 1, // IMPORTANT: Currently only supports one pending load. See how code works below, with loader setTimeout, etc.
+	loadedChunkIds = [ ], lastLoadedChunkId = null,
+	loaderId = null, loaderInterval = 100;
+    
     // Functions
+    self.renderAtLatLonPoint = function(latLonPoint) {
+		var mainChunkId = self.chunkIdFromLatLonPoint(latLonPoint),
+		mainChunkIdStr = JSON.stringify(mainChunkId);
+    	if (pendingLoads >= maxPendingLoads) {
+    		console.log('Currently loading...');
+    	} else if ( loadedChunkIds.indexOf(mainChunkIdStr) === -1 ) {
+    		// Has not already been loaded.
+
+    		// Check if already prepped to be loaded 
+    		if ( lastLoadedChunkId !== mainChunkIdStr ) {
+    			// New chunk to be loaded.
+	    		clearTimeout(loaderId);	    	
+	    		setTimeout( function() {
+		    		pendingLoads++;
+			    	loadedChunkIds.push(mainChunkIdStr);
+			    	console.log(loadedChunkIds);
+
+			    	var overpassQueryUrl = OW.overpassMap.loadMapChunkAtLatLonPoint(latLonPoint, undefined, function(mapData) {
+			    		pendingLoads--;
+			    		if (mapData) {
+				    		// Process Map Data	
+			    			console.log("Map data for chunkId:", mainChunkId);
+			    			console.log(mapData);
+			    			// Ensure is added to loaded list
+			    			if (loadedChunkIds.indexOf(mainChunkIdStr) === -1) {
+			    				loadedChunkIds.push(mainChunkIdStr); 
+			    			}
+				    	} else {
+				    		// Error occured: No map data
+				    		loadedChunkIds.splice( loadedChunkIds.indexOf( mainChunkIdStr ), 1 ); // Remove from loaded chunks
+				    	}
+			    	});
+					
+				}, loaderInterval);
+
+	    	}
+
+	    	lastLoadedChunkId = mainChunkIdStr;
+
+    	} else {
+    		// console.log('Already loaded.');
+    		// console.log(mainChunkId);
+    	}
+
+    };
     self.chunkIdFromLatLonPoint = function(latLonPoint) {
     	// Number is fastest Object property name for retrieval (see JSPerfs below) 
 		var latChunkId, lonChunkId;
@@ -170,3 +234,4 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 
     return self;
 };
+
