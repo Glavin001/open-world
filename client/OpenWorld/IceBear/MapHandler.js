@@ -13,6 +13,45 @@ IB.map.finishInitialLoad = function (worldRef, info) {
 	worldRef.finishLoadMap(info);
 };
 
+IB.map.getPlayerGeoLocation = function(callback, errorCallback) {
+	// In case of error
+	errorCallback = errorCallback || function errorCallback(error) {
+		switch(error.code) {
+		case error.PERMISSION_DENIED:
+			console.warn("User denied the request for Geolocation.");
+			break;
+		case error.POSITION_UNAVAILABLE:
+			console.warn("Location information is unavailable.");
+			break;
+		case error.TIMEOUT:
+			console.warn("The request to get user location timed out.");
+			break;
+		case error.UNKNOWN_ERROR:
+			console.warn("An unknown error occurred.");
+			break;
+		}
+	}
+	// 
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(callback, errorCallback);
+	} else {
+		return callback && callback(null);
+	}
+};
+
+IB.map.geocoding = function(address, callback) {
+	var url = "http://maps.googleapis.com/maps/api/geocode/json?address="+encodeURIComponent(address)+"&sensor=false";
+	$.getJSON(url, function(data) {
+		return callback && callback(data);
+	});
+};
+
+IB.map.reverseGeocoding = function(latLonPoint, callback) {
+	var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latLonPoint.getLatitude()+","+latLonPoint.getLongitude()+"&sensor=false"; 
+	$.getJSON(url, function(data) {
+		return callback && callback(data);
+	});
+};
 
 // Points
 var LatLonPoint = function(lat, lon, altitude) {
