@@ -75,7 +75,7 @@
 			};
 			Clay.ready(function () {
 				Clay.Player.requireLogin(function (response) {
-					OW.player.initPlayer(Clay.Player.identifier, Clay.Player.data.username);
+					OW.player.initPlayer(Clay.Player);
 					OW.initEngine();
 				});
 			});

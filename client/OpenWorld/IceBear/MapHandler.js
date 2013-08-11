@@ -2,6 +2,8 @@ var IB = IB || new Object();
 
 IB.map = IB.map || Object.create(IB.actor);
 
+IB.map.threeToMetersScale = 1.0; // For every unit in Three.js scene there is X meters
+
 ///////////////////////////////////////////
 
 IB.map.startLoad = function (worldRef, info) {
@@ -39,7 +41,7 @@ IB.map.getPlayerGeoLocation = function(callback, errorCallback) {
 	}
 };
 
-IB.map.currentPlayerLonLat = function(callback) {
+IB.map.currentPlayerLatLon = function(callback) {
 	var self = this;
 	self.getPlayerGeoLocation(function(geoposition){
 		var p = self.LatLonPoint(geoposition.coords.latitude, geoposition.coords.longitude, geoposition.coords.altitude);
@@ -80,6 +82,10 @@ IB.map.LatLonPoint = function(lat, lon, altitude) {
 	this.longitude = lon || 0.0;
   	this.altitude = altitude || 0.0;
   	return this;
+};
+
+IB.map.LatLonPoint.prototype.toString = function() {
+	return "("+this.getLatitude()+","+this.getLongitude()+")";
 };
 
 IB.map.LatLonPoint.prototype.setLatLon = function(lat, lon) {
@@ -127,9 +133,18 @@ IB.map.LatLonPoint.prototype.fromLatLonToMeters = function() {
 	return p;
 };
 
+IB.map.LatLonPoint.prototype.fromLatLonToThreePosition = function() {
+	var m = this.fromLatLonToMeters();
+	var threeToMetersScale = IB.map.threeToMetersScale;
+	return { x: m.y/threeToMetersScale, y: m.z/threeToMetersScale, z: m.x/threeToMetersScale  };
+};
+
 IB.map.LatLonPoint.prototype.setToMeters = function(x,y,z) {
-	
-	// Source: http://stackoverflow.com/a/2689261/2578205 
+	/*
+	x = latitude/vertical
+	y = longitude/horizontal
+	z = Altitude
+	*/
 
 	// creating source and destination Proj4js objects
 	// once initialized, these may be re-used as often as needed
@@ -145,6 +160,19 @@ IB.map.LatLonPoint.prototype.setToMeters = function(x,y,z) {
 	this.setAltitude(z);
 
 	return this;
+};
+
+IB.map.LatLonPoint.prototype.setToThreePosition = function(x,y,z) {
+	/*
+	z = latitude/vertical/forward/backwards
+	x = longitude/horizontal/left/right
+	y = Altitude/up/down
+	*/
+	var threeToMetersScale = IB.map.threeToMetersScale;
+	this.setToMeters( 
+		x*threeToMetersScale, 		// Longitude/horizontal
+		z*threeToMetersScale, 		// Latitude/vertical
+		y*threeToMetersScale ); 	// Altitude
 };
 
 IB.map.LatLonPoint.prototype.getAddress = function(callback) {
