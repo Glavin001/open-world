@@ -31,6 +31,9 @@ function handler (req, res) {
 
 					if (  fullPath.indexOf(".js", fullPath.length - ".js".length) !== -1 )
 						res.setHeader("Content-Type", "text/javascript");
+					else if (  fullPath.indexOf(".css", fullPath.length - ".css".length) !== -1 )
+						res.setHeader("Content-Type", "text/css");
+
 					res.writeHead(200);
 					res.end(data);
   				}
