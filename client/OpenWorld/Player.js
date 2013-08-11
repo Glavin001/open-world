@@ -32,11 +32,11 @@ OW.player.preGameStart = function () {
     // Move player to current Geolocation
     IB.map.currentPlayerLatLon( function(latLonPoint) {
 		// *latLonPoint* variable is now an instance of LatLatPoint with the values of the Geolocation
-		console.log(latLonPoint);
-		console.log(self.pc);
+		//console.log(latLonPoint);
+		//console.log(self.pc);
 
-		var m = latLonPoint.fromLatLonToMeters();
-		console.log(m);
+		//var m = latLonPoint.fromLatLonToMeters();
+		//console.log(m);
 
 		var pos = self.pc.pawn.position;
 		/*
@@ -48,7 +48,7 @@ OW.player.preGameStart = function () {
 		pos.x = newPos.x;
 		pos.y= newPos.y;
 		pos.z = newPos.z;
-		
+
 	});
 	
 };

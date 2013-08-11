@@ -91,10 +91,12 @@ IB.map.LatLonPoint.prototype.toString = function() {
 IB.map.LatLonPoint.prototype.setLatLon = function(lat, lon) {
 	this.latitude = lat;
 	this.longitude = lon;
+	return this;
 };
 
 IB.map.LatLonPoint.prototype.setAltitude = function(altitude) {
 	this.altitude = altitude;
+	return this;
 };
 IB.map.LatLonPoint.prototype.distance = function(otherLatLonPoint) {
 
@@ -163,6 +165,12 @@ IB.map.LatLonPoint.prototype.setToMeters = function(x,y,z) {
 };
 
 IB.map.LatLonPoint.prototype.setToThreePosition = function(x,y,z) {
+	// Take in only a THREE.Vector3 (position)
+	if (!y && !z && x instanceof THREE.Vector3) {
+		z = x.z;
+		y = x.y;
+		x = x.x;
+	}
 	/*
 	z = latitude/vertical/forward/backwards
 	x = longitude/horizontal/left/right
@@ -173,6 +181,8 @@ IB.map.LatLonPoint.prototype.setToThreePosition = function(x,y,z) {
 		z*threeToMetersScale, 		// Latitude/vertical
 		x*threeToMetersScale, 		// Longitude/horizontal
 		y*threeToMetersScale ); 	// Altitude
+
+	return this;
 };
 
 IB.map.LatLonPoint.prototype.getAddress = function(callback) {

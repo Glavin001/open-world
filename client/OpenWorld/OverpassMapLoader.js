@@ -2,8 +2,6 @@ OW.overpassMap = Object.create(IB.map);
 
 ///////////////////////////////////////
 
-OW.overpassMap.chunkDiameter = 100.0; // In meters
-
 OW.overpassMap.chunks = {  };
 
 OW.overpassMap.startLoad = function (worldRef, info) {
@@ -58,7 +56,7 @@ OW.overpassMap.loadMapChunkAtLonLatPoint = function(lonLatPoint, radius) {
     maxlat = 44.6516050,  // 44.6496050, // 44.6688720, 
     maxlon = -63.5705590;  // -63.5725590; // -63.5592540; 
     */
-    radius = radius || 0.001
+    radius = radius || 0.001; // In lon/lat
     var centerLat = lonLatPoint.getLatitude(), centerLon = lonLatPoint.getLongitude();
     var minlat = centerLat - radius,
     minlon = centerLon - radius,
@@ -73,4 +71,59 @@ OW.overpassMap.loadMapChunkAtLonLatPoint = function(lonLatPoint, radius) {
         self.addMapChunk(mapData);
     });
 
+};
+
+OW.overpassMap.MapChunkHandler = function(chunkRef) {
+	var self = this;
+	if (!(self instanceof OW.overpassMap.MapChunkHandler)) {
+      return new OW.overpassMap.MapChunkHandler());
+    }
+
+    // Properties
+    self.chunks = chunkRef;
+	var maxLat = 100.0, maxLon = 100.0; // Maximum size of chunk, in meters
+
+    // Functions
+    self.chunkNameFromLonLatPoint = function(lonLatPoint) {
+    	
+    };
+
+};
+
+// Map Chunk
+OW.overpassMap.MapChunk = function( minLonLatPoint, maxLonLatPoint ) { // Bounding box
+	var self = this;
+	if (!(self instanceof OW.overpassMap.MapChunk)) {
+      return new OW.overpassMap.MapChunk(options);
+    }
+
+    // Properties
+    self.dirtyChunk = false; // 
+    self.loaded = false; // If loaded or not
+    self.object3d = new THREE.Object3d;
+
+    // Load
+    self.load();
+
+    // Methods
+	self.prototype.render = function(callback) {
+		// Load all of the 
+		self.load(function() {
+			// Render all objects that are not currently being rendered.
+
+		});
+	};
+
+	self.prototype.load = function(callback) {
+		// Check if already loaded
+		if (dirtyChunk || loaded) {
+			// Requires loading
+			OW.overpassMap.loadMapChunkAtLonLatPoint
+		} else {
+			// Already loaded
+			return callback && callback();
+		}
+	};
+
+    return self;
 };
