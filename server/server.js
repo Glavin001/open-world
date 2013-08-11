@@ -29,6 +29,8 @@ function handler (req, res) {
 						return res.end('Error loading index.html');
 					}
 
+					if (  fullPath.indexOf(".js", fullPath.length - ".js".length) !== -1 )
+						res.setHeader("Content-Type", "text/javascript");
 					res.writeHead(200);
 					res.end(data);
   				}
