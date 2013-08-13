@@ -176,11 +176,11 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
 
 		var p = latLonPoint.fromLatLonToMeters();
 
-    	// Calculate
+    	// Calculate (in meters)
     	latChunkId = parseInt(p.x / maxLat )*maxLat;
     	lonChunkId = parseInt(p.y / maxLon )*maxLon;
 
-		return {lat: latChunkId, lon: lonChunkId };    	
+		return {lat: latChunkId, lon: lonChunkId }; // In meters
     };
 
     self.getChunkWithId = function(chunkId) {
@@ -199,7 +199,7 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
     		} else {
 	    		// Does not exist
 	    		// Create chunk!
-	    		latChunks[chunkId.lon] = { };
+	    		latChunks[chunkId.lon] = self.createMapChunkAtChunkId(chunkId);
 	    		var lonChunk = latChunks[chunkId.lon];
 	    		return lonChunk;
     		}
@@ -208,11 +208,22 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
     		// Create chunk!
     		self.chunks[chunkId.lat] = { };
     		var latChunks = self.chunks[chunkId.lat];
-    		latChunks[chunkId.lon] = { };
+    		latChunks[chunkId.lon] = self.createMapChunkAtChunkId(chunkId);
     		var lonChunk = latChunks[chunkId.lon];
     		return lonChunk;
     	}
     };
+
+    self.createMapChunkAtChunkId = function(chunkId) {
+    	// Create points 
+    	var minLatLonPoint new IB.map.LatLonPoint(), maxLatLonPoint = new IB.map.LatLonPoint();
+    	//  Calculate boundaries in meters and convert to LatLonPoint
+    	minLatLonPoint.setToMeters(chunkId.lat - maxLat/2, chunkId.lon - maxLon/2, 0.0);
+    	maxLatLonPoint.setToMeters(chunkId.lat + maxLat/2, chunkId.lon + maxLon/2, 0.0);
+    	// Create chunk with LatLonPoints
+		var chunk = new OW.overpassMap.MapChunk(minLatLonPoint, maxLatLonPoint);
+		return chunk;
+    }
 
 };
 
@@ -220,16 +231,13 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
 OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Bounding box
 	var self = this;
 	if (!(self instanceof OW.overpassMap.MapChunk)) {
-      return new OW.overpassMap.MapChunk(options);
+      return new OW.overpassMap.MapChunk( minLatLonPoint, maxLatLonPoint );
     }
 
     // Properties
     self.dirtyChunk = false; // 
     self.loaded = false; // If loaded or not
     self.object3d = new THREE.Object3d;
-
-    // Load
-    self.load();
 
     // Methods
 	self.prototype.render = function(callback) {
@@ -250,6 +258,9 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			return callback && callback();
 		}
 	};
+
+    // Load & Render
+    self.render();
 
     return self;
 };
