@@ -306,8 +306,9 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 
 				// Re-Position
 				obj.position.x = minPos.x;
-				obj.position.y = 10.0; //minPos.y || 0.0;
+				obj.position.y = 1.0; //minPos.y || 0.0;
 				obj.position.z = minPos.z;
+				obj.rotation.y = -Math.PI / 2;
 				// Merge
 				// THREE.GeometryUtils.merge(self.object3D, obj);
 				self.object3D = obj;
