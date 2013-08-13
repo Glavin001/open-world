@@ -58,6 +58,7 @@ OW.overpassMap.addMapChunk = function (overpassData) {
 	this.addMapGeo(processedGeometry);
 };
 
+/*
 OW.overpassMap.queriesPerSecond = 3, OW.overpassMap.pendingQueries = [], OW.overpassMap.lastQueryTime = null; // Max is 5 requests per second, and then errors occur.
 OW.overpassMap.loadMapChunkAtLatLonPoint = function(latLonPoint, options, callback) {
 	var self = this;
@@ -109,6 +110,33 @@ OW.overpassMap.loadMapChunkAtLatLonPoint = function(latLonPoint, options, callba
 
 	}
 };
+*/
+
+OW.overpassMap.loadMapChunkWithBoundingBox = function (minLatLonPoint, maxLatLonPoint, callback, options) {
+	if ( !(minLatLonPoint instanceof IB.map.LatLonPoint && maxLatLonPoint instanceof IB.map.LatLonPoint ) ) 
+		return callback && callback(false);
+
+	options = options || { };
+    var outputFormat = options.out || "json"; // "xml";
+
+	var url = 'http://overpass.osm.rambler.ru/cgi/interpreter?data=[out:'+outputFormat+'];(node('+minLatLonPoint.getLatitude()+','+minLatLonPoint.getLongitude()+','+maxLatLonPoint.getLatitude()+','+maxLatLonPoint.getLongitude()+');%3C;%3E;);out%20meta;';
+	$.ajax({ url: url , method: "GET", dataType:"text" })
+	.done(function(mapData) {
+		//console.log("Done: Have Map Data");
+		//console.dir(mapData);
+		return callback && callback(mapData); // self.addMapChunk(mapData);
+	})
+	.fail(function(event) {
+		console.log(arguments);
+		console.error( event.error() );
+		return callback && callback(false);
+	})
+	.always(function(){
+		// console.log('Finished loading map data from Overpass.');
+
+	});
+	return url;
+};
 
 OW.overpassMap.MapRenderer = function(chunkRef) {
 	var self = this;
@@ -127,6 +155,8 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
     self.renderAtLatLonPoint = function(latLonPoint) {
 		var mainChunkId = self.chunkIdFromLatLonPoint(latLonPoint),
 		mainChunkIdStr = JSON.stringify(mainChunkId);
+
+		/*
     	//if (pendingLoads >= maxPendingLoads) {
     	//	console.log('Currently loading...');
     	//} else 
@@ -168,19 +198,23 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
     		// console.log('Already loaded.');
     		// console.log(mainChunkId);
     	}
+    	*/
+
+    	var chunk = self.getChunkWithId(mainChunkId);
 
     };
+
     self.chunkIdFromLatLonPoint = function(latLonPoint) {
     	// Number is fastest Object property name for retrieval (see JSPerfs below) 
 		var latChunkId, lonChunkId;
 
 		var p = latLonPoint.fromLatLonToMeters();
 
-    	// Calculate
+    	// Calculate (in meters)
     	latChunkId = parseInt(p.x / maxLat )*maxLat;
     	lonChunkId = parseInt(p.y / maxLon )*maxLon;
 
-		return {lat: latChunkId, lon: lonChunkId };    	
+		return {lat: latChunkId, lon: lonChunkId }; // In meters
     };
 
     self.getChunkWithId = function(chunkId) {
@@ -199,7 +233,7 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
     		} else {
 	    		// Does not exist
 	    		// Create chunk!
-	    		latChunks[chunkId.lon] = { };
+	    		latChunks[chunkId.lon] = self.createMapChunkAtChunkId(chunkId);
 	    		var lonChunk = latChunks[chunkId.lon];
 	    		return lonChunk;
     		}
@@ -208,11 +242,22 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
     		// Create chunk!
     		self.chunks[chunkId.lat] = { };
     		var latChunks = self.chunks[chunkId.lat];
-    		latChunks[chunkId.lon] = { };
+    		latChunks[chunkId.lon] = self.createMapChunkAtChunkId(chunkId);
     		var lonChunk = latChunks[chunkId.lon];
     		return lonChunk;
     	}
     };
+
+    self.createMapChunkAtChunkId = function(chunkId) {
+    	// Create points 
+    	var minLatLonPoint = new IB.map.LatLonPoint(), maxLatLonPoint = new IB.map.LatLonPoint();
+    	//  Calculate bounding box in meters and convert to LatLonPoint
+    	minLatLonPoint.setToMeters(chunkId.lat - maxLat/2, chunkId.lon - maxLon/2, 0.0);
+    	maxLatLonPoint.setToMeters(chunkId.lat + maxLat/2, chunkId.lon + maxLon/2, 0.0);
+    	// Create chunk with LatLonPoints
+		var chunk = new OW.overpassMap.MapChunk(minLatLonPoint, maxLatLonPoint);
+		return chunk;
+    }
 
 };
 
@@ -220,37 +265,106 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
 OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Bounding box
 	var self = this;
 	if (!(self instanceof OW.overpassMap.MapChunk)) {
-      return new OW.overpassMap.MapChunk(options);
+      return new OW.overpassMap.MapChunk( minLatLonPoint, maxLatLonPoint );
     }
 
     // Properties
     self.dirtyChunk = false; // 
     self.loaded = false; // If loaded or not
-    self.object3d = new THREE.Object3d;
+    self.reloadInterval = 1000; 
+    self.reloadAttempts=0;
+    self.maxReloadAttempts=10;
+    self.object3D = new THREE.Object3D();
 
-    // Load
-    self.load();
+
 
     // Methods
-	self.prototype.render = function(callback) {
+	self.render = function(callback) {
 		// Load all of the 
-		self.load(function() {
+		self.load(function(successfullyLoaded) {
 			// Render all objects that are not currently being rendered.
+			if (successfullyLoaded) {
+				console.log('Ready to render', self);
 
+				var msg = "Loaded!";
+				var text3d = new THREE.TextGeometry(msg, {
+					size: 0.5,
+					height: 0.1,
+					curveSegments: 3,
+					font: "helvetiker"
+				});
+				text3d.computeBoundingBox();
+
+				var textMaterial = new THREE.MeshPhongMaterial({
+					color: 0xFFFFFF,
+					overdraw: true});
+				var obj = new THREE.Mesh(text3d, textMaterial);
+				
+				// Get position in Three.js units
+				var p = minLatLonPoint.fromLatLonToThreePosition();
+				// Re-Position
+				obj.position.x = p.x;
+				obj.position.y = p.y;
+				obj.position.z = p.z;
+				// Merge
+				// THREE.GeometryUtils.merge(self.object3D, obj);
+				self.object3D = obj;
+				// Add to scene
+				OW.world.sceneAdd( self.object3D );
+
+			} else {
+				// Error occured
+				console.error('Could not render chunk because load failed.');
+			}
 		});
 	};
 
-	self.prototype.load = function(callback) {
+	self.load = function(callback) {
 		// Check if already loaded
-		if (dirtyChunk || loaded) {
+		if (self.dirtyChunk || !self.loaded) {
 			// Requires loading
-			OW.overpassMap.loadMapChunkAtLatLonPoint
+			OW.overpassMap.loadMapChunkWithBoundingBox(minLatLonPoint, maxLatLonPoint, function (mapData) {
+				if (mapData) {
+					//console.log(mapData);
+					self.loaded = true;
+					return callback && callback(true);
+				} else {
+					// Failed, reload
+					setTimeout( function() {
+						self.reloadAttempts++;
+						if (self.maxReloadAttempts > self.reloadAttempts) {
+							self.load(callback);
+						} else {
+							self.reloadAttempts = 0; // Reset
+							return callback && callback(false);
+						}
+					}, self.reloadInterval * self.reloadAttempts);
+				}
+			});
+
 		} else {
 			// Already loaded
-			return callback && callback();
+			return callback && callback(true);
 		}
 	};
 
+    // Load & Render
+    self.render();
+
     return self;
+};
+
+OW.overpassMap.Way = function(parentMapChunk) {
+	var self = this;
+	if (!(self instanceof OW.overpassMap.Way)) {
+      return new OW.overpassMap.Way( );
+    }
+
+	self.parentMapChunk = parentMapChunk;
+
+};
+
+OW.overpassMap.Node = function() {
+
 };
 

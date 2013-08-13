@@ -58,6 +58,15 @@ OW.pc.tick = function (deltaTime) {
 	this.nameTag.position.z = this.pawn.position.z - 3;
 	this.nameTag.rotation.x = 0;
 	this.nameTag.rotation.y = Math.PI;
+
+	OW.hemiLight.position.x = this.pawn.position.x;
+	//OW.hemiLight.position.y = this.pawn.position.y;
+	OW.hemiLight.position.z = this.pawn.position.z;
+	OW.ground.position.x = this.pawn.position.x;
+	//OW.ground.position.y = this.pawn.position.y;
+	OW.ground.position.z = this.pawn.position.z;
+
+
 };
 
 OW.pc.processControls = function (deltaTime) {
