@@ -10,6 +10,8 @@ OW.pc.camDistance = 10;
 
 OW.pc.camAngle = 35;
 
+OW.pc.direction = 0;
+
 ////////////////////////////
 
 OW.pc.DEFAULT_PAWN = "pawn";
@@ -72,6 +74,8 @@ OW.pc.processControls = function (deltaTime) {
 	else if (this.input.rstrafe && !this.input.lstrafe) {
 		this.pawn.position.x -= (50 * deltaTime) + (50 * deltaTime * this.input.boost);
 	}
+	
+	this.pawn.rotation.y = rotation;
 	
 	this.camera.position.y = this.pawn.position.y + (this.camDistance * Math.sin(this.camAngle*Math.PI/180));
 	
