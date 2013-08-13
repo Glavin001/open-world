@@ -26,6 +26,9 @@ OW.customStartupFunctions3.push(function () {
     ////IMPORTANT, draw on both sides 
     ground.doubleSided = true;
     ground.receiveShadow = true;
+
+    this.ground = ground;
+
     this.world.sceneAdd(ground);
 
 	var pointLight = new THREE.PointLight(0xFFFFFF);
@@ -39,14 +42,20 @@ OW.customStartupFunctions3.push(function () {
 	OW.daCirc = circle;
 	//this.world.sceneAdd(circle);
 
+	
 	// Hemisphere Light
 	var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
 	hemiLight.color.setHSL( 0.6, 1, 0.6 );
 	hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
 	hemiLight.position.set( 0, 500, 0 );
-	this.world.sceneAdd( hemiLight );
+	
+	this.hemiLight = hemiLight;
 
-	// this.world.sceneAdd(new THREE.AmbientLight(0x555555));
+	this.world.sceneAdd( hemiLight );
+	
+
+	this.world.sceneAdd(new THREE.AmbientLight(0x555555));
+	
 	OW.daQuat = function (a, b, c, d) {circle.quaternion.x = a; circle.quaternion.y = b; circle.quaternion.z = c; circle.quaternion.w = d; console.log("quat called");};
 	OW.daRot = function (a, b, c) {circle.rotation.x = a;circle.rotation.y = b;circle.rotation.z = c;console.log("rot called");};
 	OW.temRot = new THREE.Quaternion(-1,1,1,1);
