@@ -8,8 +8,8 @@ OW.Input = function () {
 	$(document).keyup({that: this}, function (event) {
 		event.data.that.keyupHandler(event);
 	});
-	$(document).mousemove(function(event) {
-		
+	$(document).mousemove({that: this}, function(event) {
+		event.data.that.mousemoveHandler(event);
 	});
 };
 
