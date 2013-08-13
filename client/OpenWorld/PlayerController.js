@@ -62,10 +62,6 @@ OW.pc.tick = function (deltaTime) {
 	OW.hemiLight.position.x = this.pawn.position.x;
 	//OW.hemiLight.position.y = this.pawn.position.y;
 	OW.hemiLight.position.z = this.pawn.position.z;
-	OW.ground.position.x = this.pawn.position.x;
-	//OW.ground.position.y = this.pawn.position.y;
-	OW.ground.position.z = this.pawn.position.z;
-
 
 };
 

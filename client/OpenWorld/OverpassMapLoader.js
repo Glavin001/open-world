@@ -288,7 +288,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 
 				var msg = "Loaded!";
 				var text3d = new THREE.TextGeometry(msg, {
-					size: 0.5,
+					size: 1.5,
 					height: 0.1,
 					curveSegments: 3,
 					font: "helvetiker"
@@ -301,16 +301,37 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 				var obj = new THREE.Mesh(text3d, textMaterial);
 				
 				// Get position in Three.js units
-				var p = minLatLonPoint.fromLatLonToThreePosition();
+				var minPos = minLatLonPoint.fromLatLonToThreePosition();
+				var maxPos = maxLatLonPoint.fromLatLonToThreePosition();
+
 				// Re-Position
-				obj.position.x = p.x;
-				obj.position.y = p.y;
-				obj.position.z = p.z;
+				obj.position.x = minPos.x;
+				obj.position.y = 10.0; //minPos.y || 0.0;
+				obj.position.z = minPos.z;
 				// Merge
 				// THREE.GeometryUtils.merge(self.object3D, obj);
 				self.object3D = obj;
 				// Add to scene
 				OW.world.sceneAdd( self.object3D );
+
+				var grassTex = THREE.ImageUtils.loadTexture('img/Grass_1.png');
+			    grassTex.wrapS = THREE.RepeatWrapping;
+			    grassTex.wrapT = THREE.RepeatWrapping;
+			    grassTex.repeat.x = 256;
+			    grassTex.repeat.y = 256;
+			    var groundMat = new THREE.MeshLambertMaterial({/*color: 0x2133BF*/map:grassTex});
+			    var groundGeo = new THREE.PlaneGeometry(Math.abs(maxPos.x-minPos.x), Math.abs(maxPos.z-minPos.z));
+			    var ground = new THREE.Mesh(groundGeo, groundMat);
+			    console.log(minPos,maxPos);
+			    ground.position.x = Math.max(minPos.x, maxPos.x);
+			    ground.position.z = Math.max(minPos.z, maxPos.z);
+			    ground.position.y = -1.9; //lower it 
+			    console.log(ground.position);
+			    ground.rotation.x = -Math.PI / 2; //-90 degrees around the xaxis 
+			    ////IMPORTANT, draw on both sides 
+			    ground.doubleSided = true;
+			    ground.receiveShadow = true;
+			    OW.world.sceneAdd(ground);
 
 			} else {
 				// Error occured
