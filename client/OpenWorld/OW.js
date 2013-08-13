@@ -26,9 +26,6 @@ OW.customStartupFunctions3.push(function () {
     ////IMPORTANT, draw on both sides 
     ground.doubleSided = true;
     ground.receiveShadow = true;
-
-    this.ground = ground;
-
     this.world.sceneAdd(ground);
 
 	var pointLight = new THREE.PointLight(0xFFFFFF);
