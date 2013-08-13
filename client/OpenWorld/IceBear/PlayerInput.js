@@ -8,11 +8,9 @@ IB.input.useBool = false;
 
 IB.input.mappings = {};
 
-IB.input.lastMousePos = {};
-
 IB.input.sensitivity = 1;
 
-IB.input.mouseDis = {x:0, y:0};
+IB.input.mousePos = {x:0, y:0};
 
 ////////////////////////////////////////////
 
@@ -68,10 +66,6 @@ IB.input.keyupHandler = function (event) {
 };
 
 IB.input.mousemoveHandler = function(event) {
-		if(!$.isEmptyObject(this.lastMousePos)) {
-			this.mouseDis.x = (event.pageX - this.lastMousePos.x) * this.sensitivity;
-			this.mouseDis.y = (event.pageY - this.lastMousePos.y) * this.sensitivity;
-		}
-		
-		this.lastMousePos = {x: event.pageX, y: event.pageY};
+	this.mousePos.x = event.pageX;
+	this.mousePos.y = event.pageY;
 };
