@@ -20,7 +20,7 @@ OW.overpassMap.tick = function (deltaTime) {
 	var gpos = new IB.map.LatLonPoint();
 	gpos.setToThreePosition(cpos.x, cpos.y, cpos.z);
 	//console.log(cpos, gpos, gpos.fromLatLonToThreePosition());
-
+	/*
 	var msg = OW.player.username+" "+gpos;
 	var text3d = new THREE.TextGeometry(msg, {
 		size: 0.5,
@@ -37,7 +37,7 @@ OW.overpassMap.tick = function (deltaTime) {
 	OW.world.scene.remove( OW.player.pc.nameTag );
 	OW.player.pc.nameTag = newNameTag;
 	OW.world.sceneAdd( newNameTag );
-
+	*/
 	// Load Map
 
 	// Create Map Chunk Handler
@@ -303,7 +303,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 				// Get position in Three.js units
 				var minPos = minLatLonPoint.fromLatLonToThreePosition();
 				var maxPos = maxLatLonPoint.fromLatLonToThreePosition();
-
+				var centerPos = { x: ( (maxPos.x - minPos.x) / 2 + minPos.x), y: 0, z: ( (maxPos.y - minPos.y) / 2 + minPos.y) };
 				// Re-Position
 				obj.position.x = minPos.x;
 				obj.position.y = 1.0; //minPos.y || 0.0;
@@ -324,9 +324,9 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			    var groundGeo = new THREE.PlaneGeometry(Math.abs(maxPos.x-minPos.x), Math.abs(maxPos.z-minPos.z));
 			    var ground = new THREE.Mesh(groundGeo, groundMat);
 			    console.log(minPos,maxPos);
-			    ground.position.x = Math.max(minPos.x, maxPos.x);
-			    ground.position.z = Math.max(minPos.z, maxPos.z);
-			    ground.position.y = -1.9; //lower it 
+			    ground.position.x = minPos.x;
+			    ground.position.z = minPos.z;
+			    ground.position.y = -0.0; // -1.9; //lower it 
 			    console.log(ground.position);
 			    ground.rotation.x = -Math.PI / 2; //-90 degrees around the xaxis 
 			    ////IMPORTANT, draw on both sides 
