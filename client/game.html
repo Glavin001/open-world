@@ -44,7 +44,23 @@
 
 			
 			<!-- make static resources by importing a script then locking the object -->
-			
+
+			<!-- Leaflet -->
+			 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+			 <!--[if lte IE 8]>
+			     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+			 <![endif]-->
+			  <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+				<style>
+				#miniMap {
+					height: 300px;
+					position: fixed;
+					bottom: 50px;
+					left: 50px;
+					width: 300px;
+				}
+				</style>
+
 			<!-- could use a .get() to load all the scripts during the loading screen -->
 			
 			<script src="OpenWorld/OW.js"></script>
@@ -59,13 +75,14 @@
 				<script type="text/javascript" src="OpenWorld/Player.js"></script>
 				<script type="text/javascript" src="OpenWorld/World.js"></script>
 
-
 	</head>
 
 	<body>
 		
 		<div id='EngineLogo' style="opacity: 0"><img src='img/IceBear.png' height='600px'></img></div>
 		
+		<div id="miniMap" style=""></div>
+
 		<script type="text/javascript">
 			var Clay = Clay || {};
 			Clay.gameKey = "openworld";
@@ -85,5 +102,6 @@
     			var tag = document.getElementsByTagName("script")[0]; tag.parentNode.insertBefore(clay, tag);
 			} )();
 		</script>
+
 	</body>
 </html>

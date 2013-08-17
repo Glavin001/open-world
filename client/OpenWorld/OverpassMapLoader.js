@@ -8,6 +8,17 @@ OW.overpassMap.startLoad = function (worldRef, info) {
 	// Create Map Chunk Handler
 	self.mapRenderer = new self.MapRenderer();
 	
+	// Create Mini Map
+	console.log('Create Mini Map');
+	var geoPt = new IB.map.LatLonPoint(); // OW.player.pc.pawn.position
+	console.log(geoPt);
+	var miniMap = L.map('miniMap').setView([geoPt.getLatitude(), geoPt.getLongitude()], 18);
+	L.tileLayer('http://{s}.tile.cloudmade.com/cef413c62be14a7e9cfe439e97bde4a1/997/256/{z}/{x}/{y}.png', {
+	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+	    maxZoom: 18
+	}).addTo(miniMap);
+	self.miniMap = miniMap;
+
 	self.finishInitialLoad(worldRef, info);
 };
 
@@ -43,7 +54,12 @@ OW.overpassMap.tick = function (deltaTime) {
 	// Create Map Chunk Handler
 	self.mapRenderer = self.mapRenderer || new self.MapRenderer();
 
+	// Move mini map
+	self.miniMap.panTo({lat: gpos.getLatitude(), lng: gpos.getLongitude() });
+
+	// Render at the current player position
 	self.mapRenderer.renderAtLatLonPoint(gpos);
+
 
 };
 

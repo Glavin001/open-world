@@ -71,11 +71,11 @@ OW.pc.processControls = function (deltaTime) {
 	
 	if (this.input.mousePos.x > middleX + this.rotateDistance) {
 		this.pawn.rotation.y += ((this.input.mousePos.x - middleX - this.rotateDistance) / middleX) * deltaTime;
-		console.log(((this.input.mousePos.x - middleX - this.rotateDistance) / middleX));
+		//console.log(((this.input.mousePos.x - middleX - this.rotateDistance) / middleX));
 	}
 	else if (this.input.mousePos.x < middleX - this.rotateDistance) {
 		this.pawn.rotation.y += ((this.input.mousePos.x - middleX + this.rotateDistance) / middleX) * deltaTime;
-		console.log(((this.input.mousePos.x - middleX + this.rotateDistance) / middleX));
+		//console.log(((this.input.mousePos.x - middleX + this.rotateDistance) / middleX));
 	}
 	
 	if (this.input.forward && !this.input.backward) {

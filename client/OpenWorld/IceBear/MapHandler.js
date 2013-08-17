@@ -47,7 +47,8 @@ IB.map.currentPlayerLatLon = function(callback) {
 		var p = self.LatLonPoint(geoposition.coords.latitude, geoposition.coords.longitude, geoposition.coords.altitude);
 		return callback && callback(p);
 	}, function(data) {
-		return callback && callback(null);
+		console.log(data);
+		return callback && callback(false);
 	});
 };
 
