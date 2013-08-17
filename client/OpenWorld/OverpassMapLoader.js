@@ -20,7 +20,7 @@ OW.overpassMap.startLoad = function (worldRef, info) {
 	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
 	    maxZoom: 18
 	}).addTo(miniMap);
-	var currPosMarker = L.marker([geoPt.getLatitude(), geoPt.getLongitude()]);
+	var currPosMarker = new L.CircleMarker([geoPt.getLatitude(), geoPt.getLongitude()]);
 	currPosMarker.addTo(miniMap);
 	// Track movement
 	miniMap.on('move', function(event) {
@@ -72,7 +72,10 @@ OW.overpassMap.tick = function (deltaTime) {
 
 	// Move mini map
 	//console.log(self.miniMap);
-	self.miniMap.setView( [ gpos.getLatitude(), gpos.getLongitude() ], 18 );
+	self.miniMap.panTo( [ gpos.getLatitude(), gpos.getLongitude() ], { reset:true, animate:false, duration:0} );
+	//console.log(self.miniMap.getCenter(), self.miniMap.getZoom() );
+	// self.miniMap.setView( [ gpos.getLatitude(), gpos.getLongitude() ], self.miniMap.getZoom() );
+	// self.miniMap.invalidateSize(true);
 
 	// Render at the current player position
 	self.mapRenderer.renderAtLatLonPoint(gpos);
