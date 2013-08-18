@@ -158,6 +158,7 @@ OW.overpassMap.loadMapChunkWithBoundingBox = function (minLatLonPoint, maxLatLon
     var outputFormat = options.out || "json"; // "xml";
 
 	var url = 'http://overpass.osm.rambler.ru/cgi/interpreter?data=[out:'+outputFormat+'];(node('+minLatLonPoint.getLatitude()+','+minLatLonPoint.getLongitude()+','+maxLatLonPoint.getLatitude()+','+maxLatLonPoint.getLongitude()+');%3C;%3E;);out%20meta;';
+	console.log(url);
 	$.ajax({ url: url , method: "GET", dataType:"text" })
 	.done(function(mapData) {
 		//console.log("Done: Have Map Data");
@@ -411,6 +412,8 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 					'z_4': elevation,
 					'lineWidth': roadWidth,
 			    		*/
+			    		
+			    		/*
 			    		var elevation = 1.0;
 						var geometry = new THREE.Geometry();
 						geometry.vertices.push(
@@ -436,6 +439,12 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 						feature.matrixAutoUpdate = false;
 						feature.castShadow = true;
 						feature.receiveShadow = true;
+						*/
+
+						var feature = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10), new THREE.MeshLambertMaterial({color: 0x0000CC}));
+						feature.position.x = tPt.x;
+						feature.position.y = tPt.y;
+						feature.position.z = tPt.z;
 						
 						OW.world.sceneAdd(feature);
 
