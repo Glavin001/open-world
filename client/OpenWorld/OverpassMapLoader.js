@@ -476,11 +476,10 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 								geometry.computeBoundingSphere();
 								//console.log(geometry.vertices);
 								var texture = new THREE.MeshBasicMaterial({
-									color: 0x00FFFF, // 0x000000,
-									lineWidth: 1
+									color: 0x00FFFF // 0x000000,
+									//, lineWidth: 1
 								});
-								//var feature = new THREE.Mesh(geometry, texture);
-								var feature = new THREE.Line(geometry, texture);
+								var feature = new THREE.Mesh(geometry, texture);
 								feature.matrixAutoUpdate = false;
 								feature.castShadow = true;
 								feature.receiveShadow = true;
