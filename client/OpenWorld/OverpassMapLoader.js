@@ -354,7 +354,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 				// Add to scene
 				OW.world.sceneAdd( self.object3D );
 
-				
+				/*
 				var grassTex = THREE.ImageUtils.loadTexture('img/Grass_1.png');
 			    grassTex.wrapS = THREE.RepeatWrapping;
 			    grassTex.wrapT = THREE.RepeatWrapping;
@@ -373,7 +373,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			    ground.doubleSided = true;
 			    ground.receiveShadow = true;
 			    OW.world.sceneAdd(ground);
-			    
+			    */
 
 			    // Render roads
 			    console.log('localWays', self.localWays);
@@ -383,9 +383,9 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			    	// console.log(id);
 			    	// Get the way from the id
 			    	var way = self.globalMapData.way[id];
-			    	// console.log(way);
 			    	// Iterate over all nodes
-			    	var prevNode, currNode;
+			    	var prevNode, currNode, wayType=(way.tags['highway'])?"highway":(way.tags['building'])?"building":"landuse";
+			    	console.log(wayType, way);
 			    	for (var n=0, nodes=way.nodes, nlen=nodes.length; n<nlen; n++) {
 			    		// Get node
 			    		currNode = self.globalMapData.node[ nodes[n] ];
@@ -396,58 +396,138 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			    		currNode.ThreePosition = new THREE.Vector3(tPt.x, tPt.y, tPt.z);
 			    		//console.log(currNode.ThreePosition);
 			    		//console.log(currNode);
-			    		prevNode = prevNode || currNode;
-			    		/*
+			    		if (wayType==="highway") {
+			    			console.log("Rendering", wayType, way);
+				    		if (prevNode) {
+					    		// prevNode = prevNode || currNode;
+					    		/*
+							'x_1': prevLon,
+							'y_1': prevLat,
+							'z_1': elevation,
+							'x_2': prevLon,
+							'y_2': prevLat - roadWidth,
+							'z_2': elevation,
+							'x_3': lon,
+							'y_3': lat - roadWidth,
+							'z_3': elevation,
+							'x_4': lon,
+							'y_4': lat,
+							'z_4': elevation,
+							'lineWidth': roadWidth,
+					    		*/
+
+					    		var elevation = 1.0;
+								var geometry = new THREE.Geometry();
+								geometry.vertices.push( new THREE.Vector3(prevNode.ThreePosition.x, elevation, prevNode.ThreePosition.z));
+								//geometry.vertices.push(new THREE.Vector3(prevNode.ThreePosition.x, elevation, prevNode.ThreePosition.z - 0.1));
+								//geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x, elevation, prevNode.ThreePosition.z - 0.1));
+								geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x, elevation, currNode.ThreePosition.z));
+								//geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
+								//geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
+								geometry.computeBoundingSphere();
+								//console.log(geometry.vertices);
+								var material = new THREE.LineBasicMaterial({
+									color: 0x0000ff,
+									lineWidth: 10
+								});
+								var texture = new THREE.MeshBasicMaterial({
+									color: 0xFFFFFF, // 0x000000,
+									lineWidth: 1
+								});
+								//var feature = new THREE.Mesh(geometry, texture);
+								var feature = new THREE.Line(geometry, material);
+								feature.matrixAutoUpdate = false;
+								feature.castShadow = true;
+								feature.receiveShadow = true;
+								/*
+								var feature = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1), new THREE.MeshLambertMaterial({color: 0x0000CC}));
+								feature.position.x = tPt.x;
+								feature.position.y = tPt.y;
+								feature.position.z = tPt.z;
+								*/
+								OW.world.sceneAdd(feature);
+							}
+						} else if (wayType === "building") {
+			    			console.log("Rendering", wayType, way);
+				    		if (prevNode) {
+							/*
 					'x_1': prevLon,
 					'y_1': prevLat,
 					'z_1': elevation,
 					'x_2': prevLon,
-					'y_2': prevLat - roadWidth,
-					'z_2': elevation,
+					'y_2': prevLat,
+					'z_2': elevation + buildingHeight,
 					'x_3': lon,
-					'y_3': lat - roadWidth,
-					'z_3': elevation,
+					'y_3': lat,
+					'z_3': elevation + buildingHeight,
 					'x_4': lon,
 					'y_4': lat,
 					'z_4': elevation,
-					'lineWidth': roadWidth,
-			    		*/
-			    		
-			    		/*
-			    		var elevation = 1.0;
-						var geometry = new THREE.Geometry();
-						geometry.vertices.push(
-							new THREE.Vector3(prevNode.ThreePosition.x,
-							elevation, prevNode.ThreePosition.z));
-						geometry.vertices.push(new THREE.Vector3(prevNode.ThreePosition.x,
-							elevation, prevNode.ThreePosition.z - 10));
-						geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x, 
-							elevation, prevNode.ThreePosition.z - 10));
-						geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x,
-							elevation, currNode.ThreePosition.z));
-						geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
-						geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
-						geometry.computeBoundingSphere();
-						
-						//console.log(geometry.vertices);
+							*/
 
-						var texture = new THREE.MeshBasicMaterial({
-							color: 0xFFFFFF, // 0x000000,
-							lineWidth: 10
-						});
-						var feature = new THREE.Mesh(geometry, texture);
-						feature.matrixAutoUpdate = false;
-						feature.castShadow = true;
-						feature.receiveShadow = true;
-						*/
+					    		var elevation = 1.0, height=10.0;
+								var geometry = new THREE.Geometry();
+								geometry.vertices.push( new THREE.Vector3(prevNode.ThreePosition.x, elevation, prevNode.ThreePosition.z));
+								geometry.vertices.push(new THREE.Vector3(prevNode.ThreePosition.x, elevation+height, prevNode.ThreePosition.z));
+								geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x, elevation+height, currNode.ThreePosition.z));
+								geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x, elevation, currNode.ThreePosition.z));
+								geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
+								geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
+								geometry.computeBoundingSphere();
+								//console.log(geometry.vertices);
+								var texture = new THREE.MeshBasicMaterial({
+									color: 0x00FFFF, // 0x000000,
+									lineWidth: 1
+								});
+								//var feature = new THREE.Mesh(geometry, texture);
+								var feature = new THREE.Line(geometry, texture);
+								feature.matrixAutoUpdate = false;
+								feature.castShadow = true;
+								feature.receiveShadow = true;
+								OW.world.sceneAdd(feature);
 
-						var feature = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10), new THREE.MeshLambertMaterial({color: 0x0000CC}));
-						feature.position.x = tPt.x;
-						feature.position.y = tPt.y;
-						feature.position.z = tPt.z;
-						
-						OW.world.sceneAdd(feature);
+							}
+						} else {
+							console.log("Rendering", wayType, way);
+				    		if (prevNode) {
+							/*
+					'x_1': prevLon,
+					'y_1': prevLat,
+					'z_1': elevation,
+					'x_2': prevLon,
+					'y_2': prevLat,
+					'z_2': elevation + buildingHeight,
+					'x_3': lon,
+					'y_3': lat,
+					'z_3': elevation + buildingHeight,
+					'x_4': lon,
+					'y_4': lat,
+					'z_4': elevation,
+							*/
 
+					    		var elevation = 1.0, height=10.0;
+								var geometry = new THREE.Geometry();
+								geometry.vertices.push( new THREE.Vector3(prevNode.ThreePosition.x, elevation, prevNode.ThreePosition.z));
+								geometry.vertices.push(new THREE.Vector3(prevNode.ThreePosition.x, elevation+height, prevNode.ThreePosition.z));
+								geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x, elevation+height, currNode.ThreePosition.z));
+								geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x, elevation, currNode.ThreePosition.z));
+								geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
+								geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
+								geometry.computeBoundingSphere();
+								//console.log(geometry.vertices);
+								var texture = new THREE.MeshBasicMaterial({
+									color: 0xFFFF00, // 0x000000,
+									lineWidth: 1
+								});
+								//var feature = new THREE.Mesh(geometry, texture);
+								var feature = new THREE.Line(geometry, texture);
+								feature.matrixAutoUpdate = false;
+								feature.castShadow = true;
+								feature.receiveShadow = true;
+								OW.world.sceneAdd(feature);
+
+							}
+						}
 						// Set previous
 						prevNode = currNode;
 
