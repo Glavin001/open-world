@@ -1,5 +1,7 @@
 OW.overpassMap = Object.create(IB.map);
 
+OW.overpassMap.globalMapData = { 'node': { }, 'way': { }, 'relation': { } }; // Storage of all nodes and ways
+
 ///////////////////////////////////////
 
 OW.overpassMap.startLoad = function (worldRef, info) {
@@ -72,7 +74,7 @@ OW.overpassMap.tick = function (deltaTime) {
 
 	// Move mini map
 	//console.log(self.miniMap);
-	self.miniMap.panTo( [ gpos.getLatitude(), gpos.getLongitude() ], { reset:true, animate:false, duration:0} );
+	self.miniMap.panTo( [ gpos.getLatitude(), gpos.getLongitude() ], { animate:false } );
 	//console.log(self.miniMap.getCenter(), self.miniMap.getZoom() );
 	// self.miniMap.setView( [ gpos.getLatitude(), gpos.getLongitude() ], self.miniMap.getZoom() );
 	// self.miniMap.invalidateSize(true);
@@ -159,7 +161,7 @@ OW.overpassMap.loadMapChunkWithBoundingBox = function (minLatLonPoint, maxLatLon
 	$.ajax({ url: url , method: "GET", dataType:"text" })
 	.done(function(mapData) {
 		//console.log("Done: Have Map Data");
-		//console.dir(mapData);
+		//console.log(mapData);
 		return callback && callback(mapData); // self.addMapChunk(mapData);
 	})
 	.fail(function(event) {
@@ -311,8 +313,8 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
     self.reloadAttempts=0;
     self.maxReloadAttempts=10;
     self.object3D = new THREE.Object3D();
-
-
+    self.globalMapData = OW.overpassMap.globalMapData;
+    self.localWays = [ ]; 
 
     // Methods
 	self.render = function(callback) {
@@ -351,12 +353,13 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 				// Add to scene
 				OW.world.sceneAdd( self.object3D );
 
+				
 				var grassTex = THREE.ImageUtils.loadTexture('img/Grass_1.png');
 			    grassTex.wrapS = THREE.RepeatWrapping;
 			    grassTex.wrapT = THREE.RepeatWrapping;
 			    grassTex.repeat.x = 256;
 			    grassTex.repeat.y = 256;
-			    var groundMat = new THREE.MeshLambertMaterial({/*color: 0x2133BF*/map:grassTex});
+			    var groundMat = new THREE.MeshLambertMaterial({map:grassTex}); // color: 0x2133BF
 			    var groundGeo = new THREE.PlaneGeometry(Math.abs(maxPos.x-minPos.x), Math.abs(maxPos.z-minPos.z));
 			    var ground = new THREE.Mesh(groundGeo, groundMat);
 			    console.log(minPos,maxPos);
@@ -369,6 +372,78 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			    ground.doubleSided = true;
 			    ground.receiveShadow = true;
 			    OW.world.sceneAdd(ground);
+			    
+
+			    // Render roads
+			    console.log('localWays', self.localWays);
+			    for (var i=0, localWays=self.localWays, len=localWays.length; i<len; i++) {
+			    	// Get way id
+			    	var id = localWays[i];
+			    	// console.log(id);
+			    	// Get the way from the id
+			    	var way = self.globalMapData.way[id];
+			    	// console.log(way);
+			    	// Iterate over all nodes
+			    	var prevNode, currNode;
+			    	for (var n=0, nodes=way.nodes, nlen=nodes.length; n<nlen; n++) {
+			    		// Get node
+			    		currNode = self.globalMapData.node[ nodes[n] ];
+			    		// console.log(node);
+			    		var nodePoint = new IB.map.LatLonPoint(currNode.lat, currNode.lon);
+			    		var tPt = nodePoint.fromLatLonToThreePosition();
+			    		currNode.LatLonPoint = nodePoint;
+			    		currNode.ThreePosition = new THREE.Vector3(tPt.x, tPt.y, tPt.z);
+			    		//console.log(currNode.ThreePosition);
+			    		//console.log(currNode);
+			    		prevNode = prevNode || currNode;
+			    		/*
+					'x_1': prevLon,
+					'y_1': prevLat,
+					'z_1': elevation,
+					'x_2': prevLon,
+					'y_2': prevLat - roadWidth,
+					'z_2': elevation,
+					'x_3': lon,
+					'y_3': lat - roadWidth,
+					'z_3': elevation,
+					'x_4': lon,
+					'y_4': lat,
+					'z_4': elevation,
+					'lineWidth': roadWidth,
+			    		*/
+			    		var elevation = 1.0;
+						var geometry = new THREE.Geometry();
+						geometry.vertices.push(
+							new THREE.Vector3(prevNode.ThreePosition.x,
+							elevation, prevNode.ThreePosition.z));
+						geometry.vertices.push(new THREE.Vector3(prevNode.ThreePosition.x,
+							elevation, prevNode.ThreePosition.z - 10));
+						geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x, 
+							elevation, prevNode.ThreePosition.z - 10));
+						geometry.vertices.push(new THREE.Vector3(currNode.ThreePosition.x,
+							elevation, currNode.ThreePosition.z));
+						geometry.faces.push(new THREE.Face4(0, 1, 2, 3));
+						geometry.faces.push(new THREE.Face4(3, 2, 1, 0));
+						geometry.computeBoundingSphere();
+						
+						//console.log(geometry.vertices);
+
+						var texture = new THREE.MeshBasicMaterial({
+							color: 0xFFFFFF, // 0x000000,
+							lineWidth: 10
+						});
+						var feature = new THREE.Mesh(geometry, texture);
+						feature.matrixAutoUpdate = false;
+						feature.castShadow = true;
+						feature.receiveShadow = true;
+						
+						OW.world.sceneAdd(feature);
+
+						// Set previous
+						prevNode = currNode;
+
+			    	}
+			    } 
 
 			} else {
 				// Error occured
@@ -384,8 +459,10 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			OW.overpassMap.loadMapChunkWithBoundingBox(minLatLonPoint, maxLatLonPoint, function (mapData) {
 				if (mapData) {
 					//console.log(mapData);
-					self.loaded = true;
-					return callback && callback(true);
+					self.processMapData(mapData, function() {
+						self.loaded = true;
+						return callback && callback(true);
+					});
 				} else {
 					// Failed, reload
 					setTimeout( function() {
@@ -404,6 +481,35 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			// Already loaded
 			return callback && callback(true);
 		}
+	};
+
+	self.processMapData = function(mapData, callback) {
+		console.log('Process Map Data');
+
+		if (typeof mapData === "string")
+			mapData = JSON.parse(mapData);
+
+		// Iterate thru elements
+		for (var i=0, elements = mapData.elements, len=elements.length; i<len; i++) {
+			var c = elements[i];
+			if (c.type==="node") {
+				// console.log('Node');
+				self.globalMapData.node[c.id] = self.globalMapData.node[c.id] || c;
+			} else if (c.type==="way") {
+				// console.log('Way');
+				self.globalMapData.way[c.id] = self.globalMapData.way[c.id] || c;
+				// self.localMapData.way[c.id] = self.localMapData.way[c.id] || c;
+				self.localWays.push(c.id);
+			} else if (c.type ==="relation" ) {
+				// console.log('Relation');
+				self.globalMapData.relation[c.id] = self.globalMapData.relation[c.id] || c;	
+			} else {
+				console.warn('Unknown element type, '+c.type);
+			}
+		}
+
+		return callback && callback();
+
 	};
 
     // Load & Render
