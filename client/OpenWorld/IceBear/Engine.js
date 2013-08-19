@@ -97,11 +97,11 @@ IB.engine.continueInitGame = function () {
         this.gameNoticeList[i].gameStart();
     }
 
-    this.startTickLoop();
+    this.tickLoop();
 };
 
-IB.engine.startTickLoop = function () {
-    //Not at all finished
+IB.engine.tickLoop = function () {
+    requestAnimFrame(this.tickLoop);
     this.renderer.render(this.world.scene, this.player.pc.camera);
 };
 
