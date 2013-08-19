@@ -34,11 +34,11 @@ IB.actor.components = [];
 IB.actor.tick = function (deltaTime) {
 	var i;
 	
-	var deltaDistance = new THREE.Vector3().distanceToSquared(new THREE.Vector3(this.getX() - this.lastPosition.getX(), this.getY() - this.lastPosition.getY(), this.getZ() - this.lastPosition.getZ()));
+	var deltaDistance = new THREE.Vector3().distanceToSquared(new THREE.Vector3(this.x - this.lastPosition.x, this.y - this.lastPosition.y, this.z - this.lastPosition.z));
 	
-	var deltaRotation = new THREE.Vector3().distanceToSquared(new THREE.Vector3(this.getRotX() - this.lastRotation.getX(), this.getRotY() - this.lastRotation.getY(), this.getRotZ() - this.lastRotation.getZ()));
+	var deltaRotation = new THREE.Vector3().distanceToSquared(new THREE.Vector3(this.getRotX() - this.lastRotation.z, this.getRotY() - this.lastRotation.y, this.getRotZ() - this.lastRotation.z));
 	
-	var deltaPosition = new THREE.Vector3(this.getX() - this.lastPosition.getx(), this.getY() - this.lastPosition.getY(), this.getZ() - this.lastPosition.getZ());
+	var deltaPosition = new THREE.Vector3(this.x - this.lastPosition.x, this.y - this.lastPosition.y, this.z - this.lastPosition.z);
 	
 	//needs to be tied in with physics
 	
