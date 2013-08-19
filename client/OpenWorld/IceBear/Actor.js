@@ -82,10 +82,10 @@ IB.actor.setPosition = function (newPosition) {
 		if (this.components.length) {
 			for (i = 0; i < this.components.length; i++) {
 				if (!this.components[i].hasOffset) {
-					this.components[i].setPosition(newPosition);
+					this.components[i].position = newPosition;
 				}
 				else {
-					this.components[i].setPosition(newPosition.addSelf(this.components[i].positionOffset));
+					this.components[i].position = newPosition.addSelf(this.components[i].positionOffset);
 				}
 			}
 		}
@@ -100,10 +100,10 @@ IB.actor.setPos = function (newPosition) {
 		if (this.components.length) {
 			for (i = 0; i < this.components.length; i++) {
 				if (!this.components[i].hasOffset) {
-					this.components[i].setPos(newPosition);
+					this.components[i].position = newPosition;
 				}
 				else {
-					this.components[i].setPos(newPosition.addSelf(this.components[i].positionOffset));
+					this.components[i].position = newPosition.addSelf(this.components[i].positionOffset);
 				}
 			}
 		}
@@ -118,10 +118,10 @@ IB.actor.setRotation = function (newRotation) {
 		if (this.components.length) {
 			for (i = 0; i < this.components.length; i++) {
 				if (!this.components[i].hasRotOffset) {
-					this.components[i].setRot(newRotation);
+					this.components[i].rotation = newRotation;
 				}
 				else {
-					this.components[i].setRot(newRotation.addSelf(this.components[i].rotationOffset));
+					this.components[i].rotation = newRotation.addSelf(this.components[i].rotationOffset);
 				}
 			}
 		}
@@ -136,10 +136,10 @@ IB.actor.setRot = function (newRotation) {
 		if (this.components.length) {
 			for (i = 0; i < this.components.length; i++) {
 				if (!this.components[i].hasRotOffset) {
-					this.components[i].setRot(newRotation);
+					this.components[i].rotation = newRotation;
 				}
 				else {
-					this.components[i].setRot(newRotation.addSelf(this.components[i].rotationOffset));
+					this.components[i].rotation = newRotation.addSelf(this.components[i].rotationOffset);
 				}
 			}
 		}
