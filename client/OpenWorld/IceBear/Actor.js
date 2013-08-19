@@ -192,27 +192,27 @@ IB.actor.setZ = function (newZ) {
 };
 
 IB.actor.getX = function () {
-	return this.position.getX();
+	return this.position.x;
 };
 
 IB.actor.getY = function () {
-	return this.position.getY();
+	return this.position.y;
 };
 
 IB.actor.getZ = function () {
-	return this.position.getZ();
+	return this.position.z;
 };
 
 IB.actor.getRotX = function () {
-	return this.rotation.getX();
+	return this.rotation.x;
 };
 
 IB.actor.getRotY = function () {
-	return this.rotation.getY();
+	return this.rotation.y;
 };
 
 IB.actor.getRotZ = function () {
-	return this.rotation.getZ();
+	return this.rotation.z;
 };
 
 IB.actor.gameStart = function () {
