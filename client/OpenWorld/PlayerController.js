@@ -63,6 +63,27 @@ OW.pc.tick = function (deltaTime) {
 	//OW.hemiLight.position.y = this.pawn.position.y;
 	OW.hemiLight.position.z = this.pawn.position.z;
 
+	// 
+	if (OW.network.peer) {
+		var p = OW.network.peer;
+		var latLonPoint = new IB.map.LatLonPoint(this.pawn.position);
+		var pos = { latitude: latLonPoint.getLatitude() , longitude: latLonPoint.getLongitude(), altitude: latLonPoint.getAltitude() };
+		//console.log(pos);
+		for (var c in p.connections) { 
+			var conns = p.connections[c];
+			//console.log(conns);
+			//conns.send(pos);
+			
+			var labels = Object.keys(conns);
+	      	for (var i = 0, ii = labels.length; i < ii; i += 1) {
+	        	var conn = conns[labels[i]];
+	        	if (conn.open)
+	        		conn.send(pos);
+	      	}
+	      	
+		}
+	}
+
 };
 
 OW.pc.processControls = function (deltaTime) {
