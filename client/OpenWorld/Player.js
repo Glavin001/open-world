@@ -28,7 +28,6 @@ OW.player.preGameStart = function () {
 
     self.pc.initPlayerController();
 
-	
     // Move player to current Geolocation
     IB.map.currentPlayerLatLon( function(latLonPoint) {
 		// *latLonPoint* variable is now an instance of LatLatPoint with the values of the Geolocation
@@ -44,10 +43,17 @@ OW.player.preGameStart = function () {
 		pos.y = m.z;
 		pos.z = m.y;
 		*/
-		var newPos = latLonPoint.fromLatLonToThreePosition();
-		pos.x = newPos.x;
-		pos.y= newPos.y;
-		pos.z = newPos.z;
+		if (latLonPoint) {
+			var newPos = latLonPoint.fromLatLonToThreePosition();
+			pos.x = newPos.x;
+			pos.y= newPos.y;
+			pos.z = newPos.z;
+		} else {
+			var newPos = new IB.map.LatLonPoint(44.664206,-63.56874299999999).fromLatLonToThreePosition();
+			pos.x = newPos.x;
+			pos.y= newPos.y;
+			pos.z = newPos.z;
+		}
 
 	});
 	

@@ -8,6 +8,10 @@ IB.input.useBool = false;
 
 IB.input.mappings = {};
 
+IB.input.sensitivity = 1;
+
+IB.input.mousePos = {x:0, y:0};
+
 ////////////////////////////////////////////
 
 IB.input.keydownHandler = function (event) {
@@ -59,4 +63,9 @@ IB.input.keyupHandler = function (event) {
 		}
 		return;
 	}
+};
+
+IB.input.mousemoveHandler = function(event) {
+	this.mousePos.x = event.pageX;
+	this.mousePos.y = event.pageY;
 };

@@ -2,7 +2,7 @@ var IB = IB || new Object();
 
 IB.map = IB.map || Object.create(IB.actor);
 
-IB.map.threeToMetersScale = 1.0; // For every unit in Three.js scene there is X meters
+IB.map.threeToMetersScale = 0.5; // For every unit in Three.js scene there is X meters
 
 ///////////////////////////////////////////
 
@@ -47,7 +47,8 @@ IB.map.currentPlayerLatLon = function(callback) {
 		var p = self.LatLonPoint(geoposition.coords.latitude, geoposition.coords.longitude, geoposition.coords.altitude);
 		return callback && callback(p);
 	}, function(data) {
-		return callback && callback(null);
+		console.log(data);
+		return callback && callback(false);
 	});
 };
 
