@@ -75,7 +75,8 @@ OW.customStartupFunctions3.push(function () {
 	
 });
 
-OW.startTickLoop = function () {
-	setInterval(function () {OW.renderer.render(OW.world.scene, OW.player.pc.camera);/*OW.temRot.w = (OW.temRot.w > 1)? OW.temRot.w % 1 + 0.05 : OW.temRot.w + 0.05;OW.temRot.x += 0.1;OW.temRot.z += Math.PI*0.125/2;
-	OW.daCirc.quaternion = OW.temRot; OW.daCirc.quaternion.normalize();*/OW.world.tick();}, 10);
+OW.tickLoop = function () {
+	requestAnimFrame(OW.tickLoop);
+	OW.world.tick();
+	OW.renderer.render(OW.world.scene, OW.player.pc.camera);
 };

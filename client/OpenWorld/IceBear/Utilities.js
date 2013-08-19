@@ -51,7 +51,7 @@ IB.util.loadScripts = function(scripts, progressCallback) {
 			if ( (completed+errors) <= total ) {
 				return progressCallback && progressCallback({'successful':true, 'completed': completed, 'total': total});
 			}
-		}
+		};
 		// Iterate thru all scripts
 		for (var i=0; i<total; i++) {
 			var curr = scripts[i];
@@ -86,7 +86,15 @@ IB.util.loadScripts = function(scripts, progressCallback) {
 	}
 };
 
-
+//thanks to Paul Irish for this polyfill
+requestAnimFrame = (function () {
+	return  window.requestAnimationFrame       ||
+     		window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame    ||
+            function ( callback ) {
+		        window.setTimeout(callback, 1000 / 60);
+		    };
+})();
 
 IB.util.keys = {
 		a: "65",

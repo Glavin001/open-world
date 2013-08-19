@@ -54,7 +54,7 @@ OW.overpassMap.tick = function (deltaTime) {
 	var text3d = new THREE.TextGeometry(msg, {
 		size: 0.5,
 		height: 0.1,
-		curveSegments: 3,
+		curveSegments: 1,
 		font: "helvetiker"
 	});
 	text3d.computeBoundingBox();
