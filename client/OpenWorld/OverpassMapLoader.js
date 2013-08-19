@@ -323,7 +323,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 		self.load(function(successfullyLoaded) {
 			// Render all objects that are not currently being rendered.
 			if (successfullyLoaded) {
-				console.log('Ready to render', self);
+				//console.log('Ready to render', self);
 
 				var msg = "Loaded!";
 				var text3d = new THREE.TextGeometry(msg, {
@@ -376,7 +376,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			    */
 
 			    // Render roads
-			    console.log('localWays', self.localWays);
+			    //console.log('localWays', self.localWays);
 			    for (var i=0, localWays=self.localWays, len=localWays.length; i<len; i++) {
 			    	// Get way id
 			    	var id = localWays[i];
@@ -385,7 +385,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			    	var way = self.globalMapData.way[id];
 			    	// Iterate over all nodes
 			    	var prevNode, currNode, wayType=(way.tags['highway'])?"highway":(way.tags['building'])?"building":"landuse";
-			    	console.log(wayType, way);
+			    	//console.log(wayType, way);
 			    	for (var n=0, nodes=way.nodes, nlen=nodes.length; n<nlen; n++) {
 			    		// Get node
 			    		currNode = self.globalMapData.node[ nodes[n] ];
@@ -397,7 +397,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			    		//console.log(currNode.ThreePosition);
 			    		//console.log(currNode);
 			    		if (wayType==="highway") {
-			    			console.log("Rendering", wayType, way);
+			    			//console.log("Rendering", wayType, way);
 				    		if (prevNode) {
 					    		// prevNode = prevNode || currNode;
 					    		/*
@@ -448,7 +448,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 								OW.world.sceneAdd(feature);
 							}
 						} else if (wayType === "building") {
-			    			console.log("Rendering", wayType, way);
+			    			//console.log("Rendering", wayType, way);
 				    		if (prevNode) {
 							/*
 					'x_1': prevLon,
@@ -487,7 +487,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 
 							}
 						} else {
-							console.log("Rendering", wayType, way);
+							//console.log("Rendering", wayType, way);
 				    		if (prevNode) {
 							/*
 					'x_1': prevLon,
@@ -572,7 +572,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 	};
 
 	self.processMapData = function(mapData, callback) {
-		console.log('Process Map Data');
+		//console.log('Process Map Data');
 
 		if (typeof mapData === "string")
 			mapData = JSON.parse(mapData);

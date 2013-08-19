@@ -10,6 +10,9 @@ staticHeaders = { host: 'localhost',
   'accept-language': 'en-GB,en-US;q=0.8,en;q=0.6',
   'accept-charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3' };
 app.listen(8081);
+// Peerjs Broker Server
+var PeerServer = require('peer').PeerServer;
+var peerServer = new PeerServer({ port: 9000 });
 
 function handler (req, res) {
 	var url = req.url;
@@ -112,6 +115,12 @@ io.sockets.on("connection", function (socket) {
 	socket.on("updatePos", function (data) {
 		;
 	});
+
+	socket.on("publishPeer", function(newPeerId) {
+		console.log('Publish Peer:', newPeerId);
+		socket.broadcast.emit('publishedPeer', newPeerId);
+	});
+
 	// Let everyone else know there is a new player
 /*	socket.broadcast.emit('newPlayer', {
 		playerId: playerObj.playerId,
