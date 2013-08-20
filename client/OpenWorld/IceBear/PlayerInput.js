@@ -66,6 +66,6 @@ IB.input.keyupHandler = function (event) {
 };
 
 IB.input.mousemoveHandler = function(event) {
-	this.mousePos.x = event.pageX;
-	this.mousePos.y = event.pageY;
+	this.mousePos.x = event.pageX * this.sensitivity;
+	this.mousePos.y = event.pageY * this.sensitivity;
 };

@@ -111,8 +111,10 @@ OW.pc.processControls = function (deltaTime) {
 		this.cameraAngleX -= ((this.input.mousePos.y - middleY + this.rotateDistance) / middleY) * deltaTime;
 	}
 	
-	if(this.VIEW_MODE == "third person") {
-		//WARNING: THIS CODE IT NOT YET USABLE
+	//if(camerAngleX > 
+	
+	if (this.VIEW_MODE == "third person") {
+		//WARNING: THIS CODE IT NOT YET USABLE ("Earthquake Mode")
 		this.pawn.rotation.y = this.cameraAngleY;
 		
 		this.camera.position.y = this.pawn.position.y + this.camDistance * Math.cos(this.camAngle*Math.PI/180);
@@ -155,5 +157,6 @@ OW.pc.getCam = function (cam) {
 	}
 	else {
 		this.camera = OW.requestPerspectiveCamera();
+		this.camera.eulerOrder = "YXZ";
 	}
 };
