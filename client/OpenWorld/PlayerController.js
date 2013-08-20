@@ -10,6 +10,10 @@ OW.pc.camDistance = 10;
 
 OW.pc.camAngle = 35;
 
+OW.pc.cameraAngleX = 0;
+
+OW.pc.cameraAngleY = 0;
+
 OW.pc.rotateDistance = 100;
 
 ////////////////////////////
@@ -19,6 +23,8 @@ OW.pc.DEFAULT_PAWN = "pawn";
 OW.pc.DEFAULT_INPUT = "Input";
 
 OW.pc.START_MODE = "flying";
+
+OW.pc.VIEW_MODE = "first person";
 
 //////////////////////////////////////////
 
@@ -89,41 +95,58 @@ OW.pc.tick = function (deltaTime) {
 OW.pc.processControls = function (deltaTime) {
 	var middleX = $(window).width() / 2;
 	var middleY = $(window).height() / 2;
+	var hasFocus = document.hasFocus();
 	
-	if (this.input.mousePos.x > middleX + this.rotateDistance) {
-		this.pawn.rotation.y += ((this.input.mousePos.x - middleX - this.rotateDistance) / middleX) * deltaTime;
-		//console.log(((this.input.mousePos.x - middleX - this.rotateDistance) / middleX));
+	if (this.input.mousePos.x > middleX + this.rotateDistance && hasFocus) {
+		this.cameraAngleY -= ((this.input.mousePos.x - middleX - this.rotateDistance) / middleX) * deltaTime;
 	}
 	else if (this.input.mousePos.x < middleX - this.rotateDistance) {
-		this.pawn.rotation.y += ((this.input.mousePos.x - middleX + this.rotateDistance) / middleX) * deltaTime;
-		//console.log(((this.input.mousePos.x - middleX + this.rotateDistance) / middleX));
+		this.cameraAngleY -= ((this.input.mousePos.x - middleX + this.rotateDistance) / middleX) * deltaTime;
+	}
+	
+	if (this.input.mousePos.y > middleY + this.rotateDistance && hasFocus) {
+		this.cameraAngleX -= ((this.input.mousePos.y - middleY - this.rotateDistance) / middleY) * deltaTime;
+	}
+	else if (this.input.mousePos.y < middleY - this.rotateDistance) {
+		this.cameraAngleX -= ((this.input.mousePos.y - middleY + this.rotateDistance) / middleY) * deltaTime;
+	}
+	
+	if(this.VIEW_MODE == "third person") {
+		//WARNING: THIS CODE IT NOT YET USABLE
+		this.pawn.rotation.y = this.cameraAngleY;
+		
+		this.camera.position.y = this.pawn.position.y + this.camDistance * Math.cos(this.camAngle*Math.PI/180);
+		this.camera.position.z = this.pawn.position.z - this.camDistance * Math.cos(this.pawn.rotation.y) * Math.sin(this.camAngle*Math.PI/180);
+		this.camera.position.x = this.pawn.position.x + this.camDistance * Math.sin(this.pawn.rotation.y) * Math.sin(this.camAngle*Math.PI/180);
+		
+		this.camera.lookAt(this.pawn.position);
+	}
+	else if (this.VIEW_MODE == "first person") {
+		this.camera.rotation.y = this.cameraAngleY;
+		this.camera.rotation.x = this.cameraAngleX;
+		
+		this.camera.position.y = this.pawn.position.y + 5;
+		this.camera.position.z = this.pawn.position.z;
+		this.camera.position.x = this.pawn.position.x;
 	}
 	
 	if (this.input.forward && !this.input.backward) {
-		this.pawn.position.z += ((50 * deltaTime) + (50 * deltaTime * this.input.boost)) * Math.cos(this.pawn.rotation.y);
-		this.pawn.position.x += ((50 * deltaTime) + (50 * deltaTime * this.input.boost)) * Math.sin(this.pawn.rotation.y);
+		this.pawn.position.z -= (50 + 50 * this.input.boost) * deltaTime * Math.cos(this.cameraAngleY);
+		this.pawn.position.x -= (50 + 50 * this.input.boost) * deltaTime * Math.sin(this.cameraAngleY);
 	}
 	else if (this.input.backward && !this.input.forward) {
-		this.pawn.position.z -= ((50 * deltaTime) + (50 * deltaTime * this.input.boost)) * Math.cos(this.pawn.rotation.y);
-		this.pawn.position.x -= ((50 * deltaTime) + (50 * deltaTime * this.input.boost)) * Math.sin(this.pawn.rotation.y);
+		this.pawn.position.z += (50 + 50 * this.input.boost) * deltaTime * Math.cos(this.cameraAngleY);
+		this.pawn.position.x += (50 + 50 * this.input.boost) * deltaTime * Math.sin(this.cameraAngleY);
 	}
 	
 	if (this.input.lstrafe && !this.input.rstrafe) {
-		this.pawn.position.z += ((50 * deltaTime) + (50 * deltaTime * this.input.boost)) * Math.cos(this.pawn.rotation.y + Math.PI / 2);
-		this.pawn.position.x += ((50 * deltaTime) + (50 * deltaTime * this.input.boost)) * Math.sin(this.pawn.rotation.y + Math.PI / 2);
+		this.pawn.position.z -= (50 + 50 * this.input.boost) * deltaTime * Math.cos(this.cameraAngleY+ Math.PI / 2);
+		this.pawn.position.x -= (50 + 50 * this.input.boost) * deltaTime * Math.sin(this.cameraAngleY + Math.PI / 2);
 	}
 	else if (this.input.rstrafe && !this.input.lstrafe) {
-		this.pawn.position.z -= ((50 * deltaTime) + (50 * deltaTime * this.input.boost)) * Math.cos(this.pawn.rotation.y + Math.PI / 2);
-		this.pawn.position.x -= ((50 * deltaTime) + (50 * deltaTime * this.input.boost)) * Math.sin(this.pawn.rotation.y + Math.PI / 2);
+		this.pawn.position.z += (50 + 50 * this.input.boost) * deltaTime * Math.cos(this.cameraAngleY + Math.PI / 2);
+		this.pawn.position.x += (50 + 50 * this.input.boost) * deltaTime * Math.sin(this.cameraAngleY + Math.PI / 2);
 	}
-	
-	this.camera.position.y = this.pawn.position.y + (this.camDistance * Math.sin(this.camAngle*Math.PI/180));
-	
-	this.camera.position.z = this.pawn.position.z - (this.camDistance * Math.cos(this.camAngle*Math.PI/180));
-	
-	this.camera.position.x = this.pawn.position.x;
-	
-	this.camera.lookAt(this.pawn.position);
 };
 
 OW.pc.getCam = function (cam) {
