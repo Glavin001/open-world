@@ -111,7 +111,14 @@ OW.pc.processControls = function (deltaTime) {
 		this.cameraAngleX -= ((this.input.mousePos.y - middleY + this.rotateDistance) / middleY) * deltaTime;
 	}
 	
-	//if(camerAngleX > 
+	/* Requires issues with player rotation fixed to work
+	if (cameraAngleX > Math.PI * 3 / 8) {
+		cameraAngleX = Math.PI * 3 / 8;
+	}
+	else if (cameraAngleX < -Math.PI * 3 / 8) {
+		cameraAngleX = -Math.PI * 3 / 8;
+	}
+	*/
 	
 	if (this.VIEW_MODE == "third person") {
 		//WARNING: THIS CODE IT NOT YET USABLE ("Earthquake Mode")
