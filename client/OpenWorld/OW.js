@@ -76,7 +76,12 @@ OW.customStartupFunctions3.push(function () {
 });
 
 OW.tickLoop = function () {
+    IB.engine.stats.begin();
+
 	requestAnimFrame(OW.tickLoop);
 	OW.world.tick();
 	OW.renderer.render(OW.world.scene, OW.player.pc.camera);
+
+    IB.engine.stats.end();
+
 };

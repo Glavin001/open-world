@@ -149,7 +149,7 @@ IB.map.LatLonPoint.prototype.fromLatLonToMeters = function() {
 
 IB.map.LatLonPoint.prototype.fromLatLonToThreePosition = function() {
 	var m = this.fromLatLonToMeters();
-	var threeToMetersScale = 1.0;// IB.map.threeToMetersScale;
+	var threeToMetersScale = IB.map.threeToMetersScale;
 	return { x: 0.5 * m.y/threeToMetersScale, y: m.z/threeToMetersScale, z: -1.0 * m.x/threeToMetersScale  };
 };
 
