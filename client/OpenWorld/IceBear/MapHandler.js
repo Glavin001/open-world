@@ -2,7 +2,10 @@ var IB = IB || new Object();
 
 IB.map = IB.map || Object.create(IB.actor);
 
-IB.map.threeToMetersScale = 0.5; // For every unit in Three.js scene there is X meters
+IB.map.threeToMetersScale = 1.0; // For every unit in Three.js scene there is X meters
+
+IB.map.GEODETIC_COORDINATES = "EPSG:4326"; // WGS 1984
+IB.map.SPHERICAL_MERCATOR_METERS = "EPSG:3785"; //"EPSG:900913"; // Spherical Mercator Projection
 
 ///////////////////////////////////////////
 
@@ -123,12 +126,15 @@ IB.map.LatLonPoint.prototype.getAltitude = function() {
 
 IB.map.LatLonPoint.prototype.fromLatLonToMeters = function() {
 	
+	//return { x: this.getLatitude(), y: this.getLongitude(), z: this.getAltitude()};
+
+
 	// Source: http://stackoverflow.com/a/2689261/2578205 
 
 	// creating source and destination Proj4js objects
 	// once initialized, these may be re-used as often as needed
-	var source = new Proj4js.Proj('EPSG:4326');    //source coordinates will be in Longitude/Latitude, WGS84
-	var dest = new Proj4js.Proj('EPSG:3785');     //destination coordinates in meters, global spherical mercators projection, see http://spatialreference.org/ref/epsg/3785/
+	var source = new Proj4js.Proj(IB.map.GEODETIC_COORDINATES);    //source coordinates will be in Longitude/Latitude, WGS84
+	var dest = new Proj4js.Proj(IB.map.SPHERICAL_MERCATOR_METERS);     //destination coordinates in meters, global spherical mercators projection, see http://spatialreference.org/ref/epsg/3785/
 
 	// transforming point coordinates
 	var p = new Proj4js.Point(this.getLatitude(), this.getLongitude());   //any object will do as long as it has 'x' and 'y' properties
@@ -143,8 +149,8 @@ IB.map.LatLonPoint.prototype.fromLatLonToMeters = function() {
 
 IB.map.LatLonPoint.prototype.fromLatLonToThreePosition = function() {
 	var m = this.fromLatLonToMeters();
-	var threeToMetersScale = IB.map.threeToMetersScale;
-	return { x: m.y/threeToMetersScale, y: m.z/threeToMetersScale, z: m.x/threeToMetersScale  };
+	var threeToMetersScale = 1.0;// IB.map.threeToMetersScale;
+	return { x: 0.5 * m.y/threeToMetersScale, y: m.z/threeToMetersScale, z: -1.0 * m.x/threeToMetersScale  };
 };
 
 IB.map.LatLonPoint.prototype.setToMeters = function(x,y,z) {
@@ -154,10 +160,16 @@ IB.map.LatLonPoint.prototype.setToMeters = function(x,y,z) {
 	z = Altitude
 	*/
 
+	/*
+	this.setLatLon(x,y);
+	this.setAltitude(z);
+	return this;
+	*/
+
 	// creating source and destination Proj4js objects
 	// once initialized, these may be re-used as often as needed
-	var source = new Proj4js.Proj('EPSG:3785');    //source coordinates will be in Longitude/Latitude, WGS84
-	var dest = new Proj4js.Proj('EPSG:4326');     //destination coordinates in meters, global spherical mercators projection, see http://spatialreference.org/ref/epsg/3785/
+	var source = new Proj4js.Proj(IB.map.SPHERICAL_MERCATOR_METERS);    //source coordinates will be in Longitude/Latitude, WGS84
+	var dest = new Proj4js.Proj(IB.map.GEODETIC_COORDINATES);     //destination coordinates in meters, global spherical mercators projection, see http://spatialreference.org/ref/epsg/3785/
 
 	// transforming point coordinates
 	var p = new Proj4js.Point(x,y);   //any object will do as long as it has 'x' and 'y' properties
@@ -184,8 +196,8 @@ IB.map.LatLonPoint.prototype.setToThreePosition = function(x,y,z) {
 	*/
 	var threeToMetersScale = IB.map.threeToMetersScale;
 	this.setToMeters( 
-		z*threeToMetersScale, 		// Latitude/vertical
-		x*threeToMetersScale, 		// Longitude/horizontal
+		-1.0 * z*threeToMetersScale, 		// Latitude/vertical
+		2.0 * x*threeToMetersScale, 		// Longitude/horizontal
 		y*threeToMetersScale ); 	// Altitude
 
 	return this;

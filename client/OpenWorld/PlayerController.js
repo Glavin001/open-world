@@ -127,7 +127,7 @@ OW.pc.processControls = function (deltaTime) {
 		this.camera.rotation.y = this.cameraAngleY;
 		this.camera.rotation.x = this.cameraAngleX;
 		
-		this.camera.position.y = this.pawn.position.y + 5;
+		this.camera.position.y = this.pawn.position.y + 205;
 		this.camera.position.z = this.pawn.position.z;
 		this.camera.position.x = this.pawn.position.x;
 	}

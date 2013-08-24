@@ -465,7 +465,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 					'z_4': elevation,
 							*/
 
-					    		var elevation = 1.0, height=10.0;
+					    		var elevation = 1.0, height=50.0;
 								var geometry = new THREE.Geometry();
 								geometry.vertices.push( new THREE.Vector3(prevNode.ThreePosition.x, elevation, prevNode.ThreePosition.z));
 								geometry.vertices.push(new THREE.Vector3(prevNode.ThreePosition.x, elevation+height, prevNode.ThreePosition.z));

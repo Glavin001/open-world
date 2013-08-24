@@ -45,14 +45,14 @@ OW.customStartupFunctions3.push(function () {
 	hemiLight.color.setHSL( 0.6, 1, 0.6 );
 	hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
 	hemiLight.position.set( 0, 500, 0 );
-	
 	this.hemiLight = hemiLight;
-
 	this.world.sceneAdd( hemiLight );
 	
-
 	this.world.sceneAdd(new THREE.AmbientLight(0x555555));
 	
+	// Set Threejs Renderer background colour
+	this.renderer.setClearColorHex( 0x000000, 1 ); // Default is black
+
 	OW.daQuat = function (a, b, c, d) {circle.quaternion.x = a; circle.quaternion.y = b; circle.quaternion.z = c; circle.quaternion.w = d; console.log("quat called");};
 	OW.daRot = function (a, b, c) {circle.rotation.x = a;circle.rotation.y = b;circle.rotation.z = c;console.log("rot called");};
 	OW.temRot = new THREE.Quaternion(-1,1,1,1);

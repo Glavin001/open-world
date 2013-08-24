@@ -49,7 +49,7 @@ var MapRenderer = function() {
         maxlat = 44.6516050,  // 44.6496050, // 44.6688720, 
         maxlon = -63.5705590;  // -63.5725590; // -63.5592540; 
         var url = 'http://overpass.osm.rambler.ru/cgi/interpreter?data=(node('+minlat+','+minlon+','+maxlat+','+maxlon+');%3C;%3E;);out%20meta;';
-        // var url = "halifax1.xml";
+        var url = "halifax1.xml";
         console.log(url);
         $.ajax({ url: url , method: "GET", dataType:"text" })
         //$.ajax({url: "germany1.xml", method: "GET"})
