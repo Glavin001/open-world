@@ -28,9 +28,24 @@ OW.network.connectToServer = function() {
 	peer.on('open', function(id){
 	  	console.log('Peer Connection Id:', id);
 		self.server.emit('publishPeer', id);
-
 		self.peer = peer;
 	});
+
+	//  
+	self.broadcast = function(data) {
+		if (OW.network.peer) {
+			var p = OW.network.peer;
+			for (var c in p.connections) { 
+				var conns = p.connections[c];
+				var labels = Object.keys(conns);
+		      	for (var i = 0, ii = labels.length; i < ii; i += 1) {
+		        	var conn = conns[labels[i]];
+		        	if (conn.open)
+		        		conn.send(data);
+		      	}	      	
+			}
+		}
+	};
 
 	// Handle connection to new peer
 	var connectToPeer = function(newPeerId) {
@@ -44,26 +59,40 @@ OW.network.connectToServer = function() {
 
 		c.on('open', function(e) {
 			console.log('Connected to ', e);
+			self.broadcast( { type:'clay', 'name': OW.player.clayPlayer.data.name, 'username': OW.player.clayPlayer.data.username })
 		});
 		c.on('data', function(data) {
-			console.log('Data:', data);
+			//console.log('Data:', data);
 			switch (data.type) {
 				case 'pos': {
 					if (data.position) {
 						var p = new IB.map.LatLonPoint(data.position.latitude, data.position.longitude, data.position.altitude);
 						var m = p.fromLatLonToThreePosition();
-						console.log(p);
+						//console.log(p);
 						pos.x = m.x;
 						pos.y = m.y;
 						pos.z = m.z;
 					}
 				}
+				break;
 				case 'clay': {
 					console.log('Clay:', data);
+			
+					// Notification
+					var options = {
+					    title: "Peer Connected",
+					    html: "Connected to "+data.username+" ("+data.name+").",
+					    id: "ConnectedToPeer-"+data.username+"", // optional, a unique identifier for this notification
+					    delay: 3000 // optional (default to 3000), number of milliseconds until notification auto-closes. If set to 0, the notification persists until manually closed
+					};
+					Clay.UI.createNotification( options );
+
 				}
+				break;
 				default: {
-					console.log('Default:', data);
+					//console.log('Default:', data);
 				}
+				break;
 			}
 		});
 	};

@@ -70,10 +70,12 @@ OW.pc.tick = function (deltaTime) {
 	OW.hemiLight.position.z = this.pawn.position.z;
 
 	// 
+	var latLonPoint = new IB.map.LatLonPoint(this.pawn.position);
+	var pos = { type: 'pos', position: { latitude: latLonPoint.getLatitude() , longitude: latLonPoint.getLongitude(), altitude: latLonPoint.getAltitude() } };
+	OW.network.broadcast(pos);
+	/*
 	if (OW.network.peer) {
 		var p = OW.network.peer;
-		var latLonPoint = new IB.map.LatLonPoint(this.pawn.position);
-		var pos = { type: 'pos', position: { latitude: latLonPoint.getLatitude() , longitude: latLonPoint.getLongitude(), altitude: latLonPoint.getAltitude() } };
 		//console.log(pos);
 		for (var c in p.connections) { 
 			var conns = p.connections[c];
@@ -89,7 +91,7 @@ OW.pc.tick = function (deltaTime) {
 	      	
 		}
 	}
-
+	*/
 };
 
 OW.pc.processControls = function (deltaTime) {

@@ -385,7 +385,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 			    	// Get the way from the id
 			    	var way = self.globalMapData.way[id];
 			    	// Iterate over all nodes
-			    	var prevNode, currNode, wayType=(way.tags['highway'])?"highway":(way.tags['building'])?"building":"landuse";
+			    	var prevNode, currNode, wayType=(way.tags && way.tags['highway'])?"highway":(way.tags && way.tags['building'])?"building":"landuse";
 			    	//console.log(wayType, way);
 			    	for (var n=0, nodes=way.nodes, nlen=nodes.length; n<nlen; n++) {
 			    		// Get node
