@@ -13,7 +13,8 @@ OW.overpassMap.startLoad = function (worldRef, info) {
 	
 	// Create Mini Map
 	console.log('Create Mini Map');
-	var geoPt = new IB.map.LatLonPoint(); // OW.player.pc.pawn.position
+	// var geoPt = new IB.map.LatLonPoint( OW.player.pc.pawn.position );
+	var geoPt = new IB.map.LatLonPoint(36.1076068, -115.1797258);
 	console.log(geoPt);
 	var miniMap = L.map('miniMap').setView([geoPt.getLatitude(), geoPt.getLongitude()], 18, {
 		'dragging': false
@@ -22,6 +23,8 @@ OW.overpassMap.startLoad = function (worldRef, info) {
 	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
 	    maxZoom: 18
 	}).addTo(miniMap);
+	new OSMBuildings(miniMap).loadData(); // OSM Buildings
+
 	var currPosMarker = new L.CircleMarker([geoPt.getLatitude(), geoPt.getLongitude()]);
 	currPosMarker.addTo(miniMap);
 	// Track movement
@@ -288,7 +291,7 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
     };
 
     self.createMapChunkAtChunkId = function(chunkId) {
-    	console.log('createMapChunkAtChunkId', chunkId);
+    	//console.log('createMapChunkAtChunkId', chunkId);
     	// Create points 
     	var minLatLonPoint = new IB.map.LatLonPoint(), maxLatLonPoint = new IB.map.LatLonPoint();
     	//  Calculate bounding box in meters and convert to LatLonPoint

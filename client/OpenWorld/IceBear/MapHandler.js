@@ -2,7 +2,7 @@ var IB = IB || new Object();
 
 IB.map = IB.map || Object.create(IB.actor);
 
-IB.map.threeToMetersScale = 1.0; // For every unit in Three.js scene there is X meters
+IB.map.threeToMetersScale = 0.5; // For every unit in Three.js scene there is X meters
 
 IB.map.GEODETIC_COORDINATES = "EPSG:4326"; // WGS 1984
 IB.map.SPHERICAL_MERCATOR_METERS = "EPSG:3785"; // "EPSG:900913"; // Spherical Mercator Projection
@@ -152,7 +152,7 @@ IB.map.LatLonPoint.prototype.fromLatLonToThreePosition = function() {
 	//console.log('fromLatLonToThreePosition', this);
 	var m = this.fromLatLonToMeters();
 	//console.log('m', m);
-	var threeToMetersScale = 1.0; // IB.map.threeToMetersScale;
+	var threeToMetersScale = IB.map.threeToMetersScale;
 	return { x: 1.0 * m.x/threeToMetersScale, y: m.z/threeToMetersScale, z: -1.0 * m.y/threeToMetersScale  };
 };
 
