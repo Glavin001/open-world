@@ -288,6 +288,7 @@ OW.overpassMap.MapRenderer = function(chunkRef) {
     };
 
     self.createMapChunkAtChunkId = function(chunkId) {
+    	console.log('createMapChunkAtChunkId', chunkId);
     	// Create points 
     	var minLatLonPoint = new IB.map.LatLonPoint(), maxLatLonPoint = new IB.map.LatLonPoint();
     	//  Calculate bounding box in meters and convert to LatLonPoint
