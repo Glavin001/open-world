@@ -149,9 +149,9 @@ IB.map.LatLonPoint.prototype.fromLatLonToMeters = function() {
 };
 
 IB.map.LatLonPoint.prototype.fromLatLonToThreePosition = function() {
-	console.log('fromLatLonToThreePosition', this);
+	//console.log('fromLatLonToThreePosition', this);
 	var m = this.fromLatLonToMeters();
-	console.log('m', m);
+	//console.log('m', m);
 	var threeToMetersScale = 1.0; // IB.map.threeToMetersScale;
 	return { x: 1.0 * m.x/threeToMetersScale, y: m.z/threeToMetersScale, z: -1.0 * m.y/threeToMetersScale  };
 };

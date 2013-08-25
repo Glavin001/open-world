@@ -46,11 +46,24 @@ OW.network.connectToServer = function() {
 			console.log('Connected to ', e);
 		});
 		c.on('data', function(data) {
-			//console.log('Data:', data);
-			if (data.position) {
-				pos.x = data.position.x;
-				pos.y = data.position.y;
-				pos.z = data.position.z;
+			console.log('Data:', data);
+			switch (data.type) {
+				case 'pos': {
+					if (data.position) {
+						var p = new IB.map.LatLonPoint(data.position.latitude, data.position.longitude, data.position.altitude);
+						var m = p.fromLatLonToThreePosition();
+						console.log(p);
+						pos.x = m.x;
+						pos.y = m.y;
+						pos.z = m.z;
+					}
+				}
+				case 'clay': {
+					console.log('Clay:', data);
+				}
+				default: {
+					console.log('Default:', data);
+				}
 			}
 		});
 	};

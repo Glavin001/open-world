@@ -73,7 +73,7 @@ OW.pc.tick = function (deltaTime) {
 	if (OW.network.peer) {
 		var p = OW.network.peer;
 		var latLonPoint = new IB.map.LatLonPoint(this.pawn.position);
-		var pos = { latitude: latLonPoint.getLatitude() , longitude: latLonPoint.getLongitude(), altitude: latLonPoint.getAltitude() };
+		var pos = { type: 'pos', position: { latitude: latLonPoint.getLatitude() , longitude: latLonPoint.getLongitude(), altitude: latLonPoint.getAltitude() } };
 		//console.log(pos);
 		for (var c in p.connections) { 
 			var conns = p.connections[c];
@@ -127,7 +127,7 @@ OW.pc.processControls = function (deltaTime) {
 		this.camera.rotation.y = this.cameraAngleY;
 		this.camera.rotation.x = this.cameraAngleX;
 		
-		this.camera.position.y = this.pawn.position.y + 205;
+		this.camera.position.y = this.pawn.position.y + 5;
 		this.camera.position.z = this.pawn.position.z;
 		this.camera.position.x = this.pawn.position.x;
 	}
