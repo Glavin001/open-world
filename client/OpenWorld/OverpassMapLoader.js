@@ -420,7 +420,7 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 							'lineWidth': roadWidth,
 					    		*/
 
-					    		var elevation = 1.0;
+					    		var elevation = (way.tags && way.tags['min_height'])?( parseFloat( way.tags['min_height'] ) ):0.0;
 								var geometry = new THREE.Geometry();
 								geometry.vertices.push( new THREE.Vector3(prevNode.ThreePosition.x, elevation, prevNode.ThreePosition.z));
 								//geometry.vertices.push(new THREE.Vector3(prevNode.ThreePosition.x, elevation, prevNode.ThreePosition.z - 0.1));
@@ -469,7 +469,8 @@ OW.overpassMap.MapChunk = function( minLatLonPoint, maxLatLonPoint ) { // Boundi
 					'z_4': elevation,
 							*/
 
-					    		var elevation = 1.0, height=50.0;
+					    		var elevation = (way.tags && way.tags['min_height'])?( parseFloat( way.tags['min_height'] ) ):0.0;
+					    		var height = (way.tags && way.tags['height'])?( parseFloat( way.tags['height'] ) ):3.5;
 								var geometry = new THREE.Geometry();
 								geometry.vertices.push( new THREE.Vector3(prevNode.ThreePosition.x, elevation, prevNode.ThreePosition.z));
 								geometry.vertices.push(new THREE.Vector3(prevNode.ThreePosition.x, elevation+height, prevNode.ThreePosition.z));

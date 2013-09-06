@@ -2,7 +2,7 @@ var IB = IB || new Object();
 
 IB.map = IB.map || Object.create(IB.actor);
 
-IB.map.threeToMetersScale = 0.5; // For every unit in Three.js scene there is X meters
+IB.map.threeToMetersScale = 10.0; // For every unit in Three.js scene there is X meters
 
 IB.map.GEODETIC_COORDINATES = "EPSG:4326"; // WGS 1984
 IB.map.SPHERICAL_MERCATOR_METERS = "EPSG:3785"; // "EPSG:900913"; // Spherical Mercator Projection

@@ -55,11 +55,9 @@ OW.player.preGameStart = function () {
 			pos.y= newPos.y;
 			pos.z = newPos.z;
 		} else {
-			//var newPos = new IB.map.LatLonPoint(36.0800, -115.1522);
-			//var newThreePos = newPos.fromLatLonToThreePosition();
-			//console.log('New Position:', newPos, newThreePos);
-			var newThreePos = new IB.map.LatLonPoint(36.1076068, -115.1797258).fromLatLonToThreePosition();
-			//var newPos = new IB.map.LatLonPoint(44.664206,-63.56874299999999).fromLatLonToThreePosition();
+			// var newThreePos = new IB.map.LatLonPoint(36.1076068, -115.1797258).fromLatLonToThreePosition(); // Las Vegas
+			var newThreePos = new IB.map.LatLonPoint(48.57224, 13.45527).fromLatLonToThreePosition();
+			//var newPos = new IB.map.LatLonPoint(44.664206,-63.56874299999999).fromLatLonToThreePosition(); // Halifax/Dartmouth
 			pos.x = newThreePos.x;
 			pos.y= newThreePos.y;
 			pos.z = newThreePos.z;
