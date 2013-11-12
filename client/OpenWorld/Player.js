@@ -28,6 +28,13 @@ OW.player.preGameStart = function () {
 
     self.pc.initPlayerController();
 
+	var newThreePos = new IB.map.LatLonPoint(36.1076068, -115.1797258).fromLatLonToThreePosition();
+	var pos = self.pc.pawn.position;
+	pos.x = newThreePos.x;
+	pos.y= newThreePos.y;
+	pos.z = newThreePos.z;
+
+
     // Move player to current Geolocation
     IB.map.currentPlayerLatLon( function(latLonPoint) {
 		// *latLonPoint* variable is now an instance of LatLatPoint with the values of the Geolocation
@@ -37,22 +44,23 @@ OW.player.preGameStart = function () {
 		//var m = latLonPoint.fromLatLonToMeters();
 		//console.log(m);
 
-		var pos = self.pc.pawn.position;
 		/*
 		pos.x = m.x;
 		pos.y = m.z;
 		pos.z = m.y;
 		*/
-		if (latLonPoint) {
+		if (false && latLonPoint) {
 			var newPos = latLonPoint.fromLatLonToThreePosition();
 			pos.x = newPos.x;
 			pos.y= newPos.y;
 			pos.z = newPos.z;
 		} else {
-			var newPos = new IB.map.LatLonPoint(44.664206,-63.56874299999999).fromLatLonToThreePosition();
-			pos.x = newPos.x;
-			pos.y= newPos.y;
-			pos.z = newPos.z;
+			// var newThreePos = new IB.map.LatLonPoint(36.1076068, -115.1797258).fromLatLonToThreePosition(); // Las Vegas
+			var newThreePos = new IB.map.LatLonPoint(48.57224, 13.45527).fromLatLonToThreePosition();
+			//var newPos = new IB.map.LatLonPoint(44.664206,-63.56874299999999).fromLatLonToThreePosition(); // Halifax/Dartmouth
+			pos.x = newThreePos.x;
+			pos.y= newThreePos.y;
+			pos.z = newThreePos.z;
 		}
 
 	});

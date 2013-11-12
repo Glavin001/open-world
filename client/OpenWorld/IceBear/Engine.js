@@ -39,6 +39,15 @@ IB.engine.mode = null;
 
 IB.logo = {};
 
+
+IB.engine.stats = new Stats();
+IB.engine.stats.setMode(1); // 0: fps, 1: ms
+
+// Align top-left
+IB.engine.stats.domElement.style.position = 'absolute';
+IB.engine.stats.domElement.style.left = '0px';
+IB.engine.stats.domElement.style.top = '0px';
+
 /////////////////////////////////////
 
 IB.logo.stopLogoFader = function () {
@@ -73,6 +82,9 @@ IB.engine.initGame = function () {
         this.customStartupFunctions0[i].apply(this);
     }
     this.world.loadMap(this, function () {this.continueInitGame();});
+
+    document.body.appendChild( IB.engine.stats.domElement );
+
 };
 
 IB.engine.continueInitGame = function () {

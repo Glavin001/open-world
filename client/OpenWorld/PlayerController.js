@@ -70,10 +70,12 @@ OW.pc.tick = function (deltaTime) {
 	OW.hemiLight.position.z = this.pawn.position.z;
 
 	// 
+	var latLonPoint = new IB.map.LatLonPoint(this.pawn.position);
+	var pos = { type: 'pos', position: { latitude: latLonPoint.getLatitude() , longitude: latLonPoint.getLongitude(), altitude: latLonPoint.getAltitude() } };
+	OW.network.broadcast(pos);
+	/*
 	if (OW.network.peer) {
 		var p = OW.network.peer;
-		var latLonPoint = new IB.map.LatLonPoint(this.pawn.position);
-		var pos = { latitude: latLonPoint.getLatitude() , longitude: latLonPoint.getLongitude(), altitude: latLonPoint.getAltitude() };
 		//console.log(pos);
 		for (var c in p.connections) { 
 			var conns = p.connections[c];
@@ -89,7 +91,7 @@ OW.pc.tick = function (deltaTime) {
 	      	
 		}
 	}
-
+	*/
 };
 
 OW.pc.processControls = function (deltaTime) {
@@ -111,7 +113,14 @@ OW.pc.processControls = function (deltaTime) {
 		this.cameraAngleX -= ((this.input.mousePos.y - middleY + this.rotateDistance) / middleY) * deltaTime;
 	}
 	
-	//if(camerAngleX > 
+	/* Requires issues with player rotation fixed to work
+	if (cameraAngleX > Math.PI * 3 / 8) {
+		cameraAngleX = Math.PI * 3 / 8;
+	}
+	else if (cameraAngleX < -Math.PI * 3 / 8) {
+		cameraAngleX = -Math.PI * 3 / 8;
+	}
+	*/
 	
 	if (this.VIEW_MODE == "third person") {
 		//WARNING: THIS CODE IT NOT YET USABLE ("Earthquake Mode")
@@ -127,7 +136,7 @@ OW.pc.processControls = function (deltaTime) {
 		this.camera.rotation.y = this.cameraAngleY;
 		this.camera.rotation.x = this.cameraAngleX;
 		
-		this.camera.position.y = this.pawn.position.y + 205;
+		this.camera.position.y = this.pawn.position.y + 5;
 		this.camera.position.z = this.pawn.position.z;
 		this.camera.position.x = this.pawn.position.x;
 	}

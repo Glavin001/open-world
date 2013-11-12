@@ -1,0 +1,31 @@
+{
+  "name": "open-world",
+  "version": "0.1.0",
+  "description": "Multiplayer world generated from Open data.",
+  "main": "server/server.js",
+  "dependencies": {
+    "peer": "~0.2.0",
+    "socket.io": "~0.9.14",
+    "cloudnode-cli": "~0.2.23"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Glavin001/open-world.git"
+  },
+  "keywords": [
+    "open",
+    "data",
+    "map",
+    "game",
+    "multiplayer"
+  ],
+  "author": "Glavin Wiechert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Glavin001/open-world/issues"
+  }
+}
