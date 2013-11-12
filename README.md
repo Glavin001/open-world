@@ -31,6 +31,7 @@ Please make sure you have the correct access rights
 and the repository exists.
 ```
 Then use method 2, `HTTP`, instead.
+To solve the SSH `permission denied` issue you need to setup a [SSH Key for your Github account](https://help.github.com/articles/generating-ssh-keys)
 ### 2) HTTP
 ```bash
 git clone https://github.com/Glavin001/open-world.git && cd open-world && npm install
