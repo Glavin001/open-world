@@ -14,6 +14,40 @@ Test out our current build here: http://glavin001.github.io/open-world/client/ga
 See [issue #24](https://github.com/Glavin001/open-world/issues/24). 
 We would love more developers contributing to this ambitious project.
 
+
+## Installation
+Run the following Terminal command.
+### 1) SSH
+```bash
+git clone git@github.com:Glavin001/open-world.git && cd open-world && npm install
+```
+#### Troubleshooting
+If you receive the following error:
+```bash
+Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+Then use method 2, `HTTP`, instead.
+### 2) HTTP
+```bash
+git clone https://github.com/Glavin001/open-world.git && cd open-world && npm install
+```
+## Run
+To start the server app execute the following (default port 8081):
+```bash
+node server/server.js
+```
+In your browser go to [http://localhost:8081/game.html](http://localhost:8081/game.html).
+### Custom Port Number
+To start the server app with a custom port number, such as `3000`, execute the following:
+```bash
+node server/server.js -p 3000
+```
+In your browser go to [http://localhost:3000/game.html/](http://localhost:3000/game.html).
+
 ## Screenshots
 These are old screenshots of walking around Halifax. The current build is much more sophisticated and will become even more appealing in the near future.
 ![Halifax Sideview](https://f.cloud.github.com/assets/1885333/269440/fcbefd0c-8f94-11e2-9d12-c59248675752.png?raw=true "Halifax sideview")
