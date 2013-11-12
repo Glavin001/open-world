@@ -10,6 +10,10 @@ I forked the original project in hopes to solidate my goal: to create an open-en
 
 Test out our current build here: http://glavin001.github.io/open-world/client/game.html
 
+## How to Contribute
+See [issue #24](https://github.com/Glavin001/open-world/issues/24). 
+We would love more developers contributing to this ambitious project.
+
 ## Screenshots
 These are old screenshots of walking around Halifax. The current build is much more sophisticated and will become even more appealing in the near future.
 ![Halifax Sideview](https://f.cloud.github.com/assets/1885333/269440/fcbefd0c-8f94-11e2-9d12-c59248675752.png?raw=true "Halifax sideview")
