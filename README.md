@@ -8,12 +8,12 @@ The original idea behind "[Open-GTA](https://github.com/tim-speed/openmap-gta)",
 I felt that 3D is much cooler and also I wanted to focus more on the environment/scenery and the interactiveness with the player, than the feel of GTA. 
 I forked the original project in hopes to solidate my goal: to create an open-ended "game" where players could do whatever they wanted in a world that resembled their own.
 
-Test out our current build here: http://glavin001.github.io/open-world/client/game.html
+Test out our current build at http://society.cs.smu.ca:8081/game.html
+Please [create an Issue](https://github.com/Glavin001/open-world/issues/new) if the server is down and you would like to see a demo.
 
 ## How to Contribute
 See [issue #24](https://github.com/Glavin001/open-world/issues/24). 
 We would love more developers contributing to this ambitious project.
-
 
 ## Installation
 Run the following Terminal commands.
@@ -90,7 +90,7 @@ Originally thought to be an old styled GTA game. now with 3D graphics using open
 The original project can be found here: https://github.com/tim-speed/openmap-gta
 
 ## Present
-WebGL demo: http://140.184.137.122:8081/game.html
+WebGL demo: http://society.cs.smu.ca:8081/game.html
 - Retrieving OpenStreetMaps data; and
 - Display in 3D on a canvas with Three.js
 
