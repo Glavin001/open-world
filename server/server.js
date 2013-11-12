@@ -1,3 +1,27 @@
+// Server.js
+
+// Display command line arguments
+console.log("Usage:")
+console.log("	node server.js [--port|-p number]");
+console.log()
+// Properties, defaults
+var port = 8081; // Server port number
+// Process command line arguments
+process.argv.forEach(function (val, index, array) {
+  	// Customize port number, "[-p #]"
+	if (val === "-p" || val === "--port") {
+		// Change port number
+		var newPort = parseInt( array[index+1] );
+		if (! isNaN(newPort )) {
+			//console.log("New port #:", newPort);
+			port = newPort;
+		} else {
+			console.error("Invalid custom port number: ", newPort);
+		}
+	} 
+}); 
+
+// 
 var http = require('http'),
 app = http.createServer(handler)
   , io = require('socket.io').listen(app)
@@ -9,10 +33,14 @@ staticHeaders = { host: 'localhost',
   'accept-encoding': 'gzip,deflate,sdch',
   'accept-language': 'en-GB,en-US;q=0.8,en;q=0.6',
   'accept-charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3' };
-app.listen(8081);
+app.listen(port);
 // Peerjs Broker Server
 var PeerServer = require('peer').PeerServer;
 var peerServer = new PeerServer({ port: 9000 });
+
+console.log("Server started listening on port "+port);
+console.log("Go to http://localhost:"+port+"/game.html");
+console.log();
 
 function handler (req, res) {
 	var url = req.url;
