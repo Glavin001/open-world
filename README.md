@@ -16,8 +16,8 @@ We would love more developers contributing to this ambitious project.
 
 
 ## Installation
-Run the following Terminal command.
-### 1) SSH
+Run the following Terminal commands.
+### 1a) SSH
 ```bash
 git clone git@github.com:Glavin001/open-world.git && cd open-world && npm install
 ```
@@ -30,14 +30,42 @@ fatal: Could not read from remote repository.
 Please make sure you have the correct access rights
 and the repository exists.
 ```
-Then use method 2, `HTTP`, instead.
+Then use method `1b`, `HTTP`, instead.
 To solve the SSH `permission denied` issue you need to setup a [SSH Key for your Github account](https://help.github.com/articles/generating-ssh-keys)
-### 2) HTTP
+### 1b) HTTP
 ```bash
 git clone https://github.com/Glavin001/open-world.git && cd open-world && npm install
 ```
+### 2) Build Leaflet from source
+Change directory into our Leaflet source location:
+Then
+```bash
+cd client/OpenWorld/lib/Leaflet/
+```
+As per [Leaflet's documentation](http://leafletjs.com/download.html):
+```bash
+npm install -g jake
+npm install
+```
+Then finally:
+```bash
+jake
+```
+And to test that it was successful:
+```bash
+ls dist
+```
+You should see:
+```bash
+images  leaflet.css  leaflet.ie.css  leaflet.js  leaflet-src.js
+```
+Now go back out to the root directory of this repository:
+```bash
+cd ../../../../
+```
+
 ## Run
-To start the server app execute the following (default port 8081):
+To start the server app execute the following from the root directory of the repository (default port 8081):
 ```bash
 node server/server.js
 ```
