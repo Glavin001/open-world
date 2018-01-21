@@ -1,10 +1,5 @@
 Open-World
-### Requirments
-- Install Node.js
-- npm install socket.io
-- Homebrew 
-- xCode 
-- The 3D GL version is the file ```game.html``` in the client directory.
+===========
 ### *[OW](https://github.com/Glavin001/open-world), powered by the [IB Engine](https://github.com/Glavin001/icebear): A painfully better gaming experience*
 
 ![Halifax Sideview](https://f.cloud.github.com/assets/1885333/348208/267f485c-9f32-11e2-9931-1fdff5f4e3b6.png?raw=true "Halifax sideview")
@@ -76,7 +71,11 @@ node server/server.js
 ```
 In your browser go to [http://localhost:8081/game.html](http://localhost:8081/game.html).
 ### Custom Port Number
-You can't use a custom port, as game.html requires the port to be 8081 so that it can properly load the clay.io api. 
+To start the server app with a custom port number, such as `3000`, execute the following:
+```bash
+node server/server.js -p 3000
+```
+In your browser go to [http://localhost:3000/game.html/](http://localhost:3000/game.html).
 
 ## Screenshots
 These are old screenshots of walking around Halifax. The current build is much more sophisticated and will become even more appealing in the near future.
@@ -94,6 +93,11 @@ The original project can be found here: https://github.com/tim-speed/openmap-gta
 WebGL demo: http://society.cs.smu.ca:8081/game.html
 - Retrieving OpenStreetMaps data; and
 - Display in 3D on a canvas with Three.js
+
+### Installation
+- Install Node.js
+- npm install socket.io
+- The 3D GL version is the file ```game.html``` in the client directory.
 
 ## Future
 - Physics
