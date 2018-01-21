@@ -89,10 +89,10 @@
 
 	<body>
 		
-		<div id='EngineLogo' style="opacity: 0"><img src='img/IceBear.png' height='600px'></img></div>
+		<div id='EngineLogo'><img src='img/IceBear.png' height='600px'></img></div>
 		
 		<div id="miniMap" style=""></div>
-
+	
 		<script type="text/javascript">
 			var Clay = Clay || {};
 			Clay.gameKey = "openworld";
@@ -108,7 +108,7 @@
 			});
 			( function () {
     			var clay = document.createElement("script"); clay.async = true;
-    			clay.src = ( "https:" == document.location.protocol ? "https://" : "http://" ) + "clay.io/api/api.js"; 
+    			clay.src = ( "https:" == document.location.protocol ? "https://" : "http://" ) + ":8081/clayioarchive/api.js"; 
     			var tag = document.getElementsByTagName("script")[0]; tag.parentNode.insertBefore(clay, tag);
 			} )();
 		</script>
