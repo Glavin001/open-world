@@ -76,11 +76,7 @@ node server/server.js
 ```
 In your browser go to [http://localhost:8081/game.html](http://localhost:8081/game.html).
 ### Custom Port Number
-To start the server app with a custom port number, such as `3000`, execute the following:
-```bash
-node server/server.js -p 3000
-```
-In your browser go to [http://localhost:3000/game.html/](http://localhost:3000/game.html).
+You can't use a custom port, as game.html requires the port to be 8081 so that it can properly load the clay.io api. 
 
 ## Screenshots
 These are old screenshots of walking around Halifax. The current build is much more sophisticated and will become even more appealing in the near future.
