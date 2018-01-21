@@ -1,4 +1,10 @@
 Open-World
+### Requirments
+- Install Node.js
+- npm install socket.io
+- Homebrew 
+- xCode 
+- The 3D GL version is the file ```game.html``` in the client directory.
 ===========
 ### *[OW](https://github.com/Glavin001/open-world), powered by the [IB Engine](https://github.com/Glavin001/icebear): A painfully better gaming experience*
 
@@ -93,11 +99,6 @@ The original project can be found here: https://github.com/tim-speed/openmap-gta
 WebGL demo: http://society.cs.smu.ca:8081/game.html
 - Retrieving OpenStreetMaps data; and
 - Display in 3D on a canvas with Three.js
-
-### Installation
-- Install Node.js
-- npm install socket.io
-- The 3D GL version is the file ```game.html``` in the client directory.
 
 ## Future
 - Physics
